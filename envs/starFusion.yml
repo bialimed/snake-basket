@@ -1,0 +1,4 @@
+channels:
+    - bioconda
+dependencies:
+    -  star-fusion=1.8.1
