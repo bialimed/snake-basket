@@ -1,0 +1,6 @@
+channels:
+    - bioconda
+    - fescudie
+dependencies:
+    - ensembl-vep=94.5
+    - anacore-utils=3.0.0

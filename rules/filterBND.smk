@@ -34,8 +34,8 @@ def filterBND(
             normal_sources = "" if params_normal_sources is None else "--normal-sources '" + params_normal_sources + "'",
             rt_max_dist = "" if params_rt_max_dist is None else "--rt-max-dist " + str(params_rt_max_dist),
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
-        # conda:
-        #     "envs/anacore-utils.yml"
+        conda:
+            "envs/anacore-utils.yml"
         shell:
             "{params.bin_path}"
             "  {params.mode}"

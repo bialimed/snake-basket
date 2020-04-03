@@ -29,8 +29,8 @@ def mergeVCFFusionsCallers(
             calling_sources = "--calling-sources " + " ".join(params_calling_sources),
             shared_filters = "" if params_shared_filters is None else "--shared-filters " + " ".join(params_shared_filters),
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
-        # conda:
-        #     "envs/anacore-utils.yml"
+        conda:
+            "envs/anacore-utils.yml"
         shell:
             "{params.bin_path}"
             " {params.annotation_field}"

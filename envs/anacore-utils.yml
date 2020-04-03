@@ -1,0 +1,5 @@
+channels:
+    - bioconda
+    - fescudie
+dependencies:
+    - anacore-utils=3.1.0

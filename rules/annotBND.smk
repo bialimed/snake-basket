@@ -25,8 +25,8 @@ def annotBND(
             annotations_field = "" if params_annotations_field is None else "--annotation-field " + params_annotations_field,
             bin_path = config.get("software_pathes", {}).get("annotBND", "annotBND.py"),
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
-        # conda:
-        #     "envs/anacore-utils.yml"
+        conda:
+            "envs/anacore-utils.yml"
         shell:
             "{params.bin_path}"
             "  {params.annotations_field}"

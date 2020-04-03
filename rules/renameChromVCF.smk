@@ -28,8 +28,8 @@ def renameChromVCF(
             bin_path = config.get("software_pathes", {}).get("renameChromVCF", "renameChromVCF.py"),
             names = "" if in_names is None else "--input-names " + in_names,
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
-        # conda:
-        #     "envs/anacore-utils.yml"
+        conda:
+            "envs/anacore-utils.yml"
         shell:
             "{params.bin_path}"
             " {params.names}"

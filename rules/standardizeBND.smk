@@ -31,8 +31,8 @@ def standardizeBND(
             sequence_padding = "" if params_sequence_padding is None else "--sequence-padding " + str(params_sequence_padding),
             stderr_redirection = "2>" if not params_stderr_append else "2>>",
             trace_unstandard = "--trace-unstandard" if params_trace_unstandard else "",
-        # conda:
-        #     "envs/anacore-utils.yml"
+        conda:
+            "envs/anacore-utils.yml"
         shell:
             "{params.bin_path}"
             " {params.sequence_padding}"
