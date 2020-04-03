@@ -14,6 +14,7 @@ def addAmpliRG(
         params_check_strand=None,
         params_min_zoi_cov=None,
         params_RG_tag=None,
+        params_single_mode=False,
         params_summary_format="json",
         params_keep_outputs=False,
         params_stderr_append=False):
@@ -33,6 +34,7 @@ def addAmpliRG(
             check_strand = "--check-strand" if params_check_strand else "",
             min_zoi_cov = "" if params_min_zoi_cov is None else "--min-zoi-cov " + str(params_min_zoi_cov),
             RG_tag = "" if params_RG_tag is None else "--RG-tag '" + params_RG_tag + "'",
+            single_mode = "--single-mode" if params_single_mode else "",
             stderr_redirection = "2>" if not params_stderr_append else "2>>",
             summary_format = params_summary_format
         conda:
@@ -43,6 +45,7 @@ def addAmpliRG(
             " {params.anchor_offset}"
             " {params.min_zoi_cov}"
             " {params.RG_tag}"
+            " {params.single_mode}"
             " --summary-format {params.summary_format}"
             " --input-aln {input.alignments}"
             " --input-panel {input.panel}"
