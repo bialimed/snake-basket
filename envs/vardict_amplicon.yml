@@ -1,0 +1,6 @@
+channels:
+    - bioconda
+    - fescudie
+dependencies:
+    - vardict-java=1.5.1
+    - ancore-utils=3.0.0
