@@ -35,7 +35,7 @@ def bwa_mem(
         conda:
             "envs/bwa.yml"
         shell:
-            "{params.bwa_path} mem"
+            "{params.bin_path} mem"
             " -t {threads}"
             " {params.extra}"
             " {input.reference}"
