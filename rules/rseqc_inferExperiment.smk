@@ -13,8 +13,8 @@ def rseqc_inferExperiment(
         params_sample_size=1000000,
         params_keep_outputs=False,
         params_stderr_append=False):
-    """Use to “guess” how RNA-seq sequencing were configured, particulary how reads were stranded for strand-specific RNA-seq data, through comparing the “strandness of reads” with the “standness of transcripts”."""
-    rule rseqc_readDistribution:
+    """Use to guess how RNA-seq sequencing were configured, particulary how reads were stranded for strand-specific RNA-seq data, through comparing the “strandness of reads” with the “standness of transcripts”."""
+    rule rseqc_inferExperiment:
         input:
             annotations = in_annotations,
             alignments = in_alignments
