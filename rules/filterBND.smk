@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2020 IUCT-O'
 __license__ = 'GNU General Public License'
-__version__ = '1.0.0'
+__version__ = '1.1.0'
 
 
 def filterBND(
@@ -11,6 +11,7 @@ def filterBND(
         out_variants="structural_variants/{sample}_annot_tag.vcf",
         out_stderr="logs/structural_variants/{sample}_filterBND_stderr.txt",
         params_annotations_field=None,  # tag or filter
+        params_min_support=None,
         params_mode=None,
         params_normal_sources=None,
         params_rt_max_dist=None,
@@ -30,6 +31,7 @@ def filterBND(
             annotations_field = "" if params_annotations_field is None else "--annotation-field " + params_annotations_field,
             bin_path = config.get("software_pathes", {}).get("filterBND", "filterBND.py"),
             input_normal = "" if in_normal is None else "--inputs-normal " + " ".join(in_normal),
+            min_support = "" if params_min_support is None else "--min-support " + str(params_min_support),
             mode = "" if params_mode is None else "--mode " + params_mode,
             normal_sources = "" if params_normal_sources is None else "--normal-sources '" + params_normal_sources + "'",
             rt_max_dist = "" if params_rt_max_dist is None else "--rt-max-dist " + str(params_rt_max_dist),
@@ -38,10 +40,11 @@ def filterBND(
             "envs/anacore-utils.yml"
         shell:
             "{params.bin_path}"
-            "  {params.mode}"
-            "  {params.annotations_field}"
-            "  {params.normal_sources}"
-            "  {params.rt_max_dist}"
+            " {params.mode}"
+            " {params.annotations_field}"
+            " {params.normal_sources}"
+            " {params.min_support}"
+            " {params.rt_max_dist}"
             " --input-annotations {input.annotations}"
             " {params.input_normal}"
             " --input-variants {input.variants}"
