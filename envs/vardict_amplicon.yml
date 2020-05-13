@@ -2,5 +2,6 @@ channels:
     - bioconda
     - fescudie
 dependencies:
+    - samtools=1.9
     - vardict-java=1.5.1
-    - ancore-utils=3.0.0
+    - anacore-utils=3.1.0
