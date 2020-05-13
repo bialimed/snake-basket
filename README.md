@@ -45,7 +45,7 @@ In this paragraph we will add a rule **markDuplicates** in your workflow.
 
 The function `markDuplicates()` is now accessibe in your workflow.
 
-3. Call rule in your workflow
+2. Call rule in your workflow
 
 Add the function call and parameters in your code:
 
@@ -63,7 +63,7 @@ parameters related to the Snakemake element like wildcards restrictions). Keep
 in mind that input and ouput must be consistent in terms of wildcards like with
 a standard rule.
 
-4. *Set execution environment for the rule*
+3. *Set execution environment for the rule*
 
 You can provide software of the rule by one of this three ways:
 
@@ -94,7 +94,7 @@ the environment of your rule is in `envs` folder:
      *The name of the environment file can be found in `conda` section of the
      rule in the `markDuplicates.smk`.*
 
-5. *Configure the computing requirements [optional]*
+4. *Configure the computing requirements [optional]*
 
 This step is necessary only if you use a submission scheduler (e.g. slurm).
 See rules declaration in the `markDuplicates.smk` (only once for this example:
