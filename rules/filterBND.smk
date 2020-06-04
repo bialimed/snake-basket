@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2020 IUCT-O'
 __license__ = 'GNU General Public License'
-__version__ = '1.1.0'
+__version__ = '1.2.0'
 
 
 def filterBND(
@@ -13,6 +13,7 @@ def filterBND(
         params_annotations_field=None,  # tag or filter
         params_min_support=None,
         params_mode=None,
+        params_normal_key=None,  # id or symbol
         params_normal_sources=None,
         params_rt_max_dist=None,
         params_keep_outputs=False,
@@ -33,6 +34,7 @@ def filterBND(
             input_normal = "" if in_normal is None else "--inputs-normal " + " ".join(in_normal),
             min_support = "" if params_min_support is None else "--min-support " + str(params_min_support),
             mode = "" if params_mode is None else "--mode " + params_mode,
+            normal_key = "" if params_normal_key is None else "--normal-key '" + params_normal_key + "'",
             normal_sources = "" if params_normal_sources is None else "--normal-sources '" + params_normal_sources + "'",
             rt_max_dist = "" if params_rt_max_dist is None else "--rt-max-dist " + str(params_rt_max_dist),
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
@@ -42,6 +44,7 @@ def filterBND(
             "{params.bin_path}"
             " {params.mode}"
             " {params.annotations_field}"
+            " {params.normal_key}"
             " {params.normal_sources}"
             " {params.min_support}"
             " {params.rt_max_dist}"
