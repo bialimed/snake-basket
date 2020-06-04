@@ -8,11 +8,11 @@ def annotKnownBND(
         in_known_partners="reference/known_fusions_genes.tsv",
         in_variants="structural_variants/{sample}_annot.vcf",
         out_variants="structural_variants/{sample}_annot_known.vcf",
-        out_stderr="logs/structural_variants/{sample}_annotknownBND_stderr.txt",
+        out_stderr="logs/structural_variants/{sample}_annotKnownBND_stderr.txt",
         params_annotations_field=None,
         params_keep_outputs=False,
         params_stderr_append=False):
-    """Annotate fusions known in fusions database with databases names and entries ID known.""""
+    """Annotate fusions known in fusions database with databases names and entries ID known."""
     rule annotKnownBND:
         input:
             known_partners = in_known_partners,
