@@ -116,6 +116,7 @@ def manta(
 
     # Configurate manta
     manta_launcher = os.path.join(manta_dir, "runWorkflow.py")
+    config_manta_path = config.get("software_pathes", {}).get("configManta", "configManta.py")
     rule manta_config:
         input:
             alignments = markdup_alignments,
@@ -126,8 +127,8 @@ def manta(
         log:
             out_stderr
         params:
-            bin_path = config.get("software_pathes", {}).get("configManta", "configManta.py"),
-            bin_folder = os.path.dirname(getSoft(config, "configManta.py", "fusion_callers")),
+            bin_path = config_manta_path,
+            bin_folder = os.path.dirname(os.path.abspath(config_manta_path)),
             bam = "tumorBam" if params_is_somatic and params_type != "rna" else "bam",  # When RNA mode is turned on, exactly one sample must be specified as normal input only (using either the --bam or --normalBam option)
             config_tpl = os.path.join(os.path.dirname(workflow.snakefile), "envs/manta_config.ini"),
             manta_dir = manta_dir,
