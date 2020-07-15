@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 IUCT-O'
 __license__ = 'GNU General Public License'
-__version__ = '2.0.0'
+__version__ = '2.0.1'
 
 
 include: "samtools_depth.smk"
@@ -26,10 +26,12 @@ def depthsMetrics(
         in_targets=in_targets,
         in_alignments=in_alignments,
         out_depths=(out_metrics + "_samtoolsDepth"),
+        out_stderr=out_stderr,
         params_mode="all_targeted",
         params_max_depth=0,
         params_min_map_qual=params_min_map_qual,
         params_min_read_qual=params_min_read_qual,
+        params_stderr_append=params_stderr_append
     )
     # Metrics
     rule depthsMetrics:
@@ -42,8 +44,7 @@ def depthsMetrics(
         params:
             bin_path = config.get("software_pathes", {}).get("depthsMetrics", "depthsMetrics.py"),
             expected_min_depth = "" if params_expected_min_depth is None else "--min-depth " + str(params_expected_min_depth),
-            format = params_format,
-            stderr_redirection = "2>" if not params_stderr_append else "2>>"
+            format = params_format
         conda:
             "envs/anacore-utils.yml"
         shell:
@@ -52,4 +53,4 @@ def depthsMetrics(
             " {params.expected_min_depth}"
             " --input-depths {input}"
             " --output-{params.format} {output}"
-            " {params.stderr_redirection} {log}"
+            " {params.stderr_redirection} 2>> {log}"
