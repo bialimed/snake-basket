@@ -53,4 +53,4 @@ def depthsMetrics(
             " {params.expected_min_depth}"
             " --input-depths {input}"
             " --output-{params.format} {output}"
-            " {params.stderr_redirection} 2>> {log}"
+            " 2>> {log}"
