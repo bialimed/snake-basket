@@ -6,6 +6,7 @@ __version__ = '1.0.0'
 
 def inspectBND(
         in_alignments="aln/{sample}.bam",
+        in_alignments_idx=None,
         in_annotations="reference/annot.gtf",
         in_domains=None,
         in_targets=None,
@@ -17,9 +18,12 @@ def inspectBND(
         params_keep_outputs=False,
         params_stderr_append=False):
     """Produce data to inspect fusions breakends."""
+    if in_alignments_idx is None:
+        in_alignments_idx = in_alignments[:-4] + ".bai"
     rule inspectBND:
         input:
             alignments = in_alignments,
+            alignments_idx = in_alignments_idx,
             annotations = in_annotations,
             domains = [] if in_domains is None else in_domains,
             targets = [] if in_targets is None else in_targets,
