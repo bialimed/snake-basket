@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 IUCT-O'
 __license__ = 'GNU General Public License'
-__version__ = '2.0.0'
+__version__ = '2.0.1'
 
 
 def filterVCFByAnnot(
@@ -32,7 +32,7 @@ def filterVCFByAnnot(
             kept_consequences = "" if params_kept_consequences is None else "--kept-consequences " + " ".join(params_kept_consequences),
             mode = "remove" if params_remove else "tag",
             polym_populations = "" if params_polym_populations is None else "--polym-populations " + " ".join(params_polym_populations),
-            polym_threshold = "" if params_polym_threshold is None else "--polym-threshold " + params_polym_threshold,
+            polym_threshold = "" if params_polym_threshold is None else "--polym-threshold " + str(params_polym_threshold),
             rna_without_version = "" if params_rna_with_version is None or params_rna_with_version else "--rna-without-version",
             selected_rna = "" if in_selected_rna is None else "--input-selected-RNA " + in_selected_rna,
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
