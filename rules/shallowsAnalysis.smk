@@ -40,7 +40,6 @@ def shallowsAnalysis(
             known_count_field = "" if params_known_count_field is None else "--known-count-field " + params_known_count_field,
             known_hgvsc_field = "" if params_known_hgvsc_field is None else "--known-hgvsc-field " + params_known_hgvsc_field,
             known_hgvsp_field = "" if params_known_hgvsp_field is None else "--known-hgvsp-field " + params_known_hgvsp_field,
-            known_count_field = "" if params_known_count_field is None else "--known-count-field " + params_known_count_field,
             known_min_count = "" if params_known_min_count is None else "--known-min-count " + str(params_known_min_count),
             known_symbol_field = "" if params_known_symbol_field is None else "--known-symbol-field " + params_known_symbol_field,
             known_variants = "" if in_known_variants is None else "--inputs-variants " + in_known_variants,
