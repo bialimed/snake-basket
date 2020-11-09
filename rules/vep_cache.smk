@@ -16,7 +16,7 @@ def vep_cache(
         params_reference_assembly=None,
         params_keep_outputs=False,
         params_stderr_append=False):
-    """Determine the effect of variants (SNPs, insertions, deletions, CNVs or structural variants) on genes, transcripts, and protein sequence, as well as regulatory regions."""
+    """Determine the effect of variants (SNPs, insertions, deletions, CNVs or structural variants) on genes, transcripts, and protein sequence, as well as regulatory regions. It required VEP >= 94."""
     params_annotations_source_opt = "--merged --xref_refseq --tsl --appris"  # --tsl: Transcript support level ; --appris: Add transcript isoform annotation ; --xref_refseq: RefSeq mRNA identifier
     if params_annotations_source == "ensembl":
         params_annotations_source_opt = "--xref_refseq --tsl --appris"
