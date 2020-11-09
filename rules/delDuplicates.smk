@@ -15,7 +15,7 @@ def delDuplicates(
         params_stringency="LENIENT",
         params_keep_outputs=False,
         params_stderr_append=False):
-    """"Remove pairs of reads originating from a single fragment of DNA."""
+    """Remove pairs of reads originating from a single fragment of DNA."""
     rule delDuplicates:
         input:
             in_alignments
