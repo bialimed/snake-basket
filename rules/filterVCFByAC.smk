@@ -1,16 +1,16 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 IUCT-O'
 __license__ = 'GNU General Public License'
-__version__ = '2.0.0'
+__version__ = '2.0.1'
 
 
 def filterVCFByAC(
         in_variants="variants/{variant_caller}/{sample}_annot.vcf",
         out_variants="variants/{variant_caller}/{sample}_annot_tagByAC.vcf",
         out_stderr="logs/variants/{variant_caller}/{sample}_filterByAC_stderr.txt",
-        params_min_alt_fraction=getParamFromConf(config, "min_alt_fraction", "filterVCF_rule", 0.02),
-        params_min_alt_count=getParamFromConf(config, "min_alt_count", "filterVCF_rule", 4),
-        params_min_calling_depth=getParamFromConf(config, "min_calling_depth", "filterVCF_rule", 20),
+        params_min_alt_fraction=0.02,
+        params_min_alt_count=4,
+        params_min_calling_depth=20,
         params_remove=False,
         params_keep_outputs=False,
         params_stderr_append=False):
