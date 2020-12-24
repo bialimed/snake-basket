@@ -1,13 +1,14 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 IUCT-O'
 __license__ = 'GNU General Public License'
-__version__ = '2.0.0'
+__version__ = '2.1.0'
 
 
 def vep_cache(
         params_reference_species,
         in_variants="variants/{variant_caller}/{sample}_call.vcf",
         in_cache=None,
+        in_cosmic=None,
         out_variants="variants/{variant_caller}/{sample}_annot.vcf",
         out_stdout="logs/variants/{variant_caller}/{sample}_annot_stdout.txt",
         out_stderr="logs/variants/{variant_caller}/{sample}_annot_stderr.txt",
@@ -76,17 +77,20 @@ def vep_cache(
     # Reverse normalisation produced by VEP in allele annotation field
     rule fixVEPAnnot:
         input:
-            out_variants + "_unfixed.tmp"
+            cosmic = in_cosmic,
+            variants = out_variants + "_unfixed.tmp"
         output:
             out_variants if params_keep_outputs else temp(out_variants)
         log:
             out_stderr
         params:
-            bin_path = config.get("software_pathes", {}).get("fixVEPAnnot", "fixVEPAnnot.py")
+            bin_path = config.get("software_pathes", {}).get("fixVEPAnnot", "fixVEPAnnot.py"),
+            cosmic_db = "" if in_cosmic is None else "--input-cosmic {}".format(in_cosmic)
         conda:
             "envs/anacore-utils.yml"
         shell:
             "{params.bin_path}"
-            " --input-variants {input}"
+            " {params.cosmic_db}"
+            " --input-variants {input.variants}"
             " --output-variants {output}"
             " 2>> {log}"
