@@ -27,7 +27,7 @@ def annotEvidences(
             evidences = in_evidences,
             variants = in_variants
         output:
-            evidences = None if out_evidences is None else (out_evidences if params_keep_outputs else temp(out_evidences))
+            evidences = None if out_evidences is None else (out_evidences if params_keep_outputs else temp(out_evidences)),
             variants = out_variants if params_keep_outputs else temp(out_variants)
         log:
             out_stderr
@@ -46,6 +46,6 @@ def annotEvidences(
             " --input-disease-ontology {input.disease_ontology}"
             " --input-evidences {input.evidences}"
             " --input-variants {input.variants}"
-            " --output-variants {output}"
+            " --output-variants {output.variants}"
             " {param.output_evidences}"
             " {params.stderr_redirection} {log}"
