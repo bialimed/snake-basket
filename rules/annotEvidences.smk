@@ -12,6 +12,7 @@ def annotEvidences(
         out_variants="variants/{sample}_annot_evidences.vcf",
         out_stderr="logs/variants/{sample}_annotEvidences_stderr.txt",
         params_annotations_field=None,
+        params_assembly_version=None,
         params_disease_id_by_spl=None,
         params_disease_term_by_spl=None,
         params_keep_outputs=False,
@@ -33,6 +34,7 @@ def annotEvidences(
             out_stderr
         params:
             annotations_field = "" if params_annotations_field is None else "--annotation-field " + params_annotations_field,
+            assembly_version = "" if params_assembly_version is None else "--assembly-version " + params_assembly_version,
             bin_path = config.get("software_pathes", {}).get("annotEvidences", "annotEvidences.py"),
             disease_id = (lambda wildcards: "" if wildcards.sample not in params_disease_id_by_spl else "--disease-id {}".format(params_disease_id_by_spl[wildcards.sample])),
             disease_term = (lambda wildcards: "" if wildcards.sample not in params_disease_term_by_spl else "--disease-term '{}'".format(params_disease_term_by_spl[wildcards.sample])),
@@ -42,10 +44,11 @@ def annotEvidences(
             "envs/anacore-utils.yml"
         shell:
             "{params.bin_path}"
+            "  {params.assembly_version}"
             "  {params.annotations_field}"
             " --input-disease-ontology {input.disease_ontology}"
             " --input-evidences {input.evidences}"
             " --input-variants {input.variants}"
             " --output-variants {output.variants}"
-            " {param.output_evidences}"
+            " {params.output_evidences}"
             " {params.stderr_redirection} {log}"
