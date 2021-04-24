@@ -2,4 +2,4 @@ channels:
     - bioconda
     - fescudie
 dependencies:
-    - anacore-utils=3.3.0
+    - genovance=0.1.0

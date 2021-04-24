@@ -24,7 +24,7 @@ def filterDetailedEvidences(
             bin_path = config.get("software_pathes", {}).get("filterDetailedEvidences", "filterDetailedEvidences.py"),
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
         conda:
-            "envs/anacore-utils.yml"
+            "envs/genovance.yml"
         shell:
             "{params.bin_path}"
             " --input-evidences {input.evidences}"

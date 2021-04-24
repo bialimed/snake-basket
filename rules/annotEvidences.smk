@@ -45,7 +45,7 @@ def annotEvidences(
             output_evidences = "--output-evidences {}".format(out_evidences) if out_evidences else "",
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
         conda:
-            "envs/anacore-utils.yml"
+            "envs/genovance.yml"
         shell:
             "{params.bin_path}"
             "  {params.assembly_version}"
