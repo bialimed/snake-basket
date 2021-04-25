@@ -29,5 +29,5 @@ def filterDetailedEvidences(
             "{params.bin_path}"
             " --input-evidences {input.evidences}"
             " --input-variants {input.variants}"
-            " --output-variants {output.evidences}"
+            " --output-evidences {output}"
             " {params.stderr_redirection} {log}"
