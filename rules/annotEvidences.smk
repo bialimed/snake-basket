@@ -48,8 +48,10 @@ def annotEvidences(
             "envs/genovance.yml"
         shell:
             "{params.bin_path}"
-            "  {params.assembly_version}"
             "  {params.annotations_field}"
+            "  {params.assembly_version}"
+            "  {params.disease_id}"
+            "  {params.disease_term}"
             "  {params.evidences_source}"
             " --input-disease-ontology {input.disease_ontology}"
             " --input-evidences {input.evidences}"
