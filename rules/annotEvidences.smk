@@ -30,14 +30,14 @@ def annotEvidences(
         param = ""
         spl_name = wildcards.sample
         if spl_name in params_disease_id_by_spl:
-            param = "--diseasez-id '{}'".format(params_disease_id_by_spl[spl_name])
+            param = "--disease-id '{}'".format(params_disease_id_by_spl[spl_name])
         return param
 
     def annotEvidencesGetParamDiseaseTerm(wildcards):
         param = ""
         spl_name = wildcards.sample
         if spl_name in params_disease_term_by_spl:
-            param = "--diseasez-id '{}'".format(params_disease_term_by_spl[spl_name])
+            param = "--diseasez-term '{}'".format(params_disease_term_by_spl[spl_name])
         return param
 
     # Rule
