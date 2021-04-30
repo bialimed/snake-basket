@@ -37,7 +37,7 @@ def annotEvidences(
         param = ""
         spl_name = wildcards.sample
         if spl_name in params_disease_term_by_spl:
-            param = "--diseasez-term '{}'".format(params_disease_term_by_spl[spl_name])
+            param = "--disease-term '{}'".format(params_disease_term_by_spl[spl_name])
         return param
 
     # Rule
