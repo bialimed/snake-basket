@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 IUCT-O'
 __license__ = 'GNU General Public License'
-__version__ = '2.1.0'
+__version__ = '2.2.0'
 
 
 def vep_cache(
@@ -12,6 +12,7 @@ def vep_cache(
         out_variants="variants/{variant_caller}/{sample}_annot.vcf",
         out_stdout="logs/variants/{variant_caller}/{sample}_annot_stdout.txt",
         out_stderr="logs/variants/{variant_caller}/{sample}_annot_stderr.txt",
+        params_annotations_field="ANN",
         params_annotations_source="merged",  # Choices: ["ensembl", "refseq", "merged"]
         params_extra="",
         params_reference_assembly=None,
@@ -33,6 +34,7 @@ def vep_cache(
             stdout = out_stdout,
             stderr = out_stderr
         params:
+            annotations_field = params_annotations_field,
             annotations_source_opt = params_annotations_source_opt,
             assembly = "" if params_reference_assembly is None else "--assembly " + params_reference_assembly,
             extra = params_extra,
@@ -69,7 +71,7 @@ def vep_cache(
             " --af_gnomad"
             " --no_stats"
             " --vcf"
-            " --vcf_info_field ANN"
+            " --vcf_info_field {params.annotations_field}"
             " --input_file {input}"
             " --output_file {output}"
             " > {log.stdout}"
@@ -84,6 +86,7 @@ def vep_cache(
         log:
             out_stderr
         params:
+            annotations_field = params_annotations_field,
             bin_path = config.get("software_pathes", {}).get("fixVEPAnnot", "fixVEPAnnot.py"),
             cosmic_db = "" if in_cosmic is None else "--input-cosmic {}".format(in_cosmic)
         conda:
@@ -91,6 +94,7 @@ def vep_cache(
         shell:
             "{params.bin_path}"
             " {params.cosmic_db}"
+            " --annotations-field {params.annotations_field}"
             " --input-variants {input.variants}"
             " --output-variants {output}"
             " 2>> {log}"
