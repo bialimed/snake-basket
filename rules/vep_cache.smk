@@ -79,7 +79,7 @@ def vep_cache(
     # Reverse normalisation produced by VEP in allele annotation field
     rule fixVEPAnnot:
         input:
-            cosmic = in_cosmic,
+            cosmic = [] if in_cosmic is None else in_cosmic,
             variants = out_variants + "_unfixed.tmp"
         output:
             out_variants if params_keep_outputs else temp(out_variants)
