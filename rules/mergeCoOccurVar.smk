@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 IUCT-O'
 __license__ = 'GNU General Public License'
-__version__ = '2.0.0'
+__version__ = '2.1.0'
 
 
 def mergeCoOccurVar(
@@ -28,7 +28,7 @@ def mergeCoOccurVar(
             out_stderr
         params:
             AF_diff_rate = "" if params_AF_diff_rate is None else "--AF-diff-rate " + str(params_AF_diff_rate),
-            bin_path = config.get("software_pathes", {}).get("mergeCoOccurVar", "mergeCoOccurVar.py"),
+            bin_path = config.get("software_paths", {}).get("mergeCoOccurVar", "mergeCoOccurVar.py"),
             intersection_count = "" if params_intersection_count is None else "--intersection-count " + str(params_intersection_count),
             intersection_rate = "" if params_intersection_rate is None else "--intersection-rate " + str(params_intersection_rate),
             max_distance = "" if params_max_distance is None else "--max-distance " + str(params_max_distance),

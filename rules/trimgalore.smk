@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2020 IUCT-O'
 __license__ = 'GNU General Public License'
-__version__ = '1.0.0'
+__version__ = '1.1.0'
 
 
 def trimgalore(
@@ -32,7 +32,7 @@ def trimgalore(
                 out_stderr
             params:
                 basename = basename,
-                bin_path = config.get("software_pathes", {}).get("trim_galore", "trim_galore"),
+                bin_path = config.get("software_paths", {}).get("trim_galore", "trim_galore"),
                 extra = params_extra,
                 match_stringency = "" if params_match_stringency is None else "--stringency " + str(params_match_stringency),
                 min_length = "" if params_min_length is None else "--length " + str(params_min_length),
@@ -70,7 +70,7 @@ def trimgalore(
                 out_stderr
             params:
                 basename = basename,
-                bin_path = config.get("software_pathes", {}).get("trim_galore", "trim_galore"),
+                bin_path = config.get("software_paths", {}).get("trim_galore", "trim_galore"),
                 extra = params_extra,
                 match_stringency = "" if params_match_stringency is None else "--stringency " + str(params_match_stringency),
                 min_length = "" if params_min_length is None else "--length " + str(params_min_length),

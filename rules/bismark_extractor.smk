@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2020 IUCT-O'
 __license__ = 'GNU General Public License'
-__version__ = '1.0.0'
+__version__ = '1.1.0'
 
 
 def bismark_extractor(
@@ -46,7 +46,7 @@ def bismark_extractor(
         log:
             out_stderr
         params:
-            bin_path = config.get("software_pathes", {}).get("bismark_methylation_extractor", "bismark_methylation_extractor"),
+            bin_path = config.get("software_paths", {}).get("bismark_methylation_extractor", "bismark_methylation_extractor"),
             buffer_size = params_buffer_size,
             compression = "--gzip" if params_compressed else "",
             out_dir = out_dir,

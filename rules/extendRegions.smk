@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 IUCT-O'
 __license__ = 'GNU General Public License'
-__version__ = '2.1.0'
+__version__ = '2.2.0'
 
 
 def extendRegions(
@@ -22,7 +22,7 @@ def extendRegions(
         log:
             out_stderr
         params:
-            bin_path = config.get("software_pathes", {}).get("extendRegions", "extendRegions.py"),
+            bin_path = config.get("software_paths", {}).get("extendRegions", "extendRegions.py"),
             concatenate_names = " --concatenate-names " if params_concatenate_names else "",
             merge_contiguous = " --merge-contiguous " if params_merge_contiguous else "",
             padding_size = " --padding-size " + str(params_padding_size) if params_padding_size is not None else "",

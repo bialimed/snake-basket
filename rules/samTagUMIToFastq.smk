@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2020 IUCT-O'
 __license__ = 'GNU General Public License'
-__version__ = '1.0.0'
+__version__ = '1.1.0'
 
 
 def samTagUMIToFastq(
@@ -28,7 +28,7 @@ def samTagUMIToFastq(
             out_stderr
         params:
             barcode_tag = " --barcode-tag {}".format(params_barcode_tag) if params_barcode_tag else "",
-            bin_path = config.get("software_pathes", {}).get("samTagUMIToFastq", "samTagUMIToFastq.py"),
+            bin_path = config.get("software_paths", {}).get("samTagUMIToFastq", "samTagUMIToFastq.py"),
             keep_qc_failed = " --keep-qc-failed" if params_keep_qc_failed else "",
             qual_offset = " --qual-offset {}".format(params_qual_offset) if params_qual_offset else "",
             reads_barcode = (lambda wildcards: "" if wildcards.sample not in params_barcode_by_spl else " --reads-barcode '{}'".format(params_barcode_by_spl[wildcards.sample])) if params_barcode_by_spl else "",

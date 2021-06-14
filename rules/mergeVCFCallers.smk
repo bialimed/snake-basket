@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 IUCT-O'
 __license__ = 'GNU General Public License'
-__version__ = '2.0.0'
+__version__ = '2.1.0'
 
 
 def mergeVCFCallers(
@@ -22,7 +22,7 @@ def mergeVCFCallers(
         log:
             out_stderr
         params:
-            bin_path = config.get("software_pathes", {}).get("mergeVCFCallers", "mergeVCFCallers.py"),
+            bin_path = config.get("software_paths", {}).get("mergeVCFCallers", "mergeVCFCallers.py"),
             annotation_field = "" if params_annotation_field is None else "--annotations-field " + params_annotation_field,
             calling_sources = " ".join(params_calling_sources),
             shared_filters = "--shared-filters " + " ".join(params_shared_filters) if params_shared_filters else "",

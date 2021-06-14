@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 IUCT-O'
 __license__ = 'GNU General Public License'
-__version__ = '2.0.0'
+__version__ = '2.1.0'
 
 
 def vcf2json(
@@ -27,7 +27,7 @@ def vcf2json(
         params:
             annot_field = "--annotation-field " + params_annot_field if params_annot_field is not None else "",
             assembly_id = "--assembly-id " + params_assembly_id if params_assembly_id is not None else "",
-            bin_path = config.get("software_pathes", {}).get("VCFToJSON", "VCFToJSON.py"),
+            bin_path = config.get("software_paths", {}).get("VCFToJSON", "VCFToJSON.py"),
             calling_source = "--calling-source " + params_calling_source if params_calling_source else "",
             merged_sources = "--merged-sources" if params_merged_sources else "",
             pathogenicity_fields = "--pathogenicity-fields " + " ".join(params_pathogenicity_fields) if params_pathogenicity_fields is not None else "",

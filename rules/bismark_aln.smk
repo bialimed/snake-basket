@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2020 IUCT-O'
 __license__ = 'GNU General Public License'
-__version__ = '1.0.0'
+__version__ = '1.1.0'
 
 
 def bismark_aln(
@@ -39,7 +39,7 @@ def bismark_aln(
         log:
             out_stderr
         params:
-            bin_path = config.get("software_pathes", {}).get("bismark", "bismark"),
+            bin_path = config.get("software_paths", {}).get("bismark", "bismark"),
             aligner = "--" + params_aligner,
             basename = basename,
             directional = "" if params_is_directional else "--non_directional",

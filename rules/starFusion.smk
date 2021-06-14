@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2020 IUCT-O'
 __license__ = 'GNU General Public License'
-__version__ = '1.0.0'
+__version__ = '1.1.0'
 
 
 def starFusion(
@@ -29,7 +29,7 @@ def starFusion(
             out_stderr
         params:
             arg_read2 = "" if in_R2 is None else "--right_fq",
-            bin_path = config.get("software_pathes", {}).get("STAR-Fusion", "STAR-Fusion"),
+            bin_path = config.get("software_paths", {}).get("STAR-Fusion", "STAR-Fusion"),
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
         threads: params_nb_threads
         conda:

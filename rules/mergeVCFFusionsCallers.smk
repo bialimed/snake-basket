@@ -1,7 +1,7 @@
 __author__ = 'Veronique Ivashchenko and Frederic Escudie'
 __copyright__ = 'Copyright (C) 2020 IUCT-O'
 __license__ = 'GNU General Public License'
-__version__ = '1.0.0'
+__version__ = '1.1.0'
 
 
 def mergeVCFFusionsCallers(
@@ -25,7 +25,7 @@ def mergeVCFFusionsCallers(
             out_stderr
         params:
             annotation_field = "" if params_annotation_field is None else "--annotation-field " + params_annotation_field,
-            bin_path = config.get("software_pathes", {}).get("mergeVCFFusionsCallers", "mergeVCFFusionsCallers.py"),
+            bin_path = config.get("software_paths", {}).get("mergeVCFFusionsCallers", "mergeVCFFusionsCallers.py"),
             calling_sources = "--calling-sources " + " ".join(params_calling_sources),
             shared_filters = "" if params_shared_filters is None else "--shared-filters " + " ".join(params_shared_filters),
             stderr_redirection = "2>" if not params_stderr_append else "2>>"

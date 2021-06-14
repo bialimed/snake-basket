@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 IUCT-O'
 __license__ = 'GNU General Public License'
-__version__ = '2.0.1'
+__version__ = '2.1.0'
 
 
 def filterVCFByAC(
@@ -23,7 +23,7 @@ def filterVCFByAC(
         log:
             out_stderr
         params:
-            bin_path = config.get("software_pathes", {}).get("filterVCFByAC", "filterVCFByAC.py"),
+            bin_path = config.get("software_paths", {}).get("filterVCFByAC", "filterVCFByAC.py"),
             mode = "remove" if params_remove else "tag",
             min_AD = "" if params_min_alt_count is None else " --min-AD " + str(params_min_alt_count),
             min_AF = "" if params_min_alt_fraction is None else " --min-AF " + str(params_min_alt_fraction),

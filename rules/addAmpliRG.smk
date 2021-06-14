@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 IUCT-O'
 __license__ = 'GNU General Public License'
-__version__ = '2.0.0'
+__version__ = '2.1.0'
 
 
 def addAmpliRG(
@@ -30,7 +30,7 @@ def addAmpliRG(
             out_stderr
         params:
             anchor_offset = "" if params_anchor_offset is None else "--anchor-offset " + str(params_anchor_offset),
-            bin_path = config.get("software_pathes", {}).get("addAmpliRG", "addAmpliRG.py"),
+            bin_path = config.get("software_paths", {}).get("addAmpliRG", "addAmpliRG.py"),
             check_strand = "--check-strand" if params_check_strand else "",
             min_zoi_cov = "" if params_min_zoi_cov is None else "--min-zoi-cov " + str(params_min_zoi_cov),
             RG_tag = "" if params_RG_tag is None else "--RG-tag '" + params_RG_tag + "'",

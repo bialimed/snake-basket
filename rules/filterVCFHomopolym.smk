@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 IUCT-O'
 __license__ = 'GNU General Public License'
-__version__ = '2.0.0'
+__version__ = '2.1.0'
 
 
 def filterVCFHomopolym(
@@ -24,7 +24,7 @@ def filterVCFHomopolym(
         log:
             out_stderr
         params:
-            bin_path = config.get("software_pathes", {}).get("filterVCFHomopolym", "filterVCFHomopolym.py"),
+            bin_path = config.get("software_paths", {}).get("filterVCFHomopolym", "filterVCFHomopolym.py"),
             homopolym_length = "" if params_homopolym_length is None else "--homopolym-length " + str(params_homopolym_length),
             mode = "remove" if params_remove else "tag",
             tag_name = "" if params_tag_name is None else "--tag-name " + params_tag_name,

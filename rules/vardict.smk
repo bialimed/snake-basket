@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 IUCT-O'
 __license__ = 'GNU General Public License'
-__version__ = '2.1.0'
+__version__ = '2.2.0'
 
 
 def vardict(
@@ -29,7 +29,7 @@ def vardict(
         log:
             out_stderr
         params:
-            bin_path = config.get("software_pathes", {}).get("vardict", "vardict-java"),
+            bin_path = config.get("software_paths", {}).get("vardict", "vardict-java"),
             min_alt_count = params_min_alt_count,
             min_alt_fraction = params_min_alt_fraction,
             min_base_qual = params_min_base_qual,
@@ -60,7 +60,7 @@ def vardict(
         log:
             out_stderr
         params:
-            bin_path = config.get("software_pathes", {}).get("vardict_teststrandbias", "teststrandbias.R")
+            bin_path = config.get("software_paths", {}).get("vardict_teststrandbias", "teststrandbias.R")
         conda:
             "envs/vardict.yml"
         shell:
@@ -77,7 +77,7 @@ def vardict(
         log:
             out_stderr
         params:
-            bin_path = config.get("software_pathes", {}).get("vardict_var2vcf", "var2vcf_valid.pl"),
+            bin_path = config.get("software_paths", {}).get("vardict_var2vcf", "var2vcf_valid.pl"),
             keep_multiple_alt = "-A" if params_keep_multiple_alt else "",
             min_alt_fraction = params_min_alt_fraction,
             min_base_qual = params_min_base_qual,
@@ -104,7 +104,7 @@ def vardict(
         log:
             out_stderr
         params:
-            bin_path = config.get("software_pathes", {}).get("fixVCallerVCF", "fixVCallerVCF.py")
+            bin_path = config.get("software_paths", {}).get("fixVCallerVCF", "fixVCallerVCF.py")
         conda:
             "envs/anacore-utils.yml"
         shell:

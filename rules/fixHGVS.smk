@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 IUCT-O'
 __license__ = 'GNU General Public License'
-__version__ = '2.0.0'
+__version__ = '2.1.0'
 
 
 def fixHGVS(
@@ -28,7 +28,7 @@ def fixHGVS(
             annotations_field = "--annotations-field " + params_annotations_field if params_annotations_field else "",
             assembly_accessions = "--input-assembly-accessions " + in_assembly_accessions if in_assembly_accessions else "",
             assembly_version = "--assembly-version " + params_assembly_version if params_assembly_version else "",
-            bin_path = config.get("software_pathes", {}).get("fixHGVSMutalyzer", "fixHGVSMutalyzer.py"),
+            bin_path = config.get("software_paths", {}).get("fixHGVSMutalyzer", "fixHGVSMutalyzer.py"),
             mutalyzer_url = "--mutalyzer-url " + params_mutalyzer_url if params_mutalyzer_url else "",
             proxy_url = "--proxy-url " + params_proxy_url if params_proxy_url else "",
             stderr_redirection = "2>" if not params_stderr_append else "2>>"

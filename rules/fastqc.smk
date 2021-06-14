@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 IUCT-O'
 __license__ = 'GNU General Public License'
-__version__ = '2.0.0'
+__version__ = '2.1.0'
 
 
 def fastqc(
@@ -41,7 +41,7 @@ def fastqc(
             stdout = out_stdout
         params:
             adapters = "" if in_adapters is None else "--adapters " + in_adapters,
-            bin_path = config.get("software_pathes", {}).get("fastqc", "fastqc"),
+            bin_path = config.get("software_paths", {}).get("fastqc", "fastqc"),
             contaminants = "" if in_contaminants is None else "--contaminants " + in_contaminants,
             dir = out_dir,
             extra = params_extra,

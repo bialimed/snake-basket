@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 IUCT-O'
 __license__ = 'GNU General Public License'
-__version__ = '1.0.0'
+__version__ = '1.1.0'
 
 
 def filterVCFBySOR(
@@ -31,7 +31,7 @@ def filterVCFBySOR(
             alt_fwd_tag = "--alt-fwd-tag " + params_alt_fwd_tag if params_alt_fwd_tag is not None else "",
             alt_rev_tag = "--alt-rev-tag " + params_alt_rev_tag if params_alt_rev_tag is not None else "",
             bias_tag = "--bias-tag " + params_bias_tag if params_bias_tag is not None else "",
-            bin_path = config.get("software_pathes", {}).get("filterVCFBySOR", "filterVCFBySOR.py"),
+            bin_path = config.get("software_paths", {}).get("filterVCFBySOR", "filterVCFBySOR.py"),
             indel_max_SOR = "--indel-max-SOR " + params_indel_max_SOR if params_indel_max_SOR is not None else "",
             mode = params_mode,
             ref_fwd_tag = "--ref-fwd-tag " + params_ref_fwd_tag if params_ref_fwd_tag is not None else "",

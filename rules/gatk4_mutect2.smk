@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 IUCT-O'
 __license__ = 'GNU General Public License'
-__version__ = '2.0.1'
+__version__ = '2.1.0'
 
 include: "gatk4_learnReadOrientationModel.smk"
 
@@ -31,7 +31,7 @@ def gatk4_mutect2(
         log:
             stderr = out_stderr
         params:
-            bin_path = config.get("software_pathes", {}).get("samtools", "samtools"),
+            bin_path = config.get("software_paths", {}).get("samtools", "samtools"),
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
         conda:
             "envs/samtools.yml"
@@ -63,7 +63,7 @@ def gatk4_mutect2(
             stdout = out_stdout,
             stderr = out_stderr
         params:
-            bin_path = config.get("software_pathes", {}).get("gatk", "gatk"),
+            bin_path = config.get("software_paths", {}).get("gatk", "gatk"),
             f1r2 = "--f1r2-tar-gz " + out_variants + "_f1r2.tar.gz" if params_tag_strand_bias else "",
             germline_variants = "" if in_germline_variants is None else "--germline-resource " + in_germline_variants,
             min_base_qual = params_min_base_qual,
@@ -102,7 +102,7 @@ def gatk4_mutect2(
             stdout = out_stdout,
             stderr = out_stderr
         params:
-            bin_path = config.get("software_pathes", {}).get("gatk", "gatk"),
+            bin_path = config.get("software_paths", {}).get("gatk", "gatk"),
             strand_model = ("" if not params_tag_strand_bias else "--orientation-bias-artifact-priors " + params_tag_strand_bias + "_strandModel.tar.gz")
         conda:
             "envs/gatk4.yml"
@@ -125,7 +125,7 @@ def gatk4_mutect2(
         log:
             out_stderr
         params:
-            bin_path = config.get("software_pathes", {}).get("splitVCFAlt", "splitVCFAlt.py")
+            bin_path = config.get("software_paths", {}).get("splitVCFAlt", "splitVCFAlt.py")
         conda:
             "envs/anacore-utils.yml"
         shell:
@@ -143,7 +143,7 @@ def gatk4_mutect2(
         log:
             out_stderr
         params:
-            bin_path = config.get("software_pathes", {}).get("filterVCF", "filterVCF.py"),
+            bin_path = config.get("software_paths", {}).get("filterVCF", "filterVCF.py"),
             filters = '{"class":"FiltersCombiner","operator":"and","filters":[{"class":"Filter","getter":"m:getPopAltAD","aggregator":"ratio:1","operator":">=","values":' + str(params_min_alt_count) + '},{"class":"Filter","getter":"m:getPopAltAF","aggregator":"ratio:1","operator":">=","values":' + str(params_min_alt_fraction) + '}]}'
         conda:
             "envs/anacore-utils.yml"

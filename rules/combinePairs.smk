@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2020 IUCT-O'
 __license__ = 'GNU General Public License'
-__version__ = '1.0.0'
+__version__ = '1.1.0'
 
 
 def combinePairs(
@@ -27,7 +27,7 @@ def combinePairs(
         log:
             out_stderr
         params:
-            bin_path = config.get("software_pathes", {}).get("combinePairs", "combinePairs.py"),
+            bin_path = config.get("software_paths", {}).get("combinePairs", "combinePairs.py"),
             max_contradict_ratio = "" if params_max_contradict_ratio is None else "--max-contradict-ratio " + str(params_max_contradict_ratio),
             max_frag_length = "" if params_max_frag_length is None else "--max-frag-length " + str(params_max_frag_length),
             min_frag_length = "" if params_min_frag_length is None else "--min-frag-length " + str(params_min_frag_length),

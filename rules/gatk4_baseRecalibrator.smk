@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 IUCT-O'
 __license__ = 'GNU General Public License'
-__version__ = '2.0.0'
+__version__ = '2.1.0'
 
 
 def gatk4_baseRecalibrator(
@@ -29,7 +29,7 @@ def gatk4_baseRecalibrator(
             stderr = out_stderr,
             stdout = out_stdout
         params:
-            bin_path = config.get("software_pathes", {}).get("gatk", "gatk"),
+            bin_path = config.get("software_paths", {}).get("gatk", "gatk"),
             extra = params_extra,
             intervals = "" if in_intervals is None else "--intervals " + in_intervals,
             known_sites = "--known-sites " + " --known-sites ".join(in_known_sites),
@@ -60,7 +60,7 @@ def gatk4_baseRecalibrator(
             stderr = out_stderr,
             stdout = out_stdout
         params:
-            bin_path = config.get("software_pathes", {}).get("gatk", "gatk"),
+            bin_path = config.get("software_paths", {}).get("gatk", "gatk"),
             extra = params_extra,
             intervals = "" if in_intervals is None else "--intervals " + in_intervals,
         conda:

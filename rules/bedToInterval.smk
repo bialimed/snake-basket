@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 IUCT-O'
 __license__ = 'GNU General Public License'
-__version__ = '2.0.0'
+__version__ = '2.1.0'
 
 
 def bedToInterval(
@@ -25,7 +25,7 @@ def bedToInterval(
         output:
             out_intervals if params_keep_outputs else temp(out_intervals)
         params:
-            bin_path = config.get("software_pathes", {}).get("picard", "picard"),
+            bin_path = config.get("software_paths", {}).get("picard", "picard"),
             java_mem = params_java_mem,
             stderr_redirection = "2>" if not params_stderr_append else "2>>",
             unique = str(params_unique).lower()

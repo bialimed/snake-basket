@@ -71,7 +71,7 @@ In this paragraph we will add a rule **markDuplicates** in your workflow.
   * The path of the software is in workflow configuration file:
 
           ...
-          software_pathes:
+          software_paths:
               picard: /home/user/bin/picard
           ...
 

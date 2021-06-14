@@ -1,7 +1,7 @@
 __author__ = 'Veronique Ivashchenko and Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 IUCT-O'
 __license__ = 'GNU General Public License'
-__version__ = '1.0.0'
+__version__ = '1.1.0'
 
 
 def fusionCatcher(
@@ -34,7 +34,7 @@ def fusionCatcher(
             stderr = out_stderr,
             stdout = out_stdout
         params:
-            bin_path = config.get("software_pathes", {}).get("fusioncather", "fusioncather.py"),
+            bin_path = config.get("software_paths", {}).get("fusioncather", "fusioncather.py"),
             single_end = "--single-end" if in_R2 is None else "",
             sort_memory = params_sort_memory,
             stderr_redirection = "2>" if not params_stderr_append else "2>>"

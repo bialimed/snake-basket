@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 IUCT-O'
 __license__ = 'GNU General Public License'
-__version__ = '1.1.0'
+__version__ = '1.2.0'
 
 
 def manta(
@@ -52,7 +52,7 @@ def manta(
         log:
             out_stderr
         params:
-            bin_path = config.get("software_pathes", {}).get("STAR", "STAR"),
+            bin_path = config.get("software_paths", {}).get("STAR", "STAR"),
             prefix = star_prefix,
             sort_buffer_size = params_sort_memory * 1000000000,
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
@@ -98,7 +98,7 @@ def manta(
         log:
             out_stderr
         params:
-            bin_path = config.get("software_pathes", {}).get("picard", "picard"),
+            bin_path = config.get("software_paths", {}).get("picard", "picard"),
             java_memory = params_java_memory
         conda:
             "envs/picard.yml"
@@ -116,7 +116,7 @@ def manta(
 
     # Configurate manta
     manta_launcher = os.path.join(manta_dir, "runWorkflow.py")
-    config_manta_path = config.get("software_pathes", {}).get("configManta", "configManta.py")
+    config_manta_path = config.get("software_paths", {}).get("configManta", "configManta.py")
     rule manta_config:
         input:
             alignments = markdup_alignments,

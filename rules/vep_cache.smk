@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 IUCT-O'
 __license__ = 'GNU General Public License'
-__version__ = '2.2.0'
+__version__ = '2.3.0'
 
 
 def vep_cache(
@@ -40,8 +40,8 @@ def vep_cache(
             extra = params_extra,
             species = params_reference_species,
             vep_cache = "" if in_cache is None else "--dir_cache " + in_cache,
-            vep_path = config.get("software_pathes", {}).get("vep", "vep"),
-            vep_wrapper_path = config.get("software_pathes", {}).get("VEPWrapper", "VEPWrapper.py"),
+            vep_path = config.get("software_paths", {}).get("vep", "vep"),
+            vep_wrapper_path = config.get("software_paths", {}).get("VEPWrapper", "VEPWrapper.py"),
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
         conda:
             "envs/vep_anacore-utils.yml"
@@ -87,7 +87,7 @@ def vep_cache(
             out_stderr
         params:
             annotations_field = params_annotations_field,
-            bin_path = config.get("software_pathes", {}).get("fixVEPAnnot", "fixVEPAnnot.py"),
+            bin_path = config.get("software_paths", {}).get("fixVEPAnnot", "fixVEPAnnot.py"),
             cosmic_db = "" if in_cosmic is None else "--input-cosmic {}".format(in_cosmic)
         conda:
             "envs/anacore-utils.yml"

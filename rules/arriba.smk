@@ -1,7 +1,7 @@
 __author__ = 'Veronique Ivashchenko and Frederic Escudie'
 __copyright__ = 'Copyright (C) 2020 IUCT-O'
 __license__ = 'GNU General Public License'
-__version__ = '1.0.0'
+__version__ = '1.1.0'
 
 
 def arriba(
@@ -46,7 +46,7 @@ def arriba(
         log:
             out_stderr
         params:
-            bin_path = config.get("software_pathes", {}).get("STAR", "STAR"),
+            bin_path = config.get("software_paths", {}).get("STAR", "STAR"),
             prefix = os.path.join(os.path.dirname(out_fusions), "{sample}"),
             sort_buffer_size = params_sort_memory * 1000000000,
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
@@ -94,7 +94,7 @@ def arriba(
         params:
             add_fusion_transcript = "-T" if params_add_fusion_transcript else "",
             add_peptide_sequence = "-P" if params_add_peptide_sequence else "",
-            bin_path = config.get("software_pathes", {}).get("arriba", "arriba"),
+            bin_path = config.get("software_paths", {}).get("arriba", "arriba"),
             blacklist = "" if in_blacklist is None else "-b " + in_blacklist,
             discarded = "" if out_discarded is None else "-O " + out_discarded,
             disabled_filters = "" if params_disabled_filters is None or len(params_disabled_filters) == 0 else "-f " + ",".join(params_disabled_filters),

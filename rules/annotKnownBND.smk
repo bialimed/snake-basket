@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2020 IUCT-O'
 __license__ = 'GNU General Public License'
-__version__ = '1.0.0'
+__version__ = '1.1.0'
 
 
 def annotKnownBND(
@@ -23,7 +23,7 @@ def annotKnownBND(
             out_stderr
         params:
             annotations_field = "" if params_annotations_field is None else "--annotation-field " + params_annotations_field,
-            bin_path = config.get("software_pathes", {}).get("annotKnownBND", "annotKnownBND.py"),
+            bin_path = config.get("software_paths", {}).get("annotKnownBND", "annotKnownBND.py"),
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
         conda:
             "envs/anacore-utils.yml"

@@ -20,7 +20,7 @@ def samtools_flagstat(
         log:
             out_stderr
         params:
-            bin_path = config.get("software_pathes", {}).get("samtools", "samtools"),
+            bin_path = config.get("software_paths", {}).get("samtools", "samtools"),
             extra = params_extra,
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
         conda:

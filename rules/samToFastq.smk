@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2020 IUCT-O'
 __license__ = 'GNU General Public License'
-__version__ = '1.0.0'
+__version__ = '1.1.0'
 
 
 def samToFastq(
@@ -24,7 +24,7 @@ def samToFastq(
         log:
             out_stderr
         params:
-            bin_path = config.get("software_pathes", {}).get("picard", "picard"),
+            bin_path = config.get("software_paths", {}).get("picard", "picard"),
             extra = params_extra,
             include_non_pf = ("true" if params_include_non_pf else "false"),
             memory = params_memory,

@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 IUCT-O'
 __license__ = 'GNU General Public License'
-__version__ = '2.0.0'
+__version__ = '2.1.0'
 
 
 def sortVCF(
@@ -19,7 +19,7 @@ def sortVCF(
         log:
             out_stderr
         params:
-            bin_path = config.get("software_pathes", {}).get("sortVCF", "sortVCF.py"),
+            bin_path = config.get("software_paths", {}).get("sortVCF", "sortVCF.py"),
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
         conda:
             "envs/anacore-utils.yml"

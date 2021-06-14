@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2021 IUCT-O'
 __license__ = 'GNU General Public License'
-__version__ = '1.0.0'
+__version__ = '1.1.0'
 
 
 def annotEvidences(
@@ -55,7 +55,7 @@ def annotEvidences(
         params:
             annotations_field = "" if params_annotations_field is None else "--annotation-field " + params_annotations_field,
             assembly_version = "" if params_assembly_version is None else "--assembly-version " + params_assembly_version,
-            bin_path = config.get("software_pathes", {}).get("annotEvidences", "annotEvidences.py"),
+            bin_path = config.get("software_paths", {}).get("annotEvidences", "annotEvidences.py"),
             disease_id = annotEvidencesGetParamDiseaseId,
             disease_term = annotEvidencesGetParamDiseaseTerm,
             evidences_source = '--evidences-source "{}"'.format(params_evidences_source) if params_evidences_source else "",

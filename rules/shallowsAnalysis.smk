@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 IUCT-O'
 __license__ = 'GNU General Public License'
-__version__ = '2.2.0'
+__version__ = '2.3.0'
 
 
 def shallowsAnalysis(
@@ -34,7 +34,7 @@ def shallowsAnalysis(
         log:
             out_stderr
         params:
-            bin_path = config.get("software_pathes", {}).get("shallowsAnalysis", "shallowsAnalysis.py"),
+            bin_path = config.get("software_paths", {}).get("shallowsAnalysis", "shallowsAnalysis.py"),
             depth_mode = "" if params_depth_mode is None else "--depth-mode " + params_depth_mode,
             expected_min_depth = "" if params_expected_min_depth is None else "--min-depth " + str(params_expected_min_depth),
             known_count_field = "" if params_known_count_field is None else "--known-count-field " + params_known_count_field,

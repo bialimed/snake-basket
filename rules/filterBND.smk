@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2020 IUCT-O'
 __license__ = 'GNU General Public License'
-__version__ = '1.2.0'
+__version__ = '1.3.0'
 
 
 def filterBND(
@@ -30,7 +30,7 @@ def filterBND(
             out_stderr
         params:
             annotations_field = "" if params_annotations_field is None else "--annotation-field " + params_annotations_field,
-            bin_path = config.get("software_pathes", {}).get("filterBND", "filterBND.py"),
+            bin_path = config.get("software_paths", {}).get("filterBND", "filterBND.py"),
             input_normal = "" if in_normal is None else "--inputs-normal " + " ".join(in_normal),
             min_support = "" if params_min_support is None else "--min-support " + str(params_min_support),
             mode = "" if params_mode is None else "--mode " + params_mode,

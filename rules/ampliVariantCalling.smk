@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 IUCT-O'
 __license__ = 'GNU General Public License'
-__version__ = '2.0.0'
+__version__ = '2.1.0'
 
 
 def ampliVariantCalling(
@@ -31,7 +31,7 @@ def ampliVariantCalling(
         log:
             out_stderr
         params:
-            bin_path = config.get("software_pathes", {}).get("ampliVariantCalling", "ampliVariantCalling.py"),
+            bin_path = config.get("software_paths", {}).get("ampliVariantCalling", "ampliVariantCalling.py"),
             library_name = "" if params_library_name is None else "--library-name '" + params_library_name + "'",
             min_alt_count = "" if params_min_alt_count is None else "--min-alt-count " + str(params_min_alt_count),
             min_alt_fraction = "" if params_min_alt_fraction is None else "--min-alt-freq " + str(params_min_alt_fraction),
