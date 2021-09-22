@@ -1,0 +1,39 @@
+__author__ = 'Frederic Escudie'
+__copyright__ = 'Copyright (C) 2021 IUCT-O'
+__license__ = 'GNU General Public License'
+__version__ = '1.0.0'
+
+
+def depthsPanel(
+        in_alignments="aln/markDup/{sample}.bam",
+        in_targets="data/user_panel.tsv",
+        out_metrics="stats/depth/{sample}_depthsPanel.json",
+        out_stderr="logs/stats/depth/{sample}_depthsPanel_stderr.txt",
+        params_depth_mode=None,
+        params_expected_min_depth=None,
+        params_keep_outputs=False,
+        params_stderr_append=False):
+    """Write depths distribution and number of nt below depth thresholds for each target."""
+    rule depthsPanel:
+        input:
+            alignments = in_alignments,
+            targets = in_targets
+        output:
+            out_metrics if params_keep_outputs else temp(out_metrics)
+        log:
+            out_stderr
+        params:
+            bin_path = config.get("software_paths", {}).get("depthsPanel", "depthsPanel.py"),
+            depth_mode = "" if params_depth_mode is None else "--depth-mode " + params_depth_mode,
+            expected_min_depth = "" if params_expected_min_depth is None else "--min-depths " + " ".join(map(str, params_expected_min_depth)),
+            stderr_redirection = "2>" if not params_stderr_append else "2>>"
+        conda:
+            "envs/anacore-utils.yml"
+        shell:
+            "{params.bin_path}"
+            " {params.expected_min_depth}"
+            " {params.depth_mode}"
+            " --input-aln {input.alignments}"
+            " --input-targets {input.targets}"
+            " --output {output}"
+            " {params.stderr_redirection} {log}"
