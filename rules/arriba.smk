@@ -103,8 +103,8 @@ def arriba(
             min_anchor_length = "" if params_min_anchor_length is None else "-A " + str(params_min_anchor_length),
             max_reads = "" if params_max_reads is None else "-U " + str(params_max_reads),
             strandedness = "" if params_strandedness is None else "-s " + params_strandedness
-        # conda:
-        #     "envs/arriba.yml"
+        conda:
+            "envs/arriba.yml"
         shell:
             "{params.bin_path}"
             " {params.add_fusion_transcript}"
