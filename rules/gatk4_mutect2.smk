@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 IUCT-O'
 __license__ = 'GNU General Public License'
-__version__ = '2.1.0'
+__version__ = '2.2.0'
 
 include: "gatk4_learnReadOrientationModel.smk"
 
@@ -97,7 +97,9 @@ def gatk4_mutect2(
             variants = out_variants + "_initTmp.vcf",
             strand_model = ([] if not params_tag_strand_bias else params_tag_strand_bias + "_strandModel.tar.gz")
         output:
-            temp(out_variants + "_initTmp_filterTmp.vcf")
+            index = temp(out_variants + "_initTmp_filterTmp.vcf.idx"),
+            stats = temp(out_variants + "_initTmp_filterTmp.vcf.filteringStats"),
+            variants = temp(out_variants + "_initTmp_filterTmp.vcf")
         log:
             stdout = out_stdout,
             stderr = out_stderr
@@ -111,7 +113,7 @@ def gatk4_mutect2(
             " {params.strand_model}"
             " --reference {input.reference_seq}"
             " --variant {input.variants}"
-            " --output {output}"
+            " --output {output.variants}"
             " >> {log.stdout}"
             " 2>> {log.stderr}"
     # --max-alt-allele-count 1 default
