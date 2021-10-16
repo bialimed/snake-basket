@@ -98,7 +98,7 @@ def gatk4_mutect2(
             strand_model = ([] if not params_tag_strand_bias else params_tag_strand_bias + "_strandModel.tar.gz")
         output:
             index = temp(out_variants + "_initTmp_filterTmp.vcf.idx"),
-            stats = temp(out_variants + "_initTmp_filterTmp.vcf.filteringStats"),
+            stats = temp(out_variants + "_initTmp_filterTmp.vcf.filteringStats.tsv"),
             variants = temp(out_variants + "_initTmp_filterTmp.vcf")
         log:
             stdout = out_stdout,
