@@ -11,6 +11,7 @@ def groupReadsByUMI(
         params_max_edits=1,
         params_min_mapq=30,
         params_strategy="adjacency",
+        params_umi_tag="RX",
         params_keep_outputs=False,
         params_stderr_append=False):
     """Groups reads together that appear to have come from the same original molecule."""

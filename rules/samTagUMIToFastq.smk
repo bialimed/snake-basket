@@ -33,7 +33,7 @@ def samTagUMIToFastq(
             qual_offset = " --qual-offset {}".format(params_qual_offset) if params_qual_offset else "",
             reads_barcode = (lambda wildcards: "" if wildcards.sample not in params_barcode_by_spl else " --reads-barcode '{}'".format(params_barcode_by_spl[wildcards.sample])) if params_barcode_by_spl else "",
             umi_qual_tag = " --umi-qual-tag {}".format(params_umi_qual_tag) if params_umi_qual_tag else "",
-            umi_qual = " --umi-tag {}".format(params_umi_tag) if params_umi_tag else "",
+            umi_tag = " --umi-tag {}".format(params_umi_tag) if params_umi_tag else "",
             output_r2 = " --output-reads-2 {}".format(out_R2) if out_R2 else "",
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
         conda:
@@ -45,7 +45,7 @@ def samTagUMIToFastq(
             " {params.qual_offset}"
             " {params.reads_barcode}"
             " {params.umi_qual_tag}"
-            " {params.umi_qual}"
+            " {params.umi_tag}"
             " --input-aln {input}"
             " --output-reads {output.R1}"
             " {params.output_r2}"
