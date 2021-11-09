@@ -35,7 +35,7 @@ def delDuplicatesByUMI(
     in_group_aln = in_aln
     if params_umi_separator:
         in_group_aln = out_aln + "_UMITmpTagUMI.bam"
-        setUMIRGFromID(
+        setUMITagFromID(
             in_aln=in_aln,
             out_aln=in_group_aln,
             out_stderr=out_stderr,
