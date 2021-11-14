@@ -5,8 +5,8 @@ __version__ = '1.0.0'
 
 
 def callMolecularConsensus(
-        in_aln="aln/umi/group/{sample}.bam",
-        out_aln="aln/umi/consensus/{sample}.bam",
+        in_alignments="aln/umi/group/{sample}.bam",
+        out_alignments="aln/umi/consensus/{sample}.bam",
         out_stderr="logs/aln/{sample}_gpByUMI_consensus_stderr.txt",
         params_error_rate_post_umi=40,
         params_error_rate_pre_umi=45,
@@ -17,9 +17,9 @@ def callMolecularConsensus(
     """Calls consensus sequences from reads with the same unique molecular tag."""
     rule callMolecularConsensus:
         input:
-            in_aln
+            in_alignments
         output:
-            out_aln if params_keep_outputs else temp(out_aln))
+            out_alignments if params_keep_outputs else temp(out_alignments)
         log:
             out_stderr
         params:

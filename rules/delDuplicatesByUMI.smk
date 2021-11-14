@@ -5,9 +5,9 @@ __version__ = '1.0.0'
 
 
 def delDuplicatesByUMI(
-        in_aln="aln/{sample}.bam",
+        in_alignments="aln/{sample}.bam",
         in_reference_seq="data/reference.fa",
-        out_aln="aln/delDuplicates/{sample}.bam",
+        out_alignments="aln/delDup/{sample}.bam",
         out_stderr="logs/aln/{sample}_delDuplicatesByUMI_stderr.txt",
         params_aln_extra=r"-R '@RG\tID:1\tLB:{sample}\tSM:{sample}\tPL:ILLUMINA'",
         params_aln_fct=bwa_mem,
@@ -32,20 +32,20 @@ def delDuplicatesByUMI(
         params_keep_outputs=False,
         params_stderr_append=False):
     """Use UMI to remove pairs of reads coming from same original molecule and generate consensus."""
-    in_group_aln = in_aln
+    in_group_aln = in_alignments
     if params_umi_separator:
-        in_group_aln = out_aln + "_UMITmpTagUMI.bam"
+        in_group_aln = out_alignments + "_UMITmpTagUMI.bam"
         setUMITagFromID(
-            in_aln=in_aln,
-            out_aln=in_group_aln,
+            in_alignments=in_alignments,
+            out_alignments=in_group_aln,
             out_stderr=out_stderr,
             params_stderr_append=True,
             params_umi_separator=params_umi_separator,
             params_umi_tag=params_umi_tag)
 
-    groupReadsByUmi(
-        in_aln=in_group_aln,
-        out_aln=out_aln + "_UMITmpGroup.bam",
+    groupReadsByUMI(
+        in_alignments=in_group_aln,
+        out_alignments=out_alignments + "_UMITmpGroup.bam",
         out_stderr=out_stderr,
         params_stderr_append=True,
         params_max_edits=params_group_max_edits,
@@ -54,8 +54,8 @@ def delDuplicatesByUMI(
         params_umi_tag=params_umi_tag)
 
     callMolecularConsensus(
-        in_aln=out_aln + "_UMITmpGroup.bam",
-        out_aln=out_aln + "_UMITmpConsensus.bam",
+        in_alignments=out_alignments + "_UMITmpGroup.bam",
+        out_alignments=out_alignments + "_UMITmpConsensus.bam",
         out_stderr=out_stderr,
         params_stderr_append=True,
         params_error_rate_post_umi=params_consensus_error_rate_post_umi,
@@ -64,9 +64,9 @@ def delDuplicatesByUMI(
         params_min_reads=params_consensus_min_reads)
 
     filterUMIConsensus(
-        in_aln=out_aln + "_UMITmpConsensus.bam",
+        in_alignments=out_alignments + "_UMITmpConsensus.bam",
         in_reference_seq=in_reference_seq,
-        out_aln=out_aln + "_UMITmpFilter.bam",
+        out_alignments=out_alignments + "_UMITmpFilter.bam",
         out_stderr=out_stderr,
         params_stderr_append=True,
         params_max_base_error_rate=params_filter_max_base_error_rate,
@@ -79,20 +79,20 @@ def delDuplicatesByUMI(
         params_reverse_per_tags=params_filter_reverse_per_tags)
 
     samToFastq(
-        in_alignments=out_aln + "_UMITmpFilter.bam",
-        out_R1=out_aln + "_R1.fastq.gz",
-        out_R2=out_aln + "_R2.fastq.gz",
+        in_alignments=out_alignments + "_UMITmpFilter.bam",
+        out_R1=out_alignments + "_R1.fastq.gz",
+        out_R2=out_alignments + "_R2.fastq.gz",
         out_stderr=out_stderr,
         params_stderr_append=True,
         params_memory=params_sam2fastq_mem)
 
     params_aln_fct(
         in_reads=[
-            out_aln + "_R1.fastq.gz",
-            out_aln + "_R2.fastq.gz",
+            out_alignments + "_R1.fastq.gz",
+            out_alignments + "_R2.fastq.gz",
         ],
         in_reference_seq=in_reference_seq,
-        out_alignments=out_aln,
+        out_alignments=out_alignments,
         out_stderr=out_stderr,
         params_stderr_append=True,
         params_extra=params_aln_extra,

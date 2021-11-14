@@ -5,8 +5,8 @@ __version__ = '1.0.0'
 
 
 def groupReadsByUMI(
-        in_aln="aln/{sample}.bam",
-        out_aln="aln/umi/group/{sample}.bam",
+        in_alignments="aln/{sample}.bam",
+        out_alignments="aln/umi/group/{sample}.bam",
         out_stderr="logs/aln/{sample}_gpByUMI_stderr.txt",
         params_max_edits=1,
         params_min_mapq=30,
@@ -17,9 +17,9 @@ def groupReadsByUMI(
     """Groups reads together that appear to have come from the same original molecule."""
     rule groupReadsByUMI:
         input:
-            in_aln
+            in_alignments
         output:
-            out_aln if params_keep_outputs else temp(out_aln)
+            out_alignments if params_keep_outputs else temp(out_alignments)
         log:
             out_stderr
         params:

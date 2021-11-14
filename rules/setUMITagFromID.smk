@@ -5,8 +5,8 @@ __version__ = '1.0.0'
 
 
 def setUMITagFromID(
-        in_aln="aln/{sample}.bam",
-        out_aln="aln/{sample}_tag.bam",
+        in_alignments="aln/{sample}.bam",
+        out_alignments="aln/{sample}_tag.bam",
         out_stderr="logs/reads/{sample}_setUMIRGFromID_stderr.txt",
         params_umi_separator=None,
         params_umi_tag=None,
@@ -15,14 +15,14 @@ def setUMITagFromID(
     """For each read get the UMI sequence from the ID and place it in tag."""
     rule setUMITagFromID:
         input:
-            in_aln
+            in_alignments
         output:
-            out_aln
+            out_alignments
         log:
             out_stderr
         params:
             bin_path = config.get("software_paths", {}).get("setUMITagFromID", "setUMITagFromID.py"),
-            umi_separator = " --umi-separator {}".format(umi_separator) if umi_separator else "",
+            umi_separator = " --umi-separator {}".format(params_umi_separator) if params_umi_separator else "",
             umi_tag = " --umi-tag {}".format(params_umi_tag) if params_umi_tag else "",
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
         conda:
