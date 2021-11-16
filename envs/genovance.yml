@@ -2,4 +2,5 @@ channels:
     - bioconda
     - fescudie
 dependencies:
+    - python>=3.7
     - genovance=0.1.0

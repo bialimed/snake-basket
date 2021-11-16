@@ -2,4 +2,5 @@ channels:
     - bioconda
     - fescudie
 dependencies:
+    - python>=3.7
     - anacore-utils=3.4.0
