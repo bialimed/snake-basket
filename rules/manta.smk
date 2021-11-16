@@ -130,7 +130,7 @@ def manta(
             bin_path = config_manta_path,
             bin_folder = os.path.dirname(os.path.abspath(config_manta_path)),
             bam = "tumorBam" if params_is_somatic and params_type != "rna" else "bam",  # When RNA mode is turned on, exactly one sample must be specified as normal input only (using either the --bam or --normalBam option)
-            config_tpl = os.path.join(snakefile.basedir, "envs", "manta_config.ini"),
+            config_tpl = os.path.join(workflow.basedir, "envs", "manta_config.ini"),
             manta_dir = manta_dir,
             min_candidate_spanning = params_min_candidate_spanning,
             min_edge_obs = params_min_edge_obs,
@@ -168,7 +168,7 @@ def manta(
         log:
             out_stderr
         params:
-            fix_bin = os.path.abspath(os.path.join(snakefile.basedir, "scripts", "fixMantaHeader.py")),
+            fix_bin = os.path.abspath(os.path.join(workflow.basedir, "scripts", "fixMantaHeader.py")),
             manta_dir = manta_dir,
             memory = params_calling_memory,
             sv_filename = "rnaSV.vcf.gz" if params_type == "rna" else ("tumorSV.vcf.gz" if params_is_somatic else "somaticSV.vcf.gz")
