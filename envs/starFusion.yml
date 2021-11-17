@@ -1,4 +1,5 @@
 channels:
     - bioconda
 dependencies:
-    -  star-fusion=1.8.1
+    - samtools=1.9
+    - star-fusion=1.8.1
