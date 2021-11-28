@@ -29,6 +29,7 @@ def delDuplicatesByUMI(
         params_group_max_edits=1,
         params_group_min_mapq=25,
         params_group_strategy="adjacency",
+        params_mergeBAMAlignment_mem="5G",
         params_sam2fastq_mem="5G",
         params_threads=1,
         params_tmp_folder="umi",
@@ -55,7 +56,7 @@ def delDuplicatesByUMI(
             params_umi_tag=params_umi_tag)
         mergeBamAlignment(
             in_alignments=in_alignments,
-            in_reference=in_reference_seq,
+            in_reference_seq=in_reference_seq,
             in_unmapped_bam=os.path.join(params_tmp_folder, "setTag/tmp_" + out_filename),
             out_alignments=in_group_aln,
             out_stderr=out_stderr,
@@ -63,6 +64,7 @@ def delDuplicatesByUMI(
             params_aligner_proper_pair_flags=True,
             params_create_index=True,
             params_expected_orientations=["FR"],
+            params_java_mem=params_mergeBAMAlignment_mem,
             params_sort_order="coordinate"
         )
 

@@ -17,7 +17,7 @@ def setUMITagFromID(
         input:
             in_alignments
         output:
-            out_alignments
+            out_alignments if params_keep_outputs else temp(out_alignments)
         log:
             out_stderr
         params:
