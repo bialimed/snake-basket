@@ -7,6 +7,7 @@ __version__ = '1.0.0'
 def groupReadsByUMI(
         in_alignments="aln/{sample}.bam",
         out_alignments="aln/umi/group/{sample}.bam",
+        out_metrics="stats/gpByUMI/{sample}.tsv",
         out_stderr="logs/aln/{sample}_gpByUMI_stderr.txt",
         params_max_edits=1,
         params_min_mapq=30,
@@ -19,7 +20,8 @@ def groupReadsByUMI(
         input:
             in_alignments
         output:
-            out_alignments if params_keep_outputs else temp(out_alignments)
+            alignments = out_alignments if params_keep_outputs else temp(out_alignments),
+            metrics = out_metrics if params_keep_outputs else temp(out_metrics)
         log:
             out_stderr
         params:
@@ -38,5 +40,6 @@ def groupReadsByUMI(
             " --edits={params.max_edits}"
             " --min-map-q={params.min_mapq}"
             " --input={input}"
-            " --output={output}"
+            " --output={output.alignments}"
+            " --family-size-histogram={output.metrics}"
             " {params.stderr_redirection} {log}"

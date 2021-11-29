@@ -12,6 +12,7 @@ def delDuplicatesByUMI(
         in_R2=None,
         in_reference_seq="data/reference.fa",
         out_alignments="aln/delDup/{sample}.bam",
+        out_metrics="stats/gpByUMI/{sample}.tsv",
         out_stderr="logs/aln/{sample}_delDuplicatesByUMI_stderr.txt",
         params_aln_extra=r"-R '@RG\tID:1\tLB:{sample}\tSM:{sample}\tPL:ILLUMINA'",
         params_aln_fct=bwa_mem,
@@ -71,6 +72,7 @@ def delDuplicatesByUMI(
     groupReadsByUMI(
         in_alignments=in_group_aln,
         out_alignments=os.path.join(params_tmp_folder, "group/tmp_" + out_filename),
+        out_metrics=out_metrics,
         out_stderr=out_stderr,
         params_stderr_append=True,
         params_max_edits=params_group_max_edits,
