@@ -9,6 +9,7 @@ def groupReadsByUMI(
         out_alignments="aln/umi/group/{sample}.bam",
         out_metrics="stats/gpByUMI/{sample}.tsv",
         out_stderr="logs/aln/{sample}_gpByUMI_stderr.txt",
+        params_allow_inter_contig=False,
         params_max_edits=1,
         params_min_mapq=30,
         params_strategy="adjacency",
@@ -25,6 +26,7 @@ def groupReadsByUMI(
         log:
             out_stderr
         params:
+            allow_inter_contig = "--allow-inter-contig" if params_allow_inter_contig else "",
             bin_path = config.get("software_paths", {}).get("fgbio", "fgbio"),
             max_edits = params_max_edits,
             min_mapq = params_min_mapq,
@@ -35,6 +37,7 @@ def groupReadsByUMI(
             "envs/fgbio.yml"
         shell:
             "{params.bin_path} GroupReadsByUmi"
+            " {params.allow_inter_contig}"
             " --raw-tag={params.umi_tag}"
             " --strategy={params.strategy}"
             " --edits={params.max_edits}"
