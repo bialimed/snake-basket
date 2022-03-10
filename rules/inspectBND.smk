@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2020 IUCT-O'
 __license__ = 'GNU General Public License'
-__version__ = '1.1.0'
+__version__ = '1.2.0'
 
 
 def inspectBND(
@@ -14,6 +14,7 @@ def inspectBND(
         out_annotations="structural_variants/{sample}_annot_inspect.json",
         out_stderr="logs/structural_variants/{sample}_annot_inspect_stderr.txt",
         params_annotations_field=None,
+        params_min_base_qual=None,
         params_stranded=None,
         params_keep_outputs=False,
         params_stderr_append=False):
@@ -37,6 +38,7 @@ def inspectBND(
             bin_path = config.get("software_paths", {}).get("inspectBND", "inspectBND.py"),
             in_domains = "" if in_domains is None else "--input-domains " + in_domains,
             in_targets = "" if in_targets is None else "--input-targets " + in_targets,
+            min_base_qual = "" if params_min_base_qual is None else "--min-base-qual " + str(params_min_base_qual),
             stderr_redirection = "2>" if not params_stderr_append else "2>>",
             stranded = "" if params_stranded is None else "--stranded " + params_stranded
         conda:
@@ -47,6 +49,7 @@ def inspectBND(
             " {params.stranded}"
             " {params.in_domains}"
             " {params.in_targets}"
+            " {params.min_base_qual}"
             " --input-alignments {input.alignments}"
             " --input-annotations {input.annotations}"
             " --input-variants {input.variants}"
