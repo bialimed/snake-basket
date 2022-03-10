@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 IUCT-O'
 __license__ = 'GNU General Public License'
-__version__ = '2.1.0'
+__version__ = '2.2.0'
 
 
 def mergeCoOccurVar(
@@ -14,6 +14,7 @@ def mergeCoOccurVar(
         params_intersection_count=None,
         params_intersection_rate=None,
         params_max_distance=None,
+        params_spliced_aln=None,
         params_keep_outputs=False,
         params_stderr_append=False):
     """Group variants occuring in same reads."""
@@ -32,6 +33,7 @@ def mergeCoOccurVar(
             intersection_count = "" if params_intersection_count is None else "--intersection-count " + str(params_intersection_count),
             intersection_rate = "" if params_intersection_rate is None else "--intersection-rate " + str(params_intersection_rate),
             max_distance = "" if params_max_distance is None else "--max-distance " + str(params_max_distance),
+            spliced_aln = "" if params_spliced_aln is None else "--spliced-aln",
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
         conda:
             "envs/anacore-utils.yml"
@@ -41,6 +43,7 @@ def mergeCoOccurVar(
             " {params.intersection_count}"
             " {params.AF_diff_rate}"
             " {params.max_distance}"
+            " {params.spliced_aln}"
             " --input-aln {input.alignments}"
             " --input-sequences {input.sequences}"
             " --input-variants {input.variants}"
