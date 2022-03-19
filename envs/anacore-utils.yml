@@ -3,4 +3,4 @@ channels:
     - fescudie
 dependencies:
     - python>=3.7
-    - anacore-utils=3.5.0
+    - anacore-utils=3.5.1
