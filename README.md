@@ -55,12 +55,12 @@ In this paragraph we will add a rule **markDuplicates** in your workflow.
         )
         ...
 
-  The all the accessible parameters and their default values are presented in
-  function declaration of the rule in `markDuplicates.smk`. The main categories
-  of these parameters are *input_*, *output_*, *param_* and *snake_* (for
-  parameters related to the Snakemake element like wildcards restrictions). Keep
-  in mind that input and ouput must be consistent in terms of wildcards like with
-  a standard rule.
+  All accessible parameters and their default values are presented in function
+  declaration of the rule in `markDuplicates.smk`. The main categories of these
+  parameters are *input_*, *output_*, *param_* and *snake_* (for parameters
+  related to the Snakemake element like wildcards restrictions). Keep in mind
+  that input and ouput must be consistent in terms of wildcards like with a
+  standard rule.
 
 3. Set execution environment for the rule
 
