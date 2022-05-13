@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 IUCT-O'
 __license__ = 'GNU General Public License'
-__version__ = '2.3.0'
+__version__ = '2.4.0'
 
 
 def vep_cache(
@@ -14,7 +14,7 @@ def vep_cache(
         out_stderr="logs/variants/{variant_caller}/{sample}_annot_stderr.txt",
         params_annotations_field="ANN",
         params_annotations_source="merged",  # Choices: ["ensembl", "refseq", "merged"]
-        params_extra="",
+        params_extra="--flag_pick_allele",
         params_reference_assembly=None,
         params_keep_outputs=False,
         params_stderr_append=False):
