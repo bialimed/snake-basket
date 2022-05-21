@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 IUCT-O'
 __license__ = 'GNU General Public License'
-__version__ = '1.2.1'
+__version__ = '1.3.0'
 
 
 def manta(
@@ -22,6 +22,7 @@ def manta(
         params_nb_threads=1,
         params_sort_memory=5,  # In GB
         params_type="rna",  # rna or targeted or genome
+        params_keep_bam=False,
         params_keep_outputs=False,
         params_stderr_append=False):
     """Call structural variants (SVs) and indels from paired-end sequencing reads."""
@@ -92,9 +93,9 @@ def manta(
         input:
             star_alignments
         output:
-            alignments = temp(markdup_alignments),
+            alignments = markdup_alignments if params_keep_bam else temp(markdup_alignments),
             metrics = temp(markdup_alignments + ".tsv"),
-            index = temp(markdup_alignments_index)
+            index = markdup_alignments_index if params_keep_bam else temp(markdup_alignments_index)
         log:
             out_stderr
         params:
