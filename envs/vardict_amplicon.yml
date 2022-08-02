@@ -5,5 +5,5 @@ dependencies:
     - python>=3.7
     - samtools=1.9
     - r-base=3.6.1=h9bb98a2_1
-    - vardict-java=1.7.0
+    - vardict-java=1.8.3
     - anacore-utils=3.1.0
