@@ -1,14 +1,13 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 IUCT-O'
 __license__ = 'GNU General Public License'
-__version__ = '3.0.0'
+__version__ = '3.1.0'
 
 
 def evalPositiveCtrl(
         in_expected,
         in_observed="variants/{variant_caller}/{sample}_filtered.vcf",
         out_results="stats/posCtrl/{sample}_{variant_caller}.tsv",
-        out_stdout="logs/variants/{variant_caller}/{sample}_evalCtrl_stdout.txt",
         out_stderr="logs/variants/{variant_caller}/{sample}_evalCtrl_stderr.txt",
         params_error_threshold=None,
         params_keep_outputs=False,
@@ -22,8 +21,7 @@ def evalPositiveCtrl(
         output:
             out_results if params_keep_outputs else temp(out_results)
         log:
-            stderr = out_stderr,
-            stdout = out_stdout
+            out_stderr
         params:
             bin_path = config.get("software_paths", {}).get("evalVariantControl", "evalVariantControl.py"),
             error_threshold = "" if params_error_threshold is None else "--error-threshold " + str(params_error_threshold),
@@ -38,5 +36,4 @@ def evalPositiveCtrl(
             " --expected-file {input.expected}"
             " --detected-file {input.observed}"
             " --output-file {output}"
-            " > {log.stdout}"
-            " {params.stderr_redirection} {log.stderr}"
+            " {params.stderr_redirection} {log}"
