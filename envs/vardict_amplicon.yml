@@ -4,5 +4,6 @@ channels:
 dependencies:
     - python>=3.7
     - samtools=1.9
-    - vardict-java=1.5.1
+    - r-base=3.6.1=h9bb98a2_1
+    - vardict-java=1.7.0
     - anacore-utils=3.1.0
