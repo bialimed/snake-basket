@@ -29,7 +29,7 @@ def microsatMsingsClassify(
         log:
             out_stderr
         params:
-            bin_path = config.get("software_paths", {}).get("microsatMsingsClassify", "microsatMsingsClassify.py")),
+            bin_path = config.get("software_paths", {}).get("microsatMsingsClassify", "microsatMsingsClassify.py"),
             data_method = "" if params_data_method is None else "--data-method {}".format(params_data_method),
             locus_weight_is_score = "" if params_locus_weight_is_score is None else "--locus-weight-is-score",
             min_depth = "" if params_min_depth is None else "--min-depth {}".format(params_min_depth),

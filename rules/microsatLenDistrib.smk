@@ -27,7 +27,7 @@ def microsatLenDistrib(
         log:
             out_stderr
         params:
-            bin_path = config.get("software_paths", {}).get("microsatLenDistrib", "microsatLenDistrib.py")),
+            bin_path = config.get("software_paths", {}).get("microsatLenDistrib", "microsatLenDistrib.py"),
             keep_duplicates = "--keep-duplicates" if params_keep_duplicates is True else "",
             method_name = "" if params_method_name is None else "--method-name {}".format(params_method_name),
             padding = "" if params_padding is None else "--padding {}".format(params_padding),

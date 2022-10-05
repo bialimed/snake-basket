@@ -27,7 +27,7 @@ def microsatCreateModel(
         log:
             out_stderr
         params:
-            bin_path = config.get("software_paths", {}).get("microsatCreateModel", "microsatCreateModel.py")),
+            bin_path = config.get("software_paths", {}).get("microsatCreateModel", "microsatCreateModel.py"),
             min_support = "" if params_min_support is None else "--min-support {}".format(params_min_support),
             peak_height_cutoff = "" if params_peak_height_cutoff is None else "--peak-height-cutoff {}".format(params_peak_height_cutoff),
             stderr_redirection = "2>" if not params_stderr_append else "2>>"

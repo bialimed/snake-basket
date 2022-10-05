@@ -22,7 +22,7 @@ def microsatStatusToAnnot(
         log:
             out_stderr
         params:
-            bin_path = config.get("software_paths", {}).get("microsatStatusToAnnot", "microsatStatusToAnnot.py")),
+            bin_path = config.get("software_paths", {}).get("microsatStatusToAnnot", "microsatStatusToAnnot.py"),
             locus_id = "--locus-id" if params_locus_id else "",
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
         conda:

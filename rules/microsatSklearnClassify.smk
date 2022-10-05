@@ -34,7 +34,7 @@ def microsatSklearnClassify(
         log:
             out_stderr
         params:
-            bin_path = config.get("software_paths", {}).get("microsatSklearnClassify", "microsatSklearnClassify.py")),
+            bin_path = config.get("software_paths", {}).get("microsatSklearnClassify", "microsatSklearnClassify.py"),
             classifier = "" if params_classifier is None else "--classifier {}".format(params_classifier),
             classifier_params = "" if params_classifier_params is None else "--classifier-params '{}'".format(params_classifier_params),
             data_method = "" if params_data_method is None else "--data-method {}".format(params_data_method),

@@ -19,7 +19,7 @@ def microsatMergeResults(
         log:
             out_stderr
         params:
-            bin_path = config.get("software_paths", {}).get("microsatMergeResults", "microsatMergeResults.py")),
+            bin_path = config.get("software_paths", {}).get("microsatMergeResults", "microsatMergeResults.py"),
             stderr_redirection = "2>" if not params_stderr_append else "2>>",
         conda:
             "envs/anacore-utils.yml"

@@ -30,7 +30,7 @@ def microsatMsisensorproProClassify(
         log:
             out_stderr
         params:
-            bin_path = config.get("software_paths", {}).get("microsatMSIsensorproProClassify", "microsatMSIsensorproProClassify.py")),
+            bin_path = config.get("software_paths", {}).get("microsatMSIsensorproProClassify", "microsatMSIsensorproProClassify.py"),
             data_method = "" if params_data_method is None else "--data-method {}".format(params_data_method),
             instability_ratio = "" if params_instability_ratio else "--instability-ratio {}".format(params_instability_ratio),
             locus_weight_is_score = "" if params_locus_weight_is_score is None else "--locus-weight-is-score",
