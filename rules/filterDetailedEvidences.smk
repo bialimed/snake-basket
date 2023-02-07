@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
-__copyright__ = 'Copyright (C) 2021 IUCT-O'
+__copyright__ = 'Copyright (C) 2021 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.1.0'
+__version__ = '1.2.0'
 
 
 def filterDetailedEvidences(
@@ -23,6 +23,10 @@ def filterDetailedEvidences(
         params:
             bin_path = config.get("software_paths", {}).get("filterDetailedEvidences", "filterDetailedEvidences.py"),
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
+        resources:
+            extra = "",
+            mem = "5G",
+            partition = "normal"
         conda:
             "envs/genovance.yml"
         shell:

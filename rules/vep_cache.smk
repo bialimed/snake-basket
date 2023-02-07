@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
-__copyright__ = 'Copyright (C) 2019 IUCT-O'
+__copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.4.0'
+__version__ = '2.5.0'
 
 
 def vep_cache(
@@ -19,6 +19,7 @@ def vep_cache(
         params_keep_outputs=False,
         params_stderr_append=False):
     """Determine the effect of variants (SNPs, insertions, deletions, CNVs or structural variants) on genes, transcripts, and protein sequence, as well as regulatory regions. It required VEP >= 94."""
+    # Parameters
     params_annotations_source_opt = "--merged --xref_refseq --tsl --appris"  # --tsl: Transcript support level ; --appris: Add transcript isoform annotation ; --xref_refseq: RefSeq mRNA identifier
     if params_annotations_source == "ensembl":
         params_annotations_source_opt = "--xref_refseq --tsl --appris"
@@ -43,6 +44,10 @@ def vep_cache(
             vep_path = config.get("software_paths", {}).get("vep", "vep"),
             vep_wrapper_path = config.get("software_paths", {}).get("VEPWrapper", "VEPWrapper.py"),
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
+        resources:
+            extra = "",
+            mem = "38G",
+            partition = "normal"
         conda:
             "envs/vep_anacore-utils.yml"
         shell:
@@ -89,6 +94,10 @@ def vep_cache(
             annotations_field = params_annotations_field,
             bin_path = config.get("software_paths", {}).get("fixVEPAnnot", "fixVEPAnnot.py"),
             cosmic_db = "" if in_cosmic is None else "--input-cosmic {}".format(in_cosmic)
+        resources:
+            extra = "",
+            mem = "3G",
+            partition = "normal"
         conda:
             "envs/anacore-utils.yml"
         shell:

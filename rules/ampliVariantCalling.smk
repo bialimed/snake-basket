@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
-__copyright__ = 'Copyright (C) 2019 IUCT-O'
+__copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.1.0'
+__version__ = '2.2.0'
 
 
 def ampliVariantCalling(
@@ -37,6 +37,10 @@ def ampliVariantCalling(
             min_alt_fraction = "" if params_min_alt_fraction is None else "--min-alt-freq " + str(params_min_alt_fraction),
             min_base_qual = "" if params_min_base_qual is None else "--min-base-qual " + str(params_min_base_qual),
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
+        resources:
+            extra = "",
+            mem = "25G",
+            partition = "normal"
         conda:
             "envs/vardict_amplicon.yml"
         shell:

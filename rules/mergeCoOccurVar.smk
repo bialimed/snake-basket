@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
-__copyright__ = 'Copyright (C) 2019 IUCT-O'
+__copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.2.0'
+__version__ = '2.3.0'
 
 
 def mergeCoOccurVar(
@@ -35,6 +35,10 @@ def mergeCoOccurVar(
             max_distance = "" if params_max_distance is None else "--max-distance " + str(params_max_distance),
             spliced_aln = "" if params_spliced_aln is None else "--spliced-aln",
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
+        resources:
+            extra = "",
+            mem = "5G",
+            partition = "normal"
         conda:
             "envs/anacore-utils.yml"
         shell:

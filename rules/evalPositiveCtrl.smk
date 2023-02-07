@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
-__copyright__ = 'Copyright (C) 2019 IUCT-O'
+__copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '3.1.0'
+__version__ = '3.2.0'
 
 
 def evalPositiveCtrl(
@@ -27,6 +27,10 @@ def evalPositiveCtrl(
             error_threshold = "" if params_error_threshold is None else "--error-threshold " + str(params_error_threshold),
             only_expected = "--only-expected" if params_only_expected else "",
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
+        resources:
+            extra = "",
+            mem = "5G",
+            partition = "normal"
         conda:
             "envs/anacore-utils.yml"
         shell:

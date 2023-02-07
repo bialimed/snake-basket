@@ -1,7 +1,7 @@
 __author__ = 'Veronique Ivashchenko and Frederic Escudie'
-__copyright__ = 'Copyright (C) 2020 IUCT-O'
+__copyright__ = 'Copyright (C) 2020 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.1.0'
+__version__ = '2.0.0'
 
 
 def arriba(
@@ -17,19 +17,16 @@ def arriba(
         params_add_peptide_sequence=True,
         params_disabled_filters=None,
         params_extra="",
+        params_keep_outputs=False,
         params_max_reads=1000,  # Subsample fusions with more than the given number of supporting reads.
         params_min_anchor_length=None,  # This parameter sets the threshold in bp for what the filter considers short.
         params_min_supporting_reads=None,  # The filter min_support discards all fusions with fewer than this many supporting reads (split reads and discordant mates combined).
-        params_nb_threads=1,
-        params_sort_memory=5,  # In GB
-        params_strandedness="auto",
-        params_keep_outputs=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        params_strandedness="auto"):
     """Call fusions with Arriba."""
-    # Parameters.
     in_genome_dir = os.path.dirname(in_reference_seq)
 
-    # Run STAR alignment.
+    # Run STAR alignment
     star_alignments = os.path.join(os.path.dirname(out_fusions), "{sample}Aligned.sortedByCoord.out.bam")
     star_prefix = os.path.join(os.path.dirname(out_fusions), "{sample}")
     rule arriba_star:
@@ -48,11 +45,15 @@ def arriba(
         params:
             bin_path = config.get("software_paths", {}).get("STAR", "STAR"),
             prefix = os.path.join(os.path.dirname(out_fusions), "{sample}"),
-            sort_buffer_size = params_sort_memory * 1000000000,
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
+        resources:
+            extra = "",
+            mem = "35G",
+            partition = "normal",
+            sort_mem_gb = 8
+        threads: 1
         conda:
             "envs/star.yml"
-        threads: params_nb_threads
         shell:
             "{params.bin_path}"
             " --runThreadN {threads}"
@@ -73,7 +74,7 @@ def arriba(
             " --chimSegmentReadGapMax 3"
             " --readFilesCommand zcat"
             " --outSAMattrRGline ID:1 SM:{wildcards.sample}"
-            " --limitBAMsortRAM {params.sort_buffer_size}"
+            " --limitBAMsortRAM $(({resources.sort_mem_gb} * 1000000000))"
             " --outSAMtype BAM SortedByCoordinate"
             " --readFilesIn {input.R1} {input.R2}"
             " --outFileNamePrefix {params.prefix}"
@@ -103,6 +104,10 @@ def arriba(
             min_anchor_length = "" if params_min_anchor_length is None else "-A " + str(params_min_anchor_length),
             max_reads = "" if params_max_reads is None else "-U " + str(params_max_reads),
             strandedness = "" if params_strandedness is None else "-s " + params_strandedness
+        resources:
+            extra = "",
+            mem = "10G",
+            partition = "normal"
         conda:
             "envs/arriba.yml"
         shell:

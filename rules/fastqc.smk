@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
-__copyright__ = 'Copyright (C) 2019 IUCT-O'
+__copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.1.0'
+__version__ = '3.0.0'
 
 
 def fastqc(
@@ -13,7 +13,6 @@ def fastqc(
         in_contaminants=None,
         params_extra="",
         params_is_grouped=True,
-        params_nb_threads=1,
         params_keep_outputs=True,
         params_stderr_append=False):
     """Reads quality controls."""
@@ -35,7 +34,7 @@ def fastqc(
             html = out_html if params_keep_outputs else temp(out_html),
             zip = out_zip if params_keep_outputs else temp(out_zip)
         wildcard_constraints:
-            suffix = '[\._-][Rr]?[12]'
+            suffix = r'[\._-][Rr]?[12]'
         log:
             stderr = out_stderr,
             stdout = out_stdout
@@ -47,7 +46,11 @@ def fastqc(
             extra = params_extra,
             nogroup = "" if params_is_grouped else "--nogroup",
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
-        threads: params_nb_threads
+        resources:
+            extra = "",
+            mem = "4G",
+            partition = "normal"
+        threads: 1
         conda:
             "envs/fastqc.yml"
         shell:

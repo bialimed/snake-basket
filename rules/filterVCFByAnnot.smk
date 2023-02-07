@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
-__copyright__ = 'Copyright (C) 2019 IUCT-O'
+__copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.1.0'
+__version__ = '2.2.0'
 
 
 def filterVCFByAnnot(
@@ -10,12 +10,12 @@ def filterVCFByAnnot(
         out_variants="variants/{variant_caller}/{sample}_annot_tagByAnnot.vcf",
         out_stderr="logs/variants/{variant_caller}/{sample}_filterByAnnot_stderr.txt",
         params_annotation_field=None,
+        params_keep_outputs=False,
         params_kept_consequences=None,
         params_polym_populations=None,
         params_polym_threshold=None,
         params_rna_with_version=False,
         params_remove=False,
-        params_keep_outputs=False,
         params_stderr_append=False):
     """Filter variants and their annotations on annotations."""
     rule filterVCFByAnnot:
@@ -36,6 +36,10 @@ def filterVCFByAnnot(
             rna_without_version = "" if params_rna_with_version is None or params_rna_with_version else "--rna-without-version",
             selected_rna = "" if in_selected_rna is None else "--input-selected-RNA " + in_selected_rna,
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
+        resources:
+            extra = "",
+            mem = "3G",
+            partition = "normal"
         conda:
             "envs/anacore-utils.yml"
         shell:

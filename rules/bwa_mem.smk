@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
-__copyright__ = 'Copyright (C) 2019 IUCT-O'
+__copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.2.0'
+__version__ = '3.0.0'
 
 
 def bwa_mem(
@@ -10,12 +10,11 @@ def bwa_mem(
         out_alignments="aln/{sample}.bam",
         out_stderr="logs/aln/{sample}_bwaMem_stderr.txt",
         params_extra=r"-R '@RG\tID:1\tLB:{sample}\tSM:{sample}\tPL:ILLUMINA'",
-        params_threads=1,
         params_keep_outputs=False,
         params_stderr_append=False):
     """Map low-divergent sequences against a large reference genome."""
-    if in_reads is None:
-        in_reads = ["data/{sample}_R1.fastq.gz", "data/{sample}_R2.fastq.gz"]
+    # Parameters
+    in_reads = ["data/{sample}_R1.fastq.gz", "data/{sample}_R2.fastq.gz"] if in_reads is None else in_reads
     # Rule
     rule bwa_mem:
         input:
@@ -31,7 +30,12 @@ def bwa_mem(
             extra = params_extra,
             samtools_path = config.get("software_paths", {}).get("samtools", "samtools"),
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
-        threads: params_threads
+        resources:
+            extra = "",
+            mem = "10G",
+            partition = "normal",
+            sort_mem = "5G"
+        threads: 1
         conda:
             "envs/bwa.yml"
         shell:
@@ -45,6 +49,7 @@ def bwa_mem(
             " && "
             "{params.samtools_path} sort"
             " -O BAM"
+            " -m {resources.sort_mem}"
             " -o {output.bam}"
             " {output.sam}"
             " 2>> {log}"

@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
-__copyright__ = 'Copyright (C) 2020 IUCT-O'
+__copyright__ = 'Copyright (C) 2020 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.1.0'
+__version__ = '1.2.0'
 
 
 def bismark_aln(
@@ -13,12 +13,12 @@ def bismark_aln(
         params_aligner="bowtie2",  # bowtie2 or hisat2
         params_extra="",
         params_is_directional=True,
-        # params_nb_threads=1,
         # params_nucleotide_coverage=False,
         params_keep_outputs=False,
         params_stderr_append=False):
     """Alignment to bisulfite genome."""
     # Parameters
+    resources = {} if resources is None else resources
     if params_aligner not in ["bowtie2", "hisat2"]:
         raise Exception("The algner must be bowtie2 or hisat2.")
     out_dir = os.path.dirname(out_alignments)
@@ -48,7 +48,11 @@ def bismark_aln(
             key_r2 = "-2" if in_R2 else "",
             # nucleotide_coverage = "--nucleotide_coverage" if params_nucleotide_coverage else "",
             out_dir = out_dir,
-            stderr_redirection = "2>" if not params_stderr_append else "2>>",
+            stderr_redirection = "2>" if not params_stderr_append else "2>>"
+        resources:
+            extra = "",
+            mem = "60G",
+            partition = "normal"
         # threads: params_nb_threads
         conda:
             "envs/bismark.yml"

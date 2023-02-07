@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
-__copyright__ = 'Copyright (C) 2020 IUCT-O'
+__copyright__ = 'Copyright (C) 2020 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.1.0'
+__version__ = '1.2.0'
 
 
 def rseqc_readDistribution(
@@ -23,6 +23,10 @@ def rseqc_readDistribution(
         params:
             bin_path = config.get("software_paths", {}).get("read_distribution", "read_distribution.py"),
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
+        resources:
+            extra = "",
+            mem = "4G",
+            partition = "normal"
         conda:
             "envs/rseqc.yml"
         shell:

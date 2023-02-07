@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
-__copyright__ = 'Copyright (C) 2021 IUCT-O'
+__copyright__ = 'Copyright (C) 2021 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.0.0'
+__version__ = '1.1.0'
 
 
 def fastqToBam(
@@ -35,6 +35,10 @@ def fastqToBam(
             sort = "--sort" if params_sort else "",
             stderr_redirection = "2>" if not params_stderr_append else "2>>",
             umi_tag = "--umi-tag {}".format(params_umi_tag)
+        resources:
+            extra = "",
+            mem = "6G",
+            partition = "normal"
         conda:
             "envs/fgbio.yml"
         shell:

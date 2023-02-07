@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
-__copyright__ = 'Copyright (C) 2020 IUCT-O'
+__copyright__ = 'Copyright (C) 2020 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.1.0'
+__version__ = '1.2.0'
 
 
 def rseqc_inferExperiment(
@@ -27,6 +27,10 @@ def rseqc_inferExperiment(
             map_quality = "" if params_map_quality is None else "--mapq " + str(params_map_quality),
             sample_size = "" if params_sample_size is None else "--sample-size " + str(params_sample_size),
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
+        resources:
+            extra = "",
+            mem = "3G",
+            partition = "normal"
         conda:
             "envs/rseqc.yml"
         shell:

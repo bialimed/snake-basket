@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
-__copyright__ = 'Copyright (C) 2021 IUCT-O'
+__copyright__ = 'Copyright (C) 2021 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.0.0'
+__version__ = '1.1.0'
 
 
 def mergeBamAlignment(
@@ -14,7 +14,6 @@ def mergeBamAlignment(
         params_create_index=True,
         params_expected_orientations=["FR"],
         params_extra="",
-        params_java_mem="5G",
         params_max_gaps=-1,
         params_sort_order="coordinate",
         params_stringency="LENIENT",
@@ -35,17 +34,21 @@ def mergeBamAlignment(
             bin_path = config.get("software_paths", {}).get("picard", "picard"),
             create_index = str(params_create_index).lower(),
             extra = params_extra,
-            java_mem = params_java_mem,
             max_gaps = params_max_gaps,
             expected_orientations = params_expected_orientations,
             sort_order = params_sort_order,
             stderr_redirection = "2>" if not params_stderr_append else "2>>",
             stringency = params_stringency
+        resources:
+            extra = "",
+            java_mem = "5G",
+            mem = "20G",
+            partition = "normal"
         conda:
             "envs/picard.yml"
         shell:
             "{params.bin_path} MergeBamAlignment"
-            " -Xmx{params.java_mem}"
+            " -Xmx{resources.java_mem}"
             " {params.extra}"
             " ALIGNER_PROPER_PAIR_FLAGS={params.aligner_proper_pair_flags}"
             " MAX_GAPS={params.max_gaps}"

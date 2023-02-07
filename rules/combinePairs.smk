@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
-__copyright__ = 'Copyright (C) 2020 IUCT-O'
+__copyright__ = 'Copyright (C) 2020 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.1.0'
+__version__ = '1.2.0'
 
 
 def combinePairs(
@@ -10,11 +10,11 @@ def combinePairs(
         out_combined="combinePairs/{sample}.fastq.gz",
         out_report="stats/combinePairs/{sample}_report.json",
         out_stderr="logs/{sample}_combinePairs_stderr.txt",
+        params_keep_outputs=False,
         params_max_contradict_ratio=None,
         params_max_frag_length=None,
         params_min_frag_length=None,
         params_min_overlap=None,
-        params_keep_outputs=False,
         params_stderr_append=False):
     """Combine R1 and R2 by their overlapping segment."""
     rule combinePairs:
@@ -33,6 +33,10 @@ def combinePairs(
             min_frag_length = "" if params_min_frag_length is None else "--min-frag-length " + str(params_min_frag_length),
             min_overlap = "" if params_min_overlap is None else "--min-overlap " + str(params_min_overlap),
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
+        resources:
+            extra = "",
+            mem = "3G",
+            partition = "normal"
         conda:
             "envs/anacore-utils.yml"
         shell:

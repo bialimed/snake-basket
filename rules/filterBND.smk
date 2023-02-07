@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
-__copyright__ = 'Copyright (C) 2020 IUCT-O'
+__copyright__ = 'Copyright (C) 2020 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.3.0'
+__version__ = '1.4.0'
 
 
 def filterBND(
@@ -11,12 +11,12 @@ def filterBND(
         out_variants="structural_variants/{sample}_annot_tag.vcf",
         out_stderr="logs/structural_variants/{sample}_filterBND_stderr.txt",
         params_annotations_field=None,  # tag or filter
+        params_keep_outputs=False,
         params_min_support=None,
         params_mode=None,
         params_normal_key=None,  # id or symbol
         params_normal_sources=None,
         params_rt_max_dist=None,
-        params_keep_outputs=False,
         params_stderr_append=False):
     """Filter fusions that are readthrough, within a gene, known in normal samples or occuring on HLA or IG."""
     rule filterBND:
@@ -38,6 +38,10 @@ def filterBND(
             normal_sources = "" if params_normal_sources is None else "--normal-sources '" + params_normal_sources + "'",
             rt_max_dist = "" if params_rt_max_dist is None else "--rt-max-dist " + str(params_rt_max_dist),
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
+        resources:
+            extra = "",
+            mem = "10G",
+            partition = "normal"
         conda:
             "envs/anacore-utils.yml"
         shell:

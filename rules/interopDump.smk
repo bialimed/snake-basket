@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
-__copyright__ = 'Copyright (C) 2019 IUCT-O'
+__copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.1.0'
+__version__ = '2.2.0'
 
 
 def interopDump(
@@ -18,7 +18,7 @@ def interopDump(
     if os.path.exists(os.path.join(in_run_folder, "RunParameters.xml")):
         in_run_parameters = os.path.join(in_run_folder, "RunParameters.xml")
     # Rule
-    rule interopDump:
+    rule interop_dump:
         input:
             run_folder = in_run_folder,
             interop_folder = in_interop_folder,
@@ -31,6 +31,10 @@ def interopDump(
         params:
             bin_path = config.get("software_paths", {}).get("interop_dumptext", "interop_dumptext"),
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
+        resources:
+            extra = "",
+            mem = "8G",
+            partition = "normal"
         conda:
             "envs/illuminainterop.yml"
         shell:

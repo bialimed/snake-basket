@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
-__copyright__ = 'Copyright (C) 2019 IUCT-O'
+__copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.1.0'
+__version__ = '2.2.0'
 
 
 include: "samtools_depth.smk"
@@ -18,6 +18,7 @@ def depthsMetrics(
         params_keep_outputs=False,
         params_stderr_append=False):
     """Depths metrics (distribution, count by depth and targets under threshold) from the samtools depth output."""
+    # Parameters
     params_format = out_metrics.split(".")[-1]
     if params_format not in ["tsv", "json"]:
         raise Exception('The file extension for out_metrics in depthsMetrics must end with "json" or "tsv".')
@@ -45,6 +46,10 @@ def depthsMetrics(
             bin_path = config.get("software_paths", {}).get("depthsMetrics", "depthsMetrics.py"),
             expected_min_depth = "" if params_expected_min_depth is None else "--min-depth " + str(params_expected_min_depth),
             format = params_format
+        resources:
+            extra = "",
+            mem = "8G",
+            partition = "normal"
         conda:
             "envs/anacore-utils.yml"
         shell:

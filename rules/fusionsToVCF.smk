@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
-__copyright__ = 'Copyright (C) 2020 IUCT-O'
+__copyright__ = 'Copyright (C) 2020 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.2.0'
+__version__ = '1.3.0'
 
 
 def fusionsToVCF(
@@ -9,8 +9,8 @@ def fusionsToVCF(
         out_fusions="structural_variants/{caller}/{sample}_fusions.vcf",
         out_stderr="logs/{sample}_{caller}_toVCF_stderr.txt",
         params_annotation_field=None,
-        params_sample_wildcard="{sample}",
         params_keep_outputs=False,
+        params_sample_wildcard="{sample}",
         params_stderr_append=False,
         snake_wildcard_constraints=None):
     """Convert TSV output coming from several popular fusions callers to VCF."""
@@ -29,6 +29,10 @@ def fusionsToVCF(
             bin_path = config.get("software_paths", {}).get("fusionsToVCF", "fusionsToVCF.py"),
             sample_wildcard = params_sample_wildcard,
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
+        resources:
+            extra = "",
+            mem = "3G",
+            partition = "normal"
         conda:
             "envs/anacore-utils.yml"
         shell:

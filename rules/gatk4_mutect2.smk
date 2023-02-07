@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
-__copyright__ = 'Copyright (C) 2019 IUCT-O'
+__copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.2.0'
+__version__ = '3.0.0'
 
 include: "gatk4_learnReadOrientationModel.smk"
 
@@ -12,14 +12,13 @@ def gatk4_mutect2(
         in_pon_variants=None,
         in_germline_variants=None,
         out_variants="variants/mutect2/{sample}_call.vcf",
-        out_stdout="logs/variants/mutect2/{sample}_call_stdout.txt",
         out_stderr="logs/variants/mutect2/{sample}_call_stderr.txt",
+        params_keep_outputs=False,
         params_min_base_qual=15,
         params_min_alt_count=4,
         params_min_alt_fraction=0.03,
-        params_tag_strand_bias=False,
-        params_keep_outputs=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        params_tag_strand_bias=False):
     """Call somatic SNPs and indels via local re-assembly of haplotypes."""
     # Filter supplementals to prevent mutect2 error with version 4.1.4.[0-1] (see: https://github.com/broadinstitute/gatk/issues/6310)
     rule mutect2_filterSupplementals:
@@ -29,10 +28,14 @@ def gatk4_mutect2(
             aln = temp(out_variants + "_filteredTmp.bam"),
             index = temp(out_variants + "_filteredTmp.bam.bai")
         log:
-            stderr = out_stderr
+            out_stderr
         params:
             bin_path = config.get("software_paths", {}).get("samtools", "samtools"),
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
+        resources:
+            extra = "",
+            mem = "5G",
+            partition = "normal"
         conda:
             "envs/samtools.yml"
         shell:
@@ -42,11 +45,11 @@ def gatk4_mutect2(
             " -F 2048"
             " {input.tumoral_aln}"
             " > {output.aln}"
-            " {params.stderr_redirection} {log.stderr}"
+            " {params.stderr_redirection} {log}"
             " &&"
             " {params.bin_path} index"
             " {output.aln}"
-            " 2>> {log.stderr}"
+            " 2>> {log}"
 
     # Variant calling
     rule mutect2:
@@ -60,8 +63,7 @@ def gatk4_mutect2(
             variants = temp(out_variants + "_initTmp.vcf"),
             f1r2 = ([] if not params_tag_strand_bias else temp(out_variants + "_f1r2.tar.gz"))
         log:
-            stdout = out_stdout,
-            stderr = out_stderr
+            out_stderr
         params:
             bin_path = config.get("software_paths", {}).get("gatk", "gatk"),
             f1r2 = "--f1r2-tar-gz " + out_variants + "_f1r2.tar.gz" if params_tag_strand_bias else "",
@@ -69,6 +71,11 @@ def gatk4_mutect2(
             min_base_qual = params_min_base_qual,
             pon_variants = "" if in_pon_variants is None else "--panel-of-normals " + in_pon_variants,
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
+        resources:
+            extra = "",
+            mem = "15G",
+            partition = "normal"
+        threads: 2  # Should not be lower
         conda:
             "envs/gatk4.yml"
         shell:
@@ -82,8 +89,7 @@ def gatk4_mutect2(
             " {params.pon_variants}"
             " --input {input.tumoral_aln}"
             " --output {output.variants}"
-            " > {log.stdout}"
-            " 2>> {log.stderr}"
+            " 2>> {log}"
 
     if params_tag_strand_bias:
         gatk4_learnReadOrientationModel(
@@ -101,11 +107,14 @@ def gatk4_mutect2(
             stats = temp(out_variants + "_initTmp_filterTmp.vcf.filteringStats.tsv"),
             variants = temp(out_variants + "_initTmp_filterTmp.vcf")
         log:
-            stdout = out_stdout,
-            stderr = out_stderr
+            out_stderr
         params:
             bin_path = config.get("software_paths", {}).get("gatk", "gatk"),
             strand_model = ("" if not params_tag_strand_bias else "--orientation-bias-artifact-priors " + params_tag_strand_bias + "_strandModel.tar.gz")
+        resources:
+            extra = "",
+            mem = "8G",
+            partition = "normal"
         conda:
             "envs/gatk4.yml"
         shell:
@@ -114,8 +123,7 @@ def gatk4_mutect2(
             " --reference {input.reference_seq}"
             " --variant {input.variants}"
             " --output {output.variants}"
-            " >> {log.stdout}"
-            " 2>> {log.stderr}"
+            " 2>> {log}"
     # --max-alt-allele-count 1 default
 
     # Split multi-alternative variants in sevrel records
@@ -128,6 +136,10 @@ def gatk4_mutect2(
             out_stderr
         params:
             bin_path = config.get("software_paths", {}).get("splitVCFAlt", "splitVCFAlt.py")
+        resources:
+            extra = "",
+            mem = "3G",
+            partition = "normal"
         conda:
             "envs/anacore-utils.yml"
         shell:
@@ -135,8 +147,9 @@ def gatk4_mutect2(
             " --input-variants {input}"
             " --output-variants {output}"
             " 2>> {log}"
+
     # Filter variants on AD and AF
-    rule mutect2_filterVCF:
+    rule mutect2_filterByCount:
         input:
             out_variants + "_oneLine.vcf"
         output:
@@ -147,6 +160,10 @@ def gatk4_mutect2(
         params:
             bin_path = config.get("software_paths", {}).get("filterVCF", "filterVCF.py"),
             filters = '{"class":"FiltersCombiner","operator":"and","filters":[{"class":"Filter","getter":"m:getPopAltAD","aggregator":"ratio:1","operator":">=","values":' + str(params_min_alt_count) + '},{"class":"Filter","getter":"m:getPopAltAF","aggregator":"ratio:1","operator":">=","values":' + str(params_min_alt_fraction) + '}]}'
+        resources:
+            extra = "",
+            mem = "3G",
+            partition = "normal"
         conda:
             "envs/anacore-utils.yml"
         shell:

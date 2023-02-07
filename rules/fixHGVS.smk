@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
-__copyright__ = 'Copyright (C) 2019 IUCT-O'
+__copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.1.0'
+__version__ = '2.2.0'
 
 
 def fixHGVS(
@@ -11,9 +11,9 @@ def fixHGVS(
         out_stderr="logs/variants/{sample}_annot_fixHGVS_stderr.txt",
         params_annotations_field=None,
         params_assembly_version=None,
+        params_keep_outputs=False,
         params_mutalyzer_url=None,
         params_proxy_url=None,
-        params_keep_outputs=False,
         params_stderr_append=False):
     """Fix or add HGVSg, HGVSc and HGVSp on variants annotations. The HGVS used are based on mutalyzer."""
     rule fixHGVS:
@@ -32,6 +32,10 @@ def fixHGVS(
             mutalyzer_url = "--mutalyzer-url " + params_mutalyzer_url if params_mutalyzer_url else "",
             proxy_url = "--proxy-url " + params_proxy_url if params_proxy_url else "",
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
+        resources:
+            extra = "",
+            mem = "4G",
+            partition = "normal"
         conda:
             "envs/anacore-utils.yml"
         shell:

@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
-__copyright__ = 'Copyright (C) 2020 IUCT-O'
+__copyright__ = 'Copyright (C) 2020 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.1.0'
+__version__ = '2.0.0'
 
 
 def samToFastq(
@@ -12,7 +12,6 @@ def samToFastq(
         params_extra="",
         params_include_non_pf=False,
         params_keep_outputs=False,
-        params_memory="4G",
         params_stderr_append=False):
     """Converts a SAM or BAM file to FASTQ."""
     rule samToFastq:
@@ -27,14 +26,18 @@ def samToFastq(
             bin_path = config.get("software_paths", {}).get("picard", "picard"),
             extra = params_extra,
             include_non_pf = ("true" if params_include_non_pf else "false"),
-            memory = params_memory,
             output_r2 = "SECOND_END_FASTQ={}".format(out_R2) if out_R2 else "",
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
+        resources:
+            extra = "",
+            java_mem = "26G",
+            mem = "28G",
+            partition = "normal"
         conda:
             "envs/picard.yml"
         shell:
             "{params.bin_path} SamToFastq"
-            " -Xmx{params.memory}"
+            " -Xmx{resources.java_mem}"
             " {params.extra}"
             " INCLUDE_NON_PF_READS={params.include_non_pf}"
             " INPUT={input}"

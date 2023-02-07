@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
-__copyright__ = 'Copyright (C) 2020 IUCT-O'
+__copyright__ = 'Copyright (C) 2020 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.1.0'
+__version__ = '2.0.0'
 
 
 def bismark_extractor(
@@ -11,7 +11,6 @@ def bismark_extractor(
         params_buffer_size="2G",
         params_compressed=True,
         params_is_paired_end=True,
-        params_nb_threads=1,
         params_keep_outputs=False,
         params_stderr_append=False):
     """Extract cytosines methylation from alignments produced by bismark."""
@@ -52,7 +51,11 @@ def bismark_extractor(
             out_dir = out_dir,
             paired_end = "--paired-end" if params_is_paired_end else "--single-end",
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
-        threads: params_nb_threads
+        resources:
+            extra = "",
+            mem = "6G",
+            partition = "normal"
+        threads: 1
         conda:
             "envs/bismark.yml"
         shell:

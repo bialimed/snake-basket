@@ -1,7 +1,9 @@
 __author__ = 'Gael Jalowicki and Frederic Escudie'
-__copyright__ = 'Copyright (C) 2021 IUCT-O'
+__copyright__ = 'Copyright (C) 2021 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.0.0'
+__version__ = '2.0.0'
+
+import os
 
 
 def star(
@@ -12,14 +14,13 @@ def star(
         out_metrics="aln/{sample}Log.final.out",
         out_stderr="logs/aln/{sample}_star_stderr.txt",
         params_extra="",
-        params_nb_threads=1,
-        params_sort_memory=5,  # In GB
         params_keep_outputs=False,
         params_stderr_append=False):
     """Spliced Transcripts Alignment to a Reference."""
+    # Parameters
     work_directory = os.path.join(os.path.dirname(out_alignments), "tmp_{sample}")
     out_spl_prefix = os.path.join(work_directory, "{sample}")
-    # Process
+    # Rule
     rule star:
         input:
             genome_dir = os.path.dirname(in_reference_seq),
@@ -34,13 +35,17 @@ def star(
         params:
             bin_path = config.get("software_paths", {}).get("STAR", "STAR"),
             prefix = out_spl_prefix,
-            sort_buffer_size = params_sort_memory * 1000000000,
             stderr_redirection = "2>" if not params_stderr_append else "2>>",
             tmp_aln = out_spl_prefix + "Aligned.sortedByCoord.out.bam",
             tmp_metrics = out_spl_prefix + "Log.final.out",
+        resources:
+            extra = "",
+            mem = "35G",
+            partition = "normal",
+            sort_mem_gb = 8
+        threads: 1
         conda:
             "envs/star.yml"
-        threads: params_nb_threads
         shell:
             "mkdir -p {output.tmp_directory}"
             " {params.stderr_redirection} {log}"
@@ -52,7 +57,7 @@ def star(
             " --outSAMunmapped Within"
             " --readFilesCommand zcat"
             " --outSAMattrRGline ID:1 SM:{wildcards.sample}"
-            " --limitBAMsortRAM {params.sort_buffer_size}"
+            " --limitBAMsortRAM $(({resources.sort_mem_gb} * 1000000000))"
             " --outSAMtype BAM SortedByCoordinate"
             " --readFilesIn {input.R1} {input.R2}"
             " --outFileNamePrefix {params.prefix}"

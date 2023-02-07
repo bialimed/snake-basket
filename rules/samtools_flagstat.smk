@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
-__copyright__ = 'Copyright (C) 2019 IUCT-O'
+__copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.0.0'
+__version__ = '2.1.0'
 
 
 def samtools_flagstat(
@@ -23,6 +23,10 @@ def samtools_flagstat(
             bin_path = config.get("software_paths", {}).get("samtools", "samtools"),
             extra = params_extra,
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
+        resources:
+            extra = "",
+            mem = "5G",
+            partition = "normal"
         conda:
             "envs/samtools.yml"
         shell:

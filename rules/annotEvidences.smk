@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
-__copyright__ = 'Copyright (C) 2021 IUCT-O'
+__copyright__ = 'Copyright (C) 2021 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.1.0'
+__version__ = '1.2.0'
 
 
 def annotEvidences(
@@ -61,6 +61,10 @@ def annotEvidences(
             evidences_source = '--evidences-source "{}"'.format(params_evidences_source) if params_evidences_source else "",
             output_evidences = "--output-evidences {}".format(out_evidences) if out_evidences else "",
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
+        resources:
+            extra = "",
+            mem = "10G",
+            partition = "normal"
         conda:
             "envs/genovance.yml"
         shell:

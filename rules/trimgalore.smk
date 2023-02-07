@@ -1,7 +1,9 @@
 __author__ = 'Frederic Escudie'
-__copyright__ = 'Copyright (C) 2020 IUCT-O'
+__copyright__ = 'Copyright (C) 2020 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.1.0'
+__version__ = '2.0.0'
+
+import os
 
 
 def trimgalore(
@@ -15,10 +17,10 @@ def trimgalore(
         params_match_stringency=None,
         params_min_length=None,
         params_trim_qual_threshold=None,
-        params_nb_threads=1,
         params_keep_outputs=False,
         params_stderr_append=False):
     """Apply adapter and quality trimming to FastQ files, with extra functionality for RRBS data."""
+    # Parameters
     out_dir = os.path.dirname(out_R1)
     basename, extension = os.path.splitext(os.path.basename(out_R1))
     # Rules
@@ -41,7 +43,11 @@ def trimgalore(
                 tmp_R1 = os.path.join(out_dir, basename + "_trimmed.fq.gz"),
                 trim_qual_threshold = "" if params_trim_qual_threshold is None else "--quality " + str(trim_qual_threshold),
                 stderr_redirection = "2>" if not params_stderr_append else "2>>"
-            threads: params_nb_threads
+            resources:
+                extra = "",
+                mem = "5G",
+                partition = "normal"
+            threads: 1
             conda:
                 "envs/trimgalore.yml"
             shell:
@@ -80,7 +86,11 @@ def trimgalore(
                 tmp_R2 = os.path.join(out_dir, basename + "_val_2.fq.gz"),
                 trim_qual_threshold = "" if params_trim_qual_threshold is None else "--quality " + str(trim_qual_threshold),
                 stderr_redirection = "2>" if not params_stderr_append else "2>>"
-            threads: params_nb_threads
+            resources:
+                extra = "",
+                mem = "5G",
+                partition = "normal"
+            threads: 1
             conda:
                 "envs/trimgalore.yml"
             shell:

@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2020 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.3.0'
+__version__ = '1.4.0'
 
 
 def microsatLenDistrib(
@@ -35,6 +35,10 @@ def microsatLenDistrib(
             sample_name = "" if params_sample_name is None else "--sample-name {}".format(params_sample_name),
             stderr_redirection = "2>" if not params_stderr_append else "2>>",
             stitch_count = "--stitch-count" if params_stitch_count else ""
+        resources:
+            extra = "",
+            mem = "3G",
+            partition = "normal"
         conda:
             "envs/anacore-utils.yml"
         shell:

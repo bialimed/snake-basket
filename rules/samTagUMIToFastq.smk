@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
-__copyright__ = 'Copyright (C) 2020 IUCT-O'
+__copyright__ = 'Copyright (C) 2020 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.1.0'
+__version__ = '1.2.0'
 
 
 def samTagUMIToFastq(
@@ -36,6 +36,10 @@ def samTagUMIToFastq(
             umi_tag = " --umi-tag {}".format(params_umi_tag) if params_umi_tag else "",
             output_r2 = " --output-reads-2 {}".format(out_R2) if out_R2 else "",
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
+        resources:
+            extra = "",
+            mem = "4G",
+            partition = "normal"
         conda:
             "envs/anacore-utils.yml"
         shell:

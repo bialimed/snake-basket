@@ -1,7 +1,9 @@
 __author__ = 'Frederic Escudie'
-__copyright__ = 'Copyright (C) 2019 IUCT-O'
+__copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.3.0'
+__version__ = '2.0.0'
+
+import os
 
 
 def manta(
@@ -13,14 +15,10 @@ def manta(
         out_stderr="logs/structural_variants/{sample}_manta_stderr.txt",
         out_sv="structural_variants/manta/{sample}_sv.vcf.gz",
         out_sv_candidate="structural_variants/manta/{sample}_SVCandidates.vcf.gz",
-        params_calling_memory=20,  # In GB
         params_is_somatic=True,
         params_is_stranded=True,
-        params_java_memory=5,  # In GB
         params_min_candidate_spanning=2,  # Manta is configured with a discovery sensitivity appropriate for general WGS applications. In targeted or other specialized contexts the candidate sensitivity can be increased. A recommended general high sensitivity mode can be obtained by changing the two values 'minEdgeObservations' and 'minCandidateSpanningCount' in the manta configuration file (see 'Advanced configuration options' above) to 2 observations per candidate (the default is 3)
         params_min_edge_obs=2,  # Manta is configured with a discovery sensitivity appropriate for general WGS applications. In targeted or other specialized contexts the candidate sensitivity can be increased. A recommended general high sensitivity mode can be obtained by changing the two values 'minEdgeObservations' and 'minCandidateSpanningCount' in the manta configuration file (see 'Advanced configuration options' above) to 2 observations per candidate (the default is 3)
-        params_nb_threads=1,
-        params_sort_memory=5,  # In GB
         params_type="rna",  # rna or targeted or genome
         params_keep_bam=False,
         params_keep_outputs=False,
@@ -55,11 +53,15 @@ def manta(
         params:
             bin_path = config.get("software_paths", {}).get("STAR", "STAR"),
             prefix = star_prefix,
-            sort_buffer_size = params_sort_memory * 1000000000,
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
+        resources:
+            extra = "",
+            mem = "35G",
+            partition = "normal",
+            sort_mem_gb = 8
+        threads: 1
         conda:
             "envs/star.yml"
-        threads: params_nb_threads
         shell:
             "{params.bin_path}"
             " --runThreadN {threads}"
@@ -77,7 +79,7 @@ def manta(
             " --twopassMode Basic"
             " --outSAMattributes NH NM MD"
             " --outSAMattrRGline ID:1 SM:{wildcards.sample}"
-            " --limitBAMsortRAM {params.sort_buffer_size}"
+            " --limitBAMsortRAM $(({resorces.sort_mem_gb} * 1000000000))"
             " --readFilesCommand zcat"
             " --outSAMtype BAM SortedByCoordinate"
             " --readFilesIn {input.R1} {input.R2}"
@@ -99,13 +101,17 @@ def manta(
         log:
             out_stderr
         params:
-            bin_path = config.get("software_paths", {}).get("picard", "picard"),
-            java_memory = params_java_memory
+            bin_path = config.get("software_paths", {}).get("picard", "picard")
+        resources:
+            extra = "",
+            java_mem = "5G",
+            mem = "16G",
+            partition = "normal"
         conda:
             "envs/picard.yml"
         shell:
             "{params.bin_path} MarkDuplicates"
-            " -Xmx{params.java_memory}G"
+            " -Xmx{resources.java_mem}"
             " VALIDATION_STRINGENCY=LENIENT"
             " REMOVE_SEQUENCING_DUPLICATES=false"
             " REMOVE_DUPLICATES=false"
@@ -137,6 +143,10 @@ def manta(
             min_edge_obs = params_min_edge_obs,
             strand = "" if params_type != "rna" else ("" if params_is_stranded else "--unstrandedRNA"),
             type = opt_by_type[params_type]
+        resources:
+            extra = "",
+            mem = "2G",
+            partition = "normal"
         conda:
             "envs/manta.yml"
         shell:
@@ -171,15 +181,19 @@ def manta(
         params:
             fix_bin = os.path.abspath(os.path.join(workflow.basedir, "scripts", "fixMantaHeader.py")),
             manta_dir = manta_dir,
-            memory = params_calling_memory,
             sv_filename = "rnaSV.vcf.gz" if params_type == "rna" else ("tumorSV.vcf.gz" if params_is_somatic else "somaticSV.vcf.gz")
+        resources:
+            extra = "",
+            mem = "12G",
+            partition = "normal",
+            run_mem_gb = 11
+        threads: 1
         conda:
             "envs/manta.yml"
-        threads: params_nb_threads
         shell:
             "{input.launcher}"
             " --mode local"
-            " --memGb {params.memory}"
+            " --memGb {resources.run_mem_gb}"
             " --jobs {threads}"
             " 2>> {log}"
             " && "

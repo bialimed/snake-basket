@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
-__copyright__ = 'Copyright (C) 2020 IUCT-O'
+__copyright__ = 'Copyright (C) 2020 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.0.0'
+__version__ = '1.1.0'
 
 
 def groupReadsByUMI(
@@ -10,12 +10,12 @@ def groupReadsByUMI(
         out_metrics="stats/gpByUMI/{sample}.tsv",
         out_stderr="logs/aln/{sample}_gpByUMI_stderr.txt",
         params_allow_inter_contig=False,
+        params_keep_outputs=False,
         params_max_edits=1,
         params_min_mapq=30,
+        params_stderr_append=False,
         params_strategy="adjacency",
-        params_umi_tag="RX",
-        params_keep_outputs=False,
-        params_stderr_append=False):
+        params_umi_tag="RX"):
     """Groups reads together that appear to have come from the same original molecule."""
     rule groupReadsByUMI:
         input:
@@ -33,6 +33,10 @@ def groupReadsByUMI(
             stderr_redirection = "2>" if not params_stderr_append else "2>>",
             strategy = params_strategy,
             umi_tag = params_umi_tag
+        resources:
+            extra = "",
+            mem = "8G",
+            partition = "normal"
         conda:
             "envs/fgbio.yml"
         shell:

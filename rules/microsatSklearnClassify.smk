@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2020 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.1.0'
+__version__ = '1.2.0'
 
 
 def microsatSklearnClassify(
@@ -22,9 +22,11 @@ def microsatSklearnClassify(
         params_keep_outputs=False,
         params_stderr_append=False):
     """Predict stability classes and scores for loci and samples using an sklearn classifer."""
+    # Parameters
     if params_classifier_params is not None:
         if not isinstance(params_classifier_params, str):
             raise Exception('The argument "params_classifier_params" in rule microsatSklearnClassify must be a string not {}: {}.'.format(type(params_classifier_params), params_classifier_params))
+    # Rule
     rule microsatSklearnClassify:
         input:
             evaluated = in_evaluated,
@@ -46,6 +48,10 @@ def microsatSklearnClassify(
             status_method = "" if params_status_method is None else "--status-method {}".format(params_status_method),
             stderr_redirection = "2>" if not params_stderr_append else "2>>",
             undetermined_weight = "" if params_undetermined_weight is None else "--undetermined-weight {}".format(params_undetermined_weight),
+        resources:
+            extra = "",
+            mem = "10G",
+            partition = "normal"
         conda:
             "envs/anacore-utils.yml"
         shell:

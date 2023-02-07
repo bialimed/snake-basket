@@ -1,9 +1,17 @@
 __author__ = 'Frederic Escudie'
-__copyright__ = 'Copyright (C) 2020 IUCT-O'
+__copyright__ = 'Copyright (C) 2020 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.0.0'
+__version__ = '1.1.0'
 
 import os
+
+include: "fastqToBam.smk"
+include: "setUMITagFromID.smk"
+include: "mergeBamAlignment.smk"
+include: "groupReadsByUMI.smk"
+include: "callMolecularConsensus.smk"
+include: "filterUMIConsensus.smk"
+include: "samToFastq.smk"
 
 
 def delDuplicatesByUMI(
@@ -30,9 +38,6 @@ def delDuplicatesByUMI(
         params_group_max_edits=1,
         params_group_min_mapq=25,
         params_group_strategy="adjacency",
-        params_mergeBAMAlignment_mem="5G",
-        params_sam2fastq_mem="5G",
-        params_threads=1,
         params_tmp_folder="umi",
         params_umi_separator=":",
         params_umi_tag="RX",
@@ -54,7 +59,8 @@ def delDuplicatesByUMI(
             out_stderr=out_stderr,
             params_stderr_append=True,
             params_umi_separator=params_umi_separator,
-            params_umi_tag=params_umi_tag)
+            params_umi_tag=params_umi_tag
+        )
         mergeBamAlignment(
             in_alignments=in_alignments,
             in_reference_seq=in_reference_seq,
@@ -65,7 +71,6 @@ def delDuplicatesByUMI(
             params_aligner_proper_pair_flags=True,
             params_create_index=True,
             params_expected_orientations=["FR"],
-            params_java_mem=params_mergeBAMAlignment_mem,
             params_sort_order="coordinate"
         )
 
@@ -110,8 +115,7 @@ def delDuplicatesByUMI(
         out_R1=os.path.join(params_tmp_folder, "raw/tmp_" + out_filename + "_R1.fastq.gz"),
         out_R2=os.path.join(params_tmp_folder, "raw/tmp_" + out_filename + "_R2.fastq.gz"),
         out_stderr=out_stderr,
-        params_stderr_append=True,
-        params_memory=params_sam2fastq_mem)
+        params_stderr_append=True)
 
     params_aln_fct(
         in_reads=[
@@ -123,5 +127,4 @@ def delDuplicatesByUMI(
         out_stderr=out_stderr,
         params_stderr_append=True,
         params_extra=params_aln_extra,
-        params_threads=params_threads,
         params_keep_outputs=params_keep_outputs)

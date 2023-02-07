@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
-__copyright__ = 'Copyright (C) 2020 IUCT-O'
+__copyright__ = 'Copyright (C) 2020 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.1.0'
+__version__ = '2.0.0'
 
 
 def extractIlluminaBarcodes(
@@ -12,10 +12,8 @@ def extractIlluminaBarcodes(
         out_metrics="demultiplex/extractIlluminaBarcode/metrics_L{lane}.tsv",
         out_stderr="logs/demultiplex/extractIlluminaBarcode_L{lane}_stderr.txt",
         params_extra="",
-        params_lane="{lane}",
-        params_memory="10G",
         params_keep_outputs=False,
-        params_threads=1):
+        params_lane="{lane}"):
     """Determines the barcode for each read in an Illumina lane."""
     rule extractIlluminaBarcodes:
         input:
@@ -25,14 +23,18 @@ def extractIlluminaBarcodes(
             metrics = (out_metrics if params_keep_outputs else temp(out_metrics)),
             directory = temp(directory(out_dir))
         log:
-            stderr = out_stderr
+            out_stderr
         params:
             bin_path = config.get("software_paths", {}).get("picard", "picard"),
             extra = params_extra,
             lane = params_lane,
-            memory = params_memory,
             read_structure = params_read_structure
-        threads: params_threads
+        resources:
+            extra = "",
+            java_mem = "10G",
+            mem = "14G",
+            partition = "normal"
+        threads: 1
         conda:
             "envs/picard.yml"
         shell:
@@ -40,7 +42,7 @@ def extractIlluminaBarcodes(
             " 2> {log.stderr}"
             " && "
             "{params.bin_path} ExtractIlluminaBarcodes"
-            " -Xmx{params.memory}"
+            " -Xmx{resources.java_mem}"
             " {params.extra}"
             " NUM_PROCESSORS={threads}"
             " LANE={params.lane}"
@@ -49,4 +51,4 @@ def extractIlluminaBarcodes(
             " BASECALLS_DIR={input.basecalls}"
             " OUTPUT_DIR={output.directory}"
             " METRICS_FILE={output.metrics}"
-            " 2> {log.stderr}"
+            " 2> {log}"

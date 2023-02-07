@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
-__copyright__ = 'Copyright (C) 2019 IUCT-O'
+__copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.4.0'
+__version__ = '2.5.0'
 
 
 def shallowsAnalysis(
@@ -48,6 +48,10 @@ def shallowsAnalysis(
             out_genes = "" if out_genes is None else "--output-genes " + out_genes,
             stderr_redirection = "2>" if not params_stderr_append else "2>>",
             targets = "" if in_targets is None else "--input-targets " + in_targets
+        resources:
+            extra = "",
+            mem = "15G",
+            partition = "normal"
         conda:
             "envs/anacore-utils.yml"
         shell:

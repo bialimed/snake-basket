@@ -1,24 +1,24 @@
 __author__ = 'Frederic Escudie'
-__copyright__ = 'Copyright (C) 2019 IUCT-O'
+__copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.1.0'
+__version__ = '1.2.0'
 
 
 def filterVCFBySOR(
         in_variants="variants/{variant_caller}/{sample}.vcf",
         out_variants="variants/{variant_caller}/{sample}_tagSOR.vcf",
         out_stderr="logs/variants/{variant_caller}/{sample}_tagSOR_stderr.txt",
+        params_alt_fwd_tag=None,
+        params_alt_rev_tag=None,
+        params_bias_tag="strandRatioBias",
+        params_indel_max_SOR=None,
         params_keep_outputs=False,
         params_mode="tag",
-        params_stderr_append=False,
-        params_bias_tag="strandRatioBias",
-        params_SOR_tag="SOR",
-        params_indel_max_SOR=None,
-        params_substit_max_SOR=None,
         params_ref_fwd_tag=None,
         params_ref_rev_tag=None,
-        params_alt_fwd_tag=None,
-        params_alt_rev_tag=None):
+        params_SOR_tag="SOR",
+        params_stderr_append=False,
+        params_substit_max_SOR=None):
     """Add snakemake rule to filter VCF by strand odd ratio."""
     rule filterVCFBySOR:
         input:
@@ -26,7 +26,7 @@ def filterVCFBySOR(
         output:
             out_variants if params_keep_outputs else temp(out_variants)
         log:
-            stderr = out_stderr
+            out_stderr
         params:
             alt_fwd_tag = "--alt-fwd-tag " + params_alt_fwd_tag if params_alt_fwd_tag is not None else "",
             alt_rev_tag = "--alt-rev-tag " + params_alt_rev_tag if params_alt_rev_tag is not None else "",
@@ -39,6 +39,10 @@ def filterVCFBySOR(
             SOR_tag = "--SOR-tag " + params_SOR_tag if params_SOR_tag is not None else "",
             stderr_redirection = "2>" if not params_stderr_append else "2>>",
             substit_max_SOR = "--substit-max-SOR " + params_substit_max_SOR if params_substit_max_SOR is not None else ""
+        resources:
+            extra = "",
+            mem = "3G",
+            partition = "normal"
         conda:
             "envs/anacore-utils.yml"
         shell:
@@ -54,4 +58,4 @@ def filterVCFBySOR(
             " --mode {params.mode}"
             " --input-variants {input}"
             " --output-variants {output}"
-            " {params.stderr_redirection} {log.stderr}"
+            " {params.stderr_redirection} {log}"

@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2022 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.1.0'
+__version__ = '1.2.0'
 
 
 def microsatMergeResults(
@@ -21,6 +21,10 @@ def microsatMergeResults(
         params:
             bin_path = config.get("software_paths", {}).get("microsatMergeResults", "microsatMergeResults.py"),
             stderr_redirection = "2>" if not params_stderr_append else "2>>",
+        resources:
+            extra = "",
+            mem = "3G",
+            partition = "normal"
         conda:
             "envs/anacore-utils.yml"
         shell:

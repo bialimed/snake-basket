@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
-__copyright__ = 'Copyright (C) 2020 IUCT-O'
+__copyright__ = 'Copyright (C) 2020 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.2.0'
+__version__ = '1.3.0'
 
 
 def renameChromVCF(
@@ -13,7 +13,9 @@ def renameChromVCF(
         params_stderr_append=False,
         snake_wildcard_constraints=None):
     """Convert chromosome specification in STAR_Fusion VCF file into standard chromosome specification."""
+    # Parameters
     snake_wildcard_constraints = {} if snake_wildcard_constraints is None else snake_wildcard_constraints
+    # Rule
     rule renameChromVCF:
         wildcard_constraints:
             **snake_wildcard_constraints
@@ -28,6 +30,10 @@ def renameChromVCF(
             bin_path = config.get("software_paths", {}).get("renameChromVCF", "renameChromVCF.py"),
             names = "" if in_names is None else "--input-names " + in_names,
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
+        resources:
+            extra = "",
+            mem = "4G",
+            partition = "normal"
         conda:
             "envs/anacore-utils.yml"
         shell:

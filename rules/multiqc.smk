@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
-__copyright__ = 'Copyright (C) 2019 IUCT-O'
+__copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.1.0'
+__version__ = '2.2.0'
 
 
 def multiqc(
@@ -11,6 +11,7 @@ def multiqc(
         out_stdout="logs/stats/multiqc_stdout.txt",
         params_extra=""):
     """Aggregate results from bioinformatics analyses across many samples into a single report."""
+    # Parameters
     in_files_list = os.path.join(out_dir, "multiqc_inputs.txt")
     # Creates list of files
     os.makedirs(out_dir, exist_ok=True)
@@ -32,6 +33,10 @@ def multiqc(
             dir = out_dir,
             extra = params_extra,
             file_list = in_files_list
+        resources:
+            extra = "",
+            mem = "10G",
+            partition = "normal"
         conda:
             "envs/multiqc.yml"
         shell:

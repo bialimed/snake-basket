@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
-__copyright__ = 'Copyright (C) 2019 IUCT-O'
+__copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.1.0'
+__version__ = '2.2.0'
 
 
 def markDuplicates(
@@ -12,10 +12,9 @@ def markDuplicates(
         params_remove=False,
         params_create_index=True,
         params_extra="",
-        params_java_mem="5G",
-        params_stringency="LENIENT",
         params_keep_outputs=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        params_stringency="LENIENT"):
     """"Mark or remove pairs of reads originating from a single fragment of DNA."""
     rule markDuplicates:
         input:
@@ -30,15 +29,19 @@ def markDuplicates(
             bin_path = config.get("software_paths", {}).get("picard", "picard"),
             create_index = str(params_create_index).lower(),
             extra = params_extra,
-            java_mem = params_java_mem,
             delete_dup = str(params_remove).lower(),
             stderr_redirection = "2>" if not params_stderr_append else "2>>",
             stringency = params_stringency
+        resources:
+            extra = "",
+            java_mem = "5G",
+            mem = "8G",
+            partition = "normal"
         conda:
             "envs/picard.yml"
         shell:
             "{params.bin_path} MarkDuplicates"
-            " -Xmx{params.java_mem}"
+            " -Xmx{resources.java_mem}"
             " {params.extra}"
             " VALIDATION_STRINGENCY={params.stringency}"
             " REMOVE_SEQUENCING_DUPLICATES={params.delete_dup}"

@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
-__copyright__ = 'Copyright (C) 2020 IUCT-O'
+__copyright__ = 'Copyright (C) 2020 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.0.0'
+__version__ = '1.1.0'
 
 
 def callMolecularConsensus(
@@ -10,9 +10,9 @@ def callMolecularConsensus(
         out_stderr="logs/aln/{sample}_gpByUMI_consensus_stderr.txt",
         params_error_rate_post_umi=40,
         params_error_rate_pre_umi=45,
+        params_keep_outputs=False,
         params_min_input_base_quality=10,
         params_min_reads=1,
-        params_keep_outputs=False,
         params_stderr_append=False):
     """Calls consensus sequences from reads with the same unique molecular tag."""
     rule callMolecularConsensus:
@@ -29,6 +29,10 @@ def callMolecularConsensus(
             min_input_base_quality = params_min_input_base_quality,
             min_reads = params_min_reads,
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
+        resources:
+            extra = "",
+            mem = "6G",
+            partition = "normal"
         conda:
             "envs/fgbio.yml"
         shell:

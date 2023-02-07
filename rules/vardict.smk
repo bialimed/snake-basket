@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
-__copyright__ = 'Copyright (C) 2019 IUCT-O'
+__copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.2.0'
+__version__ = '2.3.0'
 
 
 def vardict(
@@ -37,6 +37,10 @@ def vardict(
             extra = params_extra,
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
             # -m If set, reads with mismatches more than INT will be filtered and ignored.  Gaps are not counted as mismatches. Valid only for bowtie2/TopHat or BWA aln followed by sampe.  BWA mem is calculated as NM - Indels. Default: 8
+        resources:
+            extra = "",
+            mem = "25G",
+            partition = "normal"
         conda:
             "envs/vardict.yml"
         shell:
@@ -61,6 +65,10 @@ def vardict(
             out_stderr
         params:
             bin_path = config.get("software_paths", {}).get("vardict_teststrandbias", "teststrandbias.R")
+        resources:
+            extra = "",
+            mem = "7G",
+            partition = "normal"
         conda:
             "envs/vardict.yml"
         shell:
@@ -83,6 +91,10 @@ def vardict(
             min_base_qual = params_min_base_qual,
             targets = "" if config.get("targets") is None else "--targets " + config["targets"],
             extra = params_extra
+        resources:
+            extra = "",
+            mem = "7G",
+            partition = "normal"
         conda:
             "envs/vardict.yml"
         shell:
@@ -105,6 +117,10 @@ def vardict(
             out_stderr
         params:
             bin_path = config.get("software_paths", {}).get("fixVCallerVCF", "fixVCallerVCF.py")
+        resources:
+            extra = "",
+            mem = "3G",
+            partition = "normal"
         conda:
             "envs/anacore-utils.yml"
         shell:

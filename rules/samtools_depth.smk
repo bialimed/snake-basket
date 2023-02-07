@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
-__copyright__ = 'Copyright (C) 2019 IUCT-O'
+__copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.1.0'
+__version__ = '2.2.0'
 
 
 def samtools_depth(
@@ -34,6 +34,10 @@ def samtools_depth(
             mode = "-aa" if params_mode == "absolutely_all" else ("-a" if params_mode == "all_targeted" else ""),
             targets = "" if in_targets is None else "-b " + in_targets,
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
+        resources:
+            extra = "",
+            mem = "6G",
+            partition = "normal"
         conda:
             "envs/samtools.yml"
         shell:

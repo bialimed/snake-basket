@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
-__copyright__ = 'Copyright (C) 2019 IUCT-O'
+__copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.1.0'
+__version__ = '2.2.0'
 
 
 def cutadapt_pe(
@@ -17,9 +17,9 @@ def cutadapt_pe(
         params_R2_adapter_type="A",  # Must be "A" for 3', "G" for 5' or "B" for 3' or 5'
         params_discard_untrimmed=False,
         params_error_rate=0.1,
+        params_keep_outputs=False,
         params_min_length=0,
         params_min_overlap=11,
-        params_keep_outputs=False,
         params_stderr_append=False):
     """Remove adapter sequences in paired-end data."""
     rule cutadapt_pe:
@@ -43,6 +43,10 @@ def cutadapt_pe(
             R1_adapter_type = params_R1_adapter_type,
             R2_adapter_type = params_R2_adapter_type,
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
+        resources:
+            extra = "",
+            mem = "4G",
+            partition = "normal"
         conda:
             "envs/cutadapt.yml"
         shell:

@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
-__copyright__ = 'Copyright (C) 2020 IUCT-O'
+__copyright__ = 'Copyright (C) 2020 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.2.0'
+__version__ = '1.3.0'
 
 
 def inspectBND(
@@ -19,8 +19,11 @@ def inspectBND(
         params_keep_outputs=False,
         params_stderr_append=False):
     """Produce data to inspect fusions breakends."""
+    # Parameters
+    resources = {} if resources is None else resources
     if in_alignments_idx is None:
         in_alignments_idx = in_alignments[:-4] + ".bai"
+    # Rule
     rule inspectBND:
         input:
             alignments = in_alignments,
@@ -41,6 +44,10 @@ def inspectBND(
             min_base_qual = "" if params_min_base_qual is None else "--min-base-qual " + str(params_min_base_qual),
             stderr_redirection = "2>" if not params_stderr_append else "2>>",
             stranded = "" if params_stranded is None else "--stranded " + params_stranded
+        resources:
+            extra = "",
+            mem = "20G",
+            partition = "normal"
         conda:
             "envs/anacore-utils.yml"
         shell:

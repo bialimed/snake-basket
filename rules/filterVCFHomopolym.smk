@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
-__copyright__ = 'Copyright (C) 2019 IUCT-O'
+__copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.1.0'
+__version__ = '2.2.0'
 
 
 def filterVCFHomopolym(
@@ -10,9 +10,9 @@ def filterVCFHomopolym(
         out_variants="variants/{variant_caller}/{sample}_tagByHomop.vcf",
         out_stderr="logs/variants/{variant_caller}/{sample}_filterByHomopolym_stderr.txt",
         params_homopolym_length=None,
+        params_keep_outputs=False,
         params_tag_name=None,
         params_remove=False,
-        params_keep_outputs=False,
         params_stderr_append=False):
     """Filter the variants adjacents of homopolymers."""
     rule filterVCFHomopolym:
@@ -29,6 +29,10 @@ def filterVCFHomopolym(
             mode = "remove" if params_remove else "tag",
             tag_name = "" if params_tag_name is None else "--tag-name " + params_tag_name,
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
+        resources:
+            extra = "",
+            mem = "3G",
+            partition = "normal"
         conda:
             "envs/anacore-utils.yml"
         shell:

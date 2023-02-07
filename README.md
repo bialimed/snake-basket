@@ -11,7 +11,7 @@ parametrized (with argument of the function).
 ## Usage
 In this paragraph we will add a rule **markDuplicates** in your workflow.
 
-1. Import the rule
+### 1. Import the rule
 
   * Copy the rule in your workflow `rules` folder
 
@@ -44,7 +44,7 @@ In this paragraph we will add a rule **markDuplicates** in your workflow.
 
   The function `markDuplicates()` is now accessibe in your workflow.
 
-2. Call rule in your workflow
+### 2. Call rule in your workflow
 
   Add the function call and parameters in your code:
 
@@ -57,14 +57,18 @@ In this paragraph we will add a rule **markDuplicates** in your workflow.
 
   All accessible parameters and their default values are presented in function
   declaration of the rule in `markDuplicates.smk`. The main categories of these
-  parameters are *input_*, *output_*, *param_* and *snake_* (for parameters
-  related to the Snakemake element like wildcards restrictions). Keep in mind
-  that input and ouput must be consistent in terms of wildcards like with a
-  standard rule.
+  parameters are:
+    * *input_*,
+    * *output_*,
+    * *param_*,
+    * *snake_*: for parameters related to the Snakemake element like wildcards
+    restrictions.
+  Keep in mind that input and ouput must be consistent in terms of wildcards
+  like with a standard rule.
 
-3. Set execution environment for the rule
+### 3. Set execution environment for the rule
 
-  You can provide software of the rule by one of this three ways:
+You can provide software of the rule by one of this three ways:
 
   * The software folder is in `$PATH`.
 
@@ -92,21 +96,44 @@ In this paragraph we will add a rule **markDuplicates** in your workflow.
      *The name of the environment file can be found in `conda` section of the
      rule in the `markDuplicates.smk`.*
 
-4. *Configure the computing requirements [optional]*
+### 4. *Configure the computing requirements [optional]*
 
-  This step is necessary only if you use a submission scheduler (e.g. slurm).
-  See rules declaration in the `markDuplicates.smk` (only once for this example:
-  markDuplicates) and add resources in the file provided to Snakemake with option
-  `--cluster-config`:
+Optional in local and required with cluster submission.
+  
+Default value are stored in rule in `resources` section:
 
-       ...
-       markDuplicates: {
-           queue: "normal",
-           mem: "8G",
-           vmem: "10G",
-           threads: 1
-       },
-       ...
+    resources:
+        extra = "",            # options added to cluster submission (example: "--qos=project_A")
+        mem = "8G",            # maximum memory required
+        partition = "normal"   # partition/queue name for job
+    threads: 1                 # threads per job
+
+Declare parameter usage in snakemake command line:
+
+    snakemake \
+      ...
+      --cluster 'sbatch {resources.extra} --mem={resources.mem} --partition={resources.partition} --cpu-per-task={resources.threads}'
+
+##### Change default value by command line [recommended]
+
+Values can be changed by `--set-threads` and `--set-resources` in snakemake
+command line.
+
+    snakemake \
+      ...
+      --cluster 'sbatch {resources.extra} --mem={resources.mem} --partition={resources.partition} --cpu-per-task={resources.threads}' \
+      --set-threads $RULE=$NUM \
+      --set-resources $RULE:$KEY=$VAL $RULE:$KEY=$VAL \
+
+##### Change default value by profile
+
+You can change default values in profile configuration file.
+
+    $PROFILE/config.yaml
+        cluster: sbatch
+        cluster: "sbatch {resources.extra} --mem={resources.mem} --partition={resources.partition} --cpu-per-task={resources.threads}"
+        set-resources:
+            - $RULE:$KEY=$VAL
 
 ## Copyright
 2019 Laboratoire d'Anatomo-Cytopathologie de l'Institut Universitaire du Cancer

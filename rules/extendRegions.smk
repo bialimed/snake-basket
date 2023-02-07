@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
-__copyright__ = 'Copyright (C) 2019 IUCT-O'
+__copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.2.0'
+__version__ = '2.3.0'
 
 
 def extendRegions(
@@ -9,9 +9,9 @@ def extendRegions(
         out_regions="design/targets_extended.bed",
         out_stderr="logs/design/extendRegions_stderr.txt",
         params_concatenate_names=False,
+        params_keep_outputs=False,
         params_merge_contiguous=False,
         params_padding_size=None,
-        params_keep_outputs=False,
         params_stderr_append=False):
     """Add padding to each regions and merge the overlapping and optionally the contiguous regions."""
     rule extendRegions:
@@ -27,6 +27,10 @@ def extendRegions(
             merge_contiguous = " --merge-contiguous " if params_merge_contiguous else "",
             padding_size = " --padding-size " + str(params_padding_size) if params_padding_size is not None else "",
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
+        resources:
+            extra = "",
+            mem = "4G",
+            partition = "normal"
         conda:
             "envs/anacore-utils.yml"
         shell:

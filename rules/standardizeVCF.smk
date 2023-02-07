@@ -30,6 +30,10 @@ def standardizeVCF(
             annotations_field = "--annotations-field " + params_annotations_field if params_annotations_field else "",
             trace_unstandard = "--trace-unstandard" if params_trace_unstandard else "",
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
+        resources:
+            extra = "",
+            mem = "4G",
+            partition = "normal"
         conda:
             "envs/anacore-utils.yml"
         shell:

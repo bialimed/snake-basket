@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2020 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.1.0'
+__version__ = '1.2.0'
 
 
 def microsatMsingsClassify(
@@ -38,6 +38,10 @@ def microsatMsingsClassify(
             std_dev_rate = "" if params_std_dev_rate is None else "--std-dev-rate {}".format(params_std_dev_rate),
             stderr_redirection = "2>" if not params_stderr_append else "2>>",
             undetermined_weight = "" if params_undetermined_weight is None else "--undetermined-weight {}".format(params_undetermined_weight),
+        resources:
+            extra = "",
+            mem = "5G",
+            partition = "normal"
         conda:
             "envs/anacore-utils.yml"
         shell:

@@ -1,7 +1,7 @@
 __author__ = 'Veronique Ivashchenko and Frederic Escudie'
-__copyright__ = 'Copyright (C) 2020 IUCT-O'
+__copyright__ = 'Copyright (C) 2020 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.1.0'
+__version__ = '1.2.0'
 
 
 def mergeVCFFusionsCallers(
@@ -16,6 +16,7 @@ def mergeVCFFusionsCallers(
     """Merge VCF coming from different fusions caller on same sample(s). It is strongly recommended to apply this script before annotation and filtering/tagging."""
     if params_calling_sources is None:
         raise Exception("At least one value must be provided for params_calling_sources.")
+    # Rule
     rule mergeVCFFusionsCallers:
         input:
             in_variants
@@ -29,6 +30,10 @@ def mergeVCFFusionsCallers(
             calling_sources = "--calling-sources " + " ".join(params_calling_sources),
             shared_filters = "" if params_shared_filters is None else "--shared-filters " + " ".join(params_shared_filters),
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
+        resources:
+            extra = "",
+            mem = "6G",
+            partition = "normal"
         conda:
             "envs/anacore-utils.yml"
         shell:

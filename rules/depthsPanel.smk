@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
-__copyright__ = 'Copyright (C) 2021 IUCT-O'
+__copyright__ = 'Copyright (C) 2021 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.1.0'
+__version__ = '1.2.0'
 
 
 def depthsPanel(
@@ -11,8 +11,8 @@ def depthsPanel(
         out_stderr="logs/stats/depth/{sample}_depthsPanel_stderr.txt",
         params_depth_mode=None,
         params_expected_min_depth=None,
-        params_min_base_qual=None,
         params_keep_outputs=False,
+        params_min_base_qual=None,
         params_stderr_append=False):
     """Write depths distribution and number of nt below depth thresholds for each target."""
     rule depthsPanel:
@@ -29,6 +29,10 @@ def depthsPanel(
             expected_min_depth = "" if params_expected_min_depth is None else "--min-depths " + " ".join(map(str, params_expected_min_depth)),
             min_base_qual = "" if params_min_base_qual is None else "--min-base-qual " + str(params_min_base_qual),
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
+        resources:
+            extra = "",
+            mem = "6G",
+            partition = "normal"
         conda:
             "envs/anacore-utils.yml"
         shell:

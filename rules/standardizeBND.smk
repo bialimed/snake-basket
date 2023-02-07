@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
-__copyright__ = 'Copyright (C) 2020 IUCT-O'
+__copyright__ = 'Copyright (C) 2020 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.1.0'
+__version__ = '1.2.0'
 
 
 def standardizeBND(
@@ -15,7 +15,9 @@ def standardizeBND(
         params_stderr_append=False,
         snake_wildcard_constraints=None):
     """Replace N in alt and ref by the convenient nucleotid and move each breakend in pair at the left most position and add uncertainty iin CIPOS tag."""
+    # Parameters
     snake_wildcard_constraints = {} if snake_wildcard_constraints is None else snake_wildcard_constraints
+    # Rule
     rule standardizeBND:
         wildcard_constraints:
             **snake_wildcard_constraints
@@ -31,6 +33,10 @@ def standardizeBND(
             sequence_padding = "" if params_sequence_padding is None else "--sequence-padding " + str(params_sequence_padding),
             stderr_redirection = "2>" if not params_stderr_append else "2>>",
             trace_unstandard = "--trace-unstandard" if params_trace_unstandard else "",
+        resources:
+            extra = "",
+            mem = "4G",
+            partition = "normal"
         conda:
             "envs/anacore-utils.yml"
         shell:
