@@ -40,7 +40,7 @@ def insertSize(
             "envs/picard.yml"
         shell:
             "{params.bin_path} CollectInsertSizeMetrics"
-            " -Xmx{params.java_mem}"
+            " -Xmx{resources.java_mem}"
             " {params.extra}"
             " VALIDATION_STRINGENCY={params.stringency}"
             " HISTOGRAM_WIDTH={params.hist_width}"
