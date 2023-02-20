@@ -112,7 +112,7 @@ Declare parameter usage in snakemake command line:
 
     snakemake \
       ...
-      --cluster 'sbatch {resources.extra} --mem={resources.mem} --partition={resources.partition} --cpu-per-task={resources.threads}'
+      --cluster 'sbatch {resources.extra} --mem={resources.mem} --partition={resources.partition} --cpus-per-task={threads}'
 
 ##### Change default value by command line [recommended]
 
@@ -121,7 +121,7 @@ command line.
 
     snakemake \
       ...
-      --cluster 'sbatch {resources.extra} --mem={resources.mem} --partition={resources.partition} --cpu-per-task={resources.threads}' \
+      --cluster 'sbatch {resources.extra} --mem={resources.mem} --partition={resources.partition} --cpus-per-task={threads}' \
       --set-threads $RULE=$NUM \
       --set-resources $RULE:$KEY=$VAL $RULE:$KEY=$VAL \
 
@@ -131,7 +131,7 @@ You can change default values in profile configuration file.
 
     $PROFILE/config.yaml
         cluster: sbatch
-        cluster: "sbatch {resources.extra} --mem={resources.mem} --partition={resources.partition} --cpu-per-task={resources.threads}"
+        cluster: "sbatch {resources.extra} --mem={resources.mem} --partition={resources.partition} --cpus-per-task={threads}"
         set-resources:
             - $RULE:$KEY=$VAL
 
