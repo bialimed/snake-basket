@@ -31,12 +31,14 @@ def callMolecularConsensus(
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
         resources:
             extra = "",
-            mem = "6G",
+            java_mem = "4G",
+            mem = "5G",
             partition = "normal"
         conda:
             "envs/fgbio.yml"
         shell:
             "{params.bin_path} CallMolecularConsensusReads"
+            " -Xmx{resources.java_mem}"
             " --error-rate-pre-umi={params.error_rate_pre_umi}"
             " --error-rate-post-umi={params.error_rate_post_umi}"
             " --min-input-base-quality={params.min_input_base_quality}"
