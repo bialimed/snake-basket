@@ -1,4 +1,4 @@
-# AnaCore-Snakemake
+# snake-basket
 
 ![license](https://img.shields.io/badge/license-GPLv3-blue)
 
