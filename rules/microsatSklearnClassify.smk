@@ -62,6 +62,7 @@ def microsatSklearnClassify(
             " {params.instability_ratio}"
             " {params.locus_weight_is_score}"
             " {params.min_depth}"
+            " {params.min_voting_loci}"
             " {params.random_seed}"
             " {params.status_method}"
             " {params.undetermined_weight}"

@@ -49,6 +49,7 @@ def microsatMsingsClassify(
             " {params.data_method}"
             " {params.locus_weight_is_score}"
             " {params.min_depth}"
+            " {params.min_voting_loci}"
             " {params.status_method}"
             " {params.std_dev_rate}"
             " {params.undetermined_weight}"
