@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2020 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.1.0'
+__version__ = '1.2.0'
 
 import os
 
@@ -9,7 +9,7 @@ include: "fastqToBam.smk"
 include: "setUMITagFromID.smk"
 include: "mergeBamAlignment.smk"
 include: "groupReadsByUMI.smk"
-include: "callMolecularConsensus.smk"
+include: "callConsensus.smk"
 include: "filterUMIConsensus.smk"
 include: "samToFastq.smk"
 
@@ -28,6 +28,7 @@ def delDuplicatesByUMI(
         params_consensus_error_rate_pre_umi=45,
         params_consensus_min_input_base_quality=10,
         params_consensus_min_reads=1,
+        params_duplex_consensus=False,
         params_filter_max_base_error_rate=0.1,
         params_filter_max_no_call_fraction=0.2,
         params_filter_max_read_error_rate=0.025,
@@ -44,6 +45,8 @@ def delDuplicatesByUMI(
         params_keep_outputs=False,
         params_stderr_append=False):
     """Use UMI to remove pairs of reads coming from same original molecule and generate consensus."""
+    if params_duplex_consensus and params_group_strategy != "paired":
+        raise Exception("Duplex consensus required paired group strategy.")
     out_filename = os.path.basename(out_alignments)
     in_group_aln = in_alignments
     if in_R1:
@@ -85,11 +88,12 @@ def delDuplicatesByUMI(
         params_strategy=params_group_strategy,
         params_umi_tag=params_umi_tag)
 
-    callMolecularConsensus(
+    callConsensus(
         in_alignments=os.path.join(params_tmp_folder, "group/tmp_" + out_filename),
         out_alignments=os.path.join(params_tmp_folder, "consensus/tmp_" + out_filename),
         out_stderr=out_stderr,
         params_stderr_append=True,
+        params_duplex_consensus=params_duplex_consensus,
         params_error_rate_post_umi=params_consensus_error_rate_post_umi,
         params_error_rate_pre_umi=params_consensus_error_rate_pre_umi,
         params_min_input_base_quality=params_consensus_min_input_base_quality,
