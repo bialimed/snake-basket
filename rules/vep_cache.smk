@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.5.0'
+__version__ = '2.6.0'
 
 
 def vep_cache(
@@ -67,13 +67,13 @@ def vep_cache(
             " --uniprot"  # UniProt accessions
             " --pubmed"  # Pubmed IDs for publications
             " {params.annotations_source_opt}"
+            " --mane"
             " --gene_phenotype"
             " --sift b"
             " --polyphen b"
             " --af"
             " --af_1kg"
-            " --af_esp"
-            " --af_gnomad"
+            " --af_gnomadg"
             " --no_stats"
             " --vcf"
             " --vcf_info_field {params.annotations_field}"
