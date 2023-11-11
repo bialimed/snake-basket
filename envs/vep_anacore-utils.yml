@@ -4,5 +4,6 @@ channels:
     - conda-forge
 dependencies:
     - python=3.7
-    - ensembl-vep=110
+    - ensembl-vep=110.1
+    - perl-compress-raw-zlib=2.202
     - anacore-utils=3.5.1
