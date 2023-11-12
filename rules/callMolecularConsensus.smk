@@ -4,7 +4,7 @@ __license__ = 'GNU General Public License'
 __version__ = '2.0.0'
 
 
-def callConsensus(
+def callMolecularConsensus(
         in_alignments="aln/umi/group/{sample}.bam",
         out_alignments="aln/umi/consensus/{sample}.bam",
         out_stderr="logs/aln/{sample}_gpByUMI_consensus_stderr.txt",
@@ -16,7 +16,7 @@ def callConsensus(
         params_min_reads=1,
         params_stderr_append=False):
     """Calls consensus sequences from reads with the same unique molecular tag."""
-    rule callConsensus:
+    rule callMolecularConsensus:
         input:
             in_alignments
         output:

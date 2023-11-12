@@ -5,13 +5,13 @@ __version__ = '1.2.0'
 
 import os
 
+include: "callMolecurlarConsensus.smk"
 include: "fastqToBam.smk"
-include: "setUMITagFromID.smk"
-include: "mergeBamAlignment.smk"
-include: "groupReadsByUMI.smk"
-include: "callConsensus.smk"
 include: "filterUMIConsensus.smk"
+include: "groupReadsByUMI.smk"
+include: "mergeBamAlignment.smk"
 include: "samToFastq.smk"
+include: "setUMITagFromID.smk"
 
 
 def delDuplicatesByUMI(
