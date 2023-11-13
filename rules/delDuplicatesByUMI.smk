@@ -88,7 +88,7 @@ def delDuplicatesByUMI(
         params_strategy=params_group_strategy,
         params_umi_tag=params_umi_tag)
 
-    callMolecurlarConsensus(
+    callMolecularConsensus(
         in_alignments=os.path.join(params_tmp_folder, "group/tmp_" + out_filename),
         out_alignments=os.path.join(params_tmp_folder, "consensus/tmp_" + out_filename),
         out_stderr=out_stderr,
