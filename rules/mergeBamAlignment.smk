@@ -42,7 +42,7 @@ def mergeBamAlignment(
         resources:
             extra = "",
             java_mem = "5G",
-            mem = "20G",
+            mem = "6G",
             partition = "normal"
         conda:
             "envs/picard.yml"

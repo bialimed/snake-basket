@@ -34,7 +34,7 @@ def gatk4_baseRecalibrator(
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
         resources:
             extra = "",
-            mem = "15G",
+            mem = "4G",
             partition = "normal"
         conda:
             "envs/gatk4.yml"
@@ -65,7 +65,7 @@ def gatk4_baseRecalibrator(
             intervals = "" if in_intervals is None else "--intervals " + in_intervals
         resources:
             extra = "",
-            mem = "15G",
+            mem = "4G",
             partition = "normal"
         conda:
             "envs/gatk4.yml"

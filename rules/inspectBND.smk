@@ -46,7 +46,7 @@ def inspectBND(
             stranded = "" if params_stranded is None else "--stranded " + params_stranded
         resources:
             extra = "",
-            mem = "20G",
+            mem = "15G",
             partition = "normal"
         conda:
             "envs/anacore-utils.yml"

@@ -56,7 +56,7 @@ def manta(
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
         resources:
             extra = "",
-            mem = "35G",
+            mem = "40G",
             partition = "normal",
             sort_mem_gb = 8
         threads: 1
@@ -105,7 +105,7 @@ def manta(
         resources:
             extra = "",
             java_mem = "5G",
-            mem = "16G",
+            mem = "8G",
             partition = "normal"
         conda:
             "envs/picard.yml"
@@ -184,7 +184,7 @@ def manta(
             sv_filename = "rnaSV.vcf.gz" if params_type == "rna" else ("tumorSV.vcf.gz" if params_is_somatic else "somaticSV.vcf.gz")
         resources:
             extra = "",
-            mem = "12G",
+            mem = "5G",
             partition = "normal",
             run_mem_gb = 11
         threads: 1

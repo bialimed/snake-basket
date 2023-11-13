@@ -35,7 +35,7 @@ def standardizeBND(
             trace_unstandard = "--trace-unstandard" if params_trace_unstandard else "",
         resources:
             extra = "",
-            mem = "4G",
+            mem = "3G",
             partition = "normal"
         conda:
             "envs/anacore-utils.yml"

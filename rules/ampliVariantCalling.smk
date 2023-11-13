@@ -39,7 +39,7 @@ def ampliVariantCalling(
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
         resources:
             extra = "",
-            mem = "25G",
+            mem = "8G",
             partition = "normal"
         conda:
             "envs/vardict_amplicon.yml"

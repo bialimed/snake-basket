@@ -48,7 +48,7 @@ def depthsMetrics(
             format = params_format
         resources:
             extra = "",
-            mem = "8G",
+            mem = "3G",
             partition = "normal"
         conda:
             "envs/anacore-utils.yml"

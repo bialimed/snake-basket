@@ -35,7 +35,7 @@ def multiqc(
             file_list = in_files_list
         resources:
             extra = "",
-            mem = "10G",
+            mem = "8G",
             partition = "normal"
         conda:
             "envs/multiqc.yml"

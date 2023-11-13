@@ -40,7 +40,7 @@ def filterBND(
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
         resources:
             extra = "",
-            mem = "10G",
+            mem = "6G",
             partition = "normal"
         conda:
             "envs/anacore-utils.yml"

@@ -30,8 +30,8 @@ def samToFastq(
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
         resources:
             extra = "",
-            java_mem = "50G",
-            mem = "51G",
+            java_mem = "150G",
+            mem = "151G",
             partition = "normal"
         conda:
             "envs/picard.yml"

@@ -36,8 +36,8 @@ def collectHsMetrics(
             stringency = params_stringency
         resources:
             extra = "",
-            java_mem = "5G",
-            mem = "7G",
+            java_mem = "3G",
+            mem = "4G",
             partition = "normal"
         conda:
             "envs/picard.yml"

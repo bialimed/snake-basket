@@ -39,7 +39,7 @@ def vardict(
             # -m If set, reads with mismatches more than INT will be filtered and ignored.  Gaps are not counted as mismatches. Valid only for bowtie2/TopHat or BWA aln followed by sampe.  BWA mem is calculated as NM - Indels. Default: 8
         resources:
             extra = "",
-            mem = "25G",
+            mem = "5G",
             partition = "normal"
         conda:
             "envs/vardict.yml"
@@ -67,7 +67,7 @@ def vardict(
             bin_path = config.get("software_paths", {}).get("vardict_teststrandbias", "teststrandbias.R")
         resources:
             extra = "",
-            mem = "7G",
+            mem = "3G",
             partition = "normal"
         conda:
             "envs/vardict.yml"
@@ -93,7 +93,7 @@ def vardict(
             extra = params_extra
         resources:
             extra = "",
-            mem = "7G",
+            mem = "3G",
             partition = "normal"
         conda:
             "envs/vardict.yml"

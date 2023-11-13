@@ -35,7 +35,7 @@ def groupReadsByUMI(
             umi_tag = params_umi_tag
         resources:
             extra = "",
-            mem = "8G",
+            mem = "7G",
             partition = "normal"
         conda:
             "envs/fgbio.yml"

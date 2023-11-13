@@ -25,7 +25,7 @@ def samtools_index(
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
         resources:
             extra = "",
-            mem = "4G",
+            mem = "3G",
             partition = "normal"
         conda:
             "envs/samtools.yml"

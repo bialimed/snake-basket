@@ -34,7 +34,7 @@ def gatk4_mutect2(
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
         resources:
             extra = "",
-            mem = "5G",
+            mem = "3G",
             partition = "normal"
         conda:
             "envs/samtools.yml"
@@ -113,7 +113,7 @@ def gatk4_mutect2(
             strand_model = ("" if not params_tag_strand_bias else "--orientation-bias-artifact-priors " + params_tag_strand_bias + "_strandModel.tar.gz")
         resources:
             extra = "",
-            mem = "8G",
+            mem = "5G",
             partition = "normal"
         conda:
             "envs/gatk4.yml"

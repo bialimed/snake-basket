@@ -33,8 +33,8 @@ def insertSize(
             stringency = params_stringency
         resources:
             extra = "",
-            java_mem = "5G",
-            mem = "8G",
+            java_mem = "4G",
+            mem = "5G",
             partition = "normal"
         conda:
             "envs/picard.yml"

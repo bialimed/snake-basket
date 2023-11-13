@@ -35,7 +35,7 @@ def vcf2json(
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
         resources:
             extra = "",
-            mem = "5G",
+            mem = "3G",
             partition = "normal"
         conda:
             "envs/anacore-utils.yml"

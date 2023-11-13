@@ -33,8 +33,8 @@ def bedToInterval(
             stdout = out_stdout
         resources:
             extra = "",
-            java_mem = "4G",
-            mem = "6G",
+            java_mem = "3G",
+            mem = "4G",
             partition = "normal"
         conda:
             "envs/picard.yml"
