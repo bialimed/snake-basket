@@ -5,7 +5,7 @@ __version__ = '1.2.0'
 
 import os
 
-include: "callMolecurlarConsensus.smk"
+include: "callMolecularConsensus.smk"
 include: "fastqToBam.smk"
 include: "filterUMIConsensus.smk"
 include: "groupReadsByUMI.smk"
