@@ -40,7 +40,7 @@ def microsatSklearnClassify(
             classifier = "" if params_classifier is None else "--classifier {}".format(params_classifier),
             classifier_params = "" if params_classifier_params is None else "--classifier-params '{}'".format(params_classifier_params),
             data_method = "" if params_data_method is None else "--data-method {}".format(params_data_method),
-            instability_ratio = "" if (params_instability_ratio is None or params_consensus_method == "count") else "--instability-ratio {}".format(params_instability_ratio),
+            instability_ratio = "" if params_instability_ratio is None else "--instability-ratio {}".format(params_instability_ratio),
             locus_weight_is_score = "--locus-weight-is-score" if params_locus_weight_is_score else "",
             min_depth = "" if params_min_depth is None else "--min-depth {}".format(params_min_depth),
             min_voting_loci = "" if params_min_voting_loci is None else "--min-voting-loci {}".format(params_min_voting_loci),
