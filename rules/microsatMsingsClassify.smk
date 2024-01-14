@@ -48,6 +48,7 @@ def microsatMsingsClassify(
         shell:
             "{params.bin_path}"
             " {params.data_method}"
+            " {params.instability_ratio}"
             " {params.locus_weight_is_score}"
             " {params.min_depth}"
             " {params.min_voting_loci}"
