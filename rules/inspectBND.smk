@@ -20,7 +20,6 @@ def inspectBND(
         params_stderr_append=False):
     """Produce data to inspect fusions breakends."""
     # Parameters
-    resources = {} if resources is None else resources
     if in_alignments_idx is None:
         in_alignments_idx = in_alignments[:-4] + ".bai"
     # Rule
