@@ -79,7 +79,7 @@ def manta(
             " --twopassMode Basic"
             " --outSAMattributes NH NM MD"
             " --outSAMattrRGline ID:1 SM:{wildcards.sample}"
-            " --limitBAMsortRAM $(({resorces.sort_mem_gb} * 1000000000))"
+            " --limitBAMsortRAM $(({resources.sort_mem_gb} * 1000000000))"
             " --readFilesCommand zcat"
             " --outSAMtype BAM SortedByCoordinate"
             " --readFilesIn {input.R1} {input.R2}"
