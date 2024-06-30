@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '3.0.0'
+__version__ = '3.1.0'
 
 
 def bwa_mem(
@@ -11,12 +11,15 @@ def bwa_mem(
         out_stderr="logs/aln/{sample}_bwaMem_stderr.txt",
         params_extra=r"-R '@RG\tID:1\tLB:{sample}\tSM:{sample}\tPL:ILLUMINA'",
         params_keep_outputs=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Map low-divergent sequences against a large reference genome."""
     # Parameters
     in_reads = ["data/{sample}_R1.fastq.gz", "data/{sample}_R2.fastq.gz"] if in_reads is None else in_reads
     # Rule
-    rule bwa_mem:
+    rule:
+        name:
+            "bwa_mem" + snake_rule_suffix
         input:
             reads = in_reads,
             reference = in_reference_seq
