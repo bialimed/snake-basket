@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2020 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.0.0'
+__version__ = '2.1.0'
 
 
 def bismark_extractor(
@@ -12,7 +12,8 @@ def bismark_extractor(
         params_compressed=True,
         params_is_paired_end=True,
         params_keep_outputs=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Extract cytosines methylation from alignments produced by bismark."""
     in_basename = os.path.splitext(os.path.basename(in_alignments))[0]
     file_pattern = os.path.join(
@@ -23,7 +24,9 @@ def bismark_extractor(
     out_report = os.path.join(out_dir, in_basename + "_splitting_report.txt")
     out_coverage = os.path.join(out_dir, in_basename + ".bismark.cov.gz")
     # Rule
-    rule bismark_extractor:
+    rule:
+        name:
+            "bismark_extractor" + snake_rule_suffix
         input:
             in_alignments
         output:

@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2020 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.2.0'
+__version__ = '1.3.0'
 
 
 def bismark_aln(
@@ -15,10 +15,10 @@ def bismark_aln(
         params_is_directional=True,
         # params_nucleotide_coverage=False,
         params_keep_outputs=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Alignment to bisulfite genome."""
     # Parameters
-    resources = {} if resources is None else resources
     if params_aligner not in ["bowtie2", "hisat2"]:
         raise Exception("The algner must be bowtie2 or hisat2.")
     out_dir = os.path.dirname(out_alignments)
@@ -28,7 +28,9 @@ def bismark_aln(
     if in_R2 is not None:  # Paired-end need rename {basename}_pe to {basename}
         out_tmp_aln = temp(out_alignments.replace(basename, basename + "_pe"))
     # Rules
-    rule bismark_aln:
+    rule:
+        name:
+            "bismark_aln" + snake_rule_suffix
         input:
             reference_dir = in_reference_dir,
             R1 = in_R1,
@@ -72,7 +74,9 @@ def bismark_aln(
             " {params.stderr_redirection} {log}"
     if in_R2 is not None:  # Paired-end need rename {basename}_pe to {basename}
         localrules: bismark_aln_rename_pe
-        rule bismark_aln_rename_pe:
+        rule:
+            name:
+                "bismark_aln_rename_pe" + snake_rule_suffix
             input:
                 out_tmp_aln
             output:
