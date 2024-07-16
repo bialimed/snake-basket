@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2021 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.1.0'
+__version__ = '1.2.0'
 
 
 def fastqToBam(
@@ -16,9 +16,12 @@ def fastqToBam(
         params_sample="{sample}",
         params_sort=False,
         params_stderr_append=False,
-        params_umi_tag="RX"):
+        params_umi_tag="RX",
+        snake_rule_suffix=""):
     """Generates an unmapped BAM (or SAM or CRAM) file from fastq files."""
-    rule fastqToBam:
+    rule:
+        name:
+            "fastqToBam" + snake_rule_suffix
         input:
             in_reads
         output:

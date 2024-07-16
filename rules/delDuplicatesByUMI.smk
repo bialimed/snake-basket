@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2020 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.2.0'
+__version__ = '1.3.0'
 
 import os
 
@@ -43,7 +43,8 @@ def delDuplicatesByUMI(
         params_umi_separator=":",
         params_umi_tag="RX",
         params_keep_outputs=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix="_delDupUMI"):
     """Use UMI to remove pairs of reads coming from same original molecule and generate consensus."""
     if params_duplex_consensus and params_group_strategy != "paired":
         raise Exception("Duplex consensus required paired group strategy.")
@@ -54,7 +55,8 @@ def delDuplicatesByUMI(
         fastqToBam(
             in_reads=[in_R1, in_R2],
             out_alignments=os.path.join(params_tmp_folder, "uBAM/tmp_" + out_filename),
-            params_sort=True
+            params_sort=True,
+            snake_rule_suffix=snake_rule_suffix
         )
         setUMITagFromID(
             in_alignments=os.path.join(params_tmp_folder, "uBAM/tmp_" + out_filename),
@@ -62,7 +64,8 @@ def delDuplicatesByUMI(
             out_stderr=out_stderr,
             params_stderr_append=True,
             params_umi_separator=params_umi_separator,
-            params_umi_tag=params_umi_tag
+            params_umi_tag=params_umi_tag,
+            snake_rule_suffix=snake_rule_suffix
         )
         mergeBamAlignment(
             in_alignments=in_alignments,
@@ -74,7 +77,8 @@ def delDuplicatesByUMI(
             params_aligner_proper_pair_flags=True,
             params_create_index=True,
             params_expected_orientations=["FR"],
-            params_sort_order="coordinate"
+            params_sort_order="coordinate",
+            snake_rule_suffix=snake_rule_suffix
         )
 
     groupReadsByUMI(
@@ -86,7 +90,8 @@ def delDuplicatesByUMI(
         params_max_edits=params_group_max_edits,
         params_min_mapq=params_group_min_mapq,
         params_strategy=params_group_strategy,
-        params_umi_tag=params_umi_tag)
+        params_umi_tag=params_umi_tag,
+        snake_rule_suffix=snake_rule_suffix)
 
     callMolecularConsensus(
         in_alignments=os.path.join(params_tmp_folder, "group/tmp_" + out_filename),
@@ -97,7 +102,8 @@ def delDuplicatesByUMI(
         params_error_rate_post_umi=params_consensus_error_rate_post_umi,
         params_error_rate_pre_umi=params_consensus_error_rate_pre_umi,
         params_min_input_base_quality=params_consensus_min_input_base_quality,
-        params_min_reads=params_consensus_min_reads)
+        params_min_reads=params_consensus_min_reads,
+        snake_rule_suffix=snake_rule_suffix)
 
     filterUMIConsensus(
         in_alignments=os.path.join(params_tmp_folder, "consensus/tmp_" + out_filename),
@@ -112,14 +118,16 @@ def delDuplicatesByUMI(
         params_min_mean_base_quality=params_filter_min_mean_base_quality,
         params_min_reads=params_consensus_min_reads,
         params_require_single_strand_agreement=params_filter_require_single_strand_agreement,
-        params_reverse_per_tags=params_filter_reverse_per_tags)
+        params_reverse_per_tags=params_filter_reverse_per_tags,
+        snake_rule_suffix=snake_rule_suffix)
 
     samToFastq(
         in_alignments=os.path.join(params_tmp_folder, "filter/tmp_" + out_filename),
         out_R1=os.path.join(params_tmp_folder, "raw/tmp_" + out_filename + "_R1.fastq.gz"),
         out_R2=os.path.join(params_tmp_folder, "raw/tmp_" + out_filename + "_R2.fastq.gz"),
         out_stderr=out_stderr,
-        params_stderr_append=True)
+        params_stderr_append=True,
+        snake_rule_suffix=snake_rule_suffix)
 
     params_aln_fct(
         in_reads=[
@@ -131,4 +139,5 @@ def delDuplicatesByUMI(
         out_stderr=out_stderr,
         params_stderr_append=True,
         params_extra=params_aln_extra,
-        params_keep_outputs=params_keep_outputs)
+        params_keep_outputs=params_keep_outputs,
+        snake_rule_suffix=snake_rule_suffix)

@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2021 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.1.0'
+__version__ = '1.2.0'
 
 
 def mergeBamAlignment(
@@ -18,9 +18,12 @@ def mergeBamAlignment(
         params_sort_order="coordinate",
         params_stringency="LENIENT",
         params_keep_outputs=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Merge BAM/SAM alignment info from a third-party aligner with the data in an unmapped BAM file, producing a third BAM file that has alignment data (from the aligner) and all the remaining data from the unmapped BAM. """
-    rule mergeBamAlignment:
+    rule:
+        name:
+            "mergeBamAlignment" + snake_rule_suffix
         input:
             alignments = in_alignments,
             reference_seq = in_reference_seq,

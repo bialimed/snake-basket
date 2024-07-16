@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2020 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.0.0'
+__version__ = '2.1.0'
 
 
 def callMolecularConsensus(
@@ -14,9 +14,12 @@ def callMolecularConsensus(
         params_keep_outputs=False,
         params_min_input_base_quality=10,
         params_min_reads=1,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Calls consensus sequences from reads with the same unique molecular tag."""
-    rule callMolecularConsensus:
+    rule:
+        name:
+            "callMolecularConsensus" + snake_rule_suffix
         input:
             in_alignments
         output:

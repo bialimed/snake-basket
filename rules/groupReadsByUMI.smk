@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2020 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.1.0'
+__version__ = '1.2.0'
 
 
 def groupReadsByUMI(
@@ -15,9 +15,12 @@ def groupReadsByUMI(
         params_min_mapq=30,
         params_stderr_append=False,
         params_strategy="adjacency",
-        params_umi_tag="RX"):
+        params_umi_tag="RX",
+        snake_rule_suffix=""):
     """Groups reads together that appear to have come from the same original molecule."""
-    rule groupReadsByUMI:
+    rule:
+        name:
+            "groupReadsByUMI" + snake_rule_suffix
         input:
             in_alignments
         output:

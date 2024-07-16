@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2020 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.0.0'
+__version__ = '2.1.0'
 
 
 def samToFastq(
@@ -12,9 +12,12 @@ def samToFastq(
         params_extra="",
         params_include_non_pf=False,
         params_keep_outputs=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Converts a SAM or BAM file to FASTQ."""
-    rule samToFastq:
+    rule:
+        name:
+            "samToFastq" + snake_rule_suffix
         input:
             in_alignments
         output:

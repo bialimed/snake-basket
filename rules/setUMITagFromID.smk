@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2021 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.1.0'
+__version__ = '1.2.0'
 
 
 def setUMITagFromID(
@@ -11,9 +11,12 @@ def setUMITagFromID(
         params_umi_separator=None,
         params_umi_tag=None,
         params_keep_outputs=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """For each read get the UMI sequence from the ID and place it in tag."""
-    rule setUMITagFromID:
+    rule:
+        name:
+            "setUMITagFromID" + snake_rule_suffix
         input:
             in_alignments
         output:
