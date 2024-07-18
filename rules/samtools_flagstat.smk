@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.1.0'
+__version__ = '2.2.0'
 
 
 def samtools_flagstat(
@@ -10,9 +10,12 @@ def samtools_flagstat(
         out_stderr="logs/stats/samtoolsFlagstat/{sample}_stderr.txt",
         params_extra="",
         params_keep_outputs=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Count the number of alignments for each FLAG type."""
-    rule samtools_flagstat:
+    rule:
+        name:
+            "samtools_flagstat" + snake_rule_suffix
         input:
             in_alignments
         output:

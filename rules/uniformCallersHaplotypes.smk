@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.2.0'
+__version__ = '2.3.0'
 
 
 def uniformCallersHaplotypes(
@@ -11,9 +11,12 @@ def uniformCallersHaplotypes(
         params_calling_sources,
         out_stderr="logs/variants/{sample}_call_std_uniformHaplo_stderr.txt",
         params_keep_outputs=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Merge or split co-occuring variants to ensure cohesion between callers."""
-    rule uniformCallersHaplotypes:
+    rule:
+        name:
+            "uniformCallersHaplotypes" + snake_rule_suffix
         input:
             haplotyped_variants = in_haplotyped_variants,
             variants = in_variants

@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.2.0'
+__version__ = '2.3.0'
 
 
 def sortVCF(
@@ -9,9 +9,12 @@ def sortVCF(
         out_variants="variants/{variant_caller}/{sample}_sorted.vcf",
         out_stderr="logs/variants/{variant_caller}/{sample}_sort_stderr.txt",
         params_keep_outputs=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Sorts VCF by coordinates."""
-    rule sortVCF:
+    rule:
+        name:
+            "sortVCF" + snake_rule_suffix
         input:
             in_variants
         output:

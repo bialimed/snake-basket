@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.2.0'
+__version__ = '1.3.0'
 
 
 def splitVCFAlt(
@@ -9,9 +9,12 @@ def splitVCFAlt(
         out_variants="variants/{variant_caller}/{sample}_call_splitAlt.vcf",
         out_stderr="logs/variants/{variant_caller}/{sample}_splitAlt_stderr.txt",
         params_keep_outputs=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Split multiple alternatives variants in one line by alternative."""
-    rule splitVCFAlt:
+    rule:
+        name:
+            "splitVCFAlt" + snake_rule_suffix
         input:
             in_variants
         output:

@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2020 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.0.0'
+__version__ = '2.1.0'
 
 
 def starFusion(
@@ -13,9 +13,12 @@ def starFusion(
         out_stderr="logs/structural_variants/{sample}_starFusion_stderr.txt",
         params_tmp_dir="structural_variants/STAR_Fusion/{sample}",
         params_keep_outputs=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Call fusions with STAR-Fusion."""
-    rule starFusion:
+    rule:
+        name:
+            "starFusion" + snake_rule_suffix
         input:
             genome_dir = in_genome_dir,
             R1 = in_R1,

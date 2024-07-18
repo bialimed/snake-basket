@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.6.0'
+__version__ = '2.7.0'
 
 
 def vep_cache(
@@ -17,7 +17,8 @@ def vep_cache(
         params_extra="--flag_pick_allele",
         params_reference_assembly=None,
         params_keep_outputs=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Determine the effect of variants (SNPs, insertions, deletions, CNVs or structural variants) on genes, transcripts, and protein sequence, as well as regulatory regions. It required VEP >= 94."""
     # Parameters
     params_annotations_source_opt = "--merged --xref_refseq --tsl --appris"  # --tsl: Transcript support level ; --appris: Add transcript isoform annotation ; --xref_refseq: RefSeq mRNA identifier
@@ -26,7 +27,9 @@ def vep_cache(
     elif params_annotations_source == "refseq":
         params_annotations_source_opt = "--refseq"
     # VEP
-    rule vep_cache:
+    rule:
+        name:
+            "vep_cache" + snake_rule_suffix
         input:
             in_variants
         output:
@@ -82,7 +85,9 @@ def vep_cache(
             " > {log.stdout}"
             " {params.stderr_redirection} {log.stderr}"
     # Reverse normalisation produced by VEP in allele annotation field
-    rule fixVEPAnnot:
+    rule:
+        name:
+            "fixVEPAnnot" + snake_rule_suffix
         input:
             cosmic = [] if in_cosmic is None else in_cosmic,
             variants = out_variants + "_unfixed.tmp"

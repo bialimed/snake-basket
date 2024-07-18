@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2020 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.0.0'
+__version__ = '2.1.0'
 
 import os
 
@@ -18,14 +18,17 @@ def trimgalore(
         params_min_length=None,
         params_trim_qual_threshold=None,
         params_keep_outputs=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Apply adapter and quality trimming to FastQ files, with extra functionality for RRBS data."""
     # Parameters
     out_dir = os.path.dirname(out_R1)
     basename, extension = os.path.splitext(os.path.basename(out_R1))
     # Rules
     if in_R2 is None:  # Single-end
-        rule trimgalore:
+        rule:
+            name:
+                "trimgalore" + snake_rule_suffix
             input:
                 in_R1,
             output:
@@ -65,7 +68,9 @@ def trimgalore(
                 " && "
                 " mv {params.tmp_R1} {output} 2>> {log}"
     else:  # Paired-end
-        rule trimgalore:
+        rule:
+            name:
+                "trimgalore" + snake_rule_suffix
             input:
                 R1 = in_R1,
                 R2 = in_R2

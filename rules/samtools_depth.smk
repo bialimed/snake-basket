@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.2.0'
+__version__ = '2.3.0'
 
 
 def samtools_depth(
@@ -15,9 +15,12 @@ def samtools_depth(
         params_min_map_qual=None,
         params_min_read_qual=None,
         params_keep_outputs=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Depth by positions"""
-    rule samtools_depth:
+    rule:
+        name:
+            "samtools_depth" + snake_rule_suffix
         input:
             alignments = in_alignments,
             targets = [] if in_targets is None else in_targets

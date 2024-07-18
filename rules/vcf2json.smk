@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.2.0'
+__version__ = '2.3.0'
 
 
 def vcf2json(
@@ -15,9 +15,12 @@ def vcf2json(
         params_merged_sources=False,
         params_calling_source="{variant_caller}",  # Use "" instead to inactivate
         params_keep_outputs=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Convert VCF annotated to JSON format."""
-    rule vcf2json:
+    rule:
+        name:
+            "vcf2json" + snake_rule_suffix
         input:
             in_variants
         output:

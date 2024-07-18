@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
-__copyright__ = 'Copyright (C) 2019 IUCT-O'
+__copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '3.1.0'
+__version__ = '3.2.0'
 
 include: "sortVCF.smk"
 
@@ -14,10 +14,13 @@ def standardizeVCF(
         params_annotations_field=None,
         params_trace_unstandard=False,
         params_keep_outputs=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Split alternatives alleles in multi-lines and removes unecessary reference and alternative nucleotids, move indel to most upstream position and update alt allele in annotations."""
     # Standardize VCF
-    rule standardizeVCF:
+    rule:
+        name:
+            "standardizeVCF" + snake_rule_suffix
         input:
             reference_seq = in_reference_seq,
             variants = in_variants
@@ -50,5 +53,6 @@ def standardizeVCF(
         out_variants=out_variants,
         out_stderr=out_stderr,
         params_keep_outputs=params_keep_outputs,
-        params_stderr_append=True
+        params_stderr_append=True,
+        snake_rule_suffix=snake_rule_suffix
     )

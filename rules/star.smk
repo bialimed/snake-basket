@@ -1,7 +1,7 @@
 __author__ = 'Gael Jalowicki and Frederic Escudie'
 __copyright__ = 'Copyright (C) 2021 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.0.0'
+__version__ = '2.1.0'
 
 import os
 
@@ -15,13 +15,16 @@ def star(
         out_stderr="logs/aln/{sample}_star_stderr.txt",
         params_extra="",
         params_keep_outputs=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Spliced Transcripts Alignment to a Reference."""
     # Parameters
     work_directory = os.path.join(os.path.dirname(out_alignments), "tmp_{sample}")
     out_spl_prefix = os.path.join(work_directory, "{sample}")
     # Rule
-    rule star:
+    rule:
+        name:
+            "star" + snake_rule_suffix
         input:
             genome_dir = os.path.dirname(in_reference_seq),
             R1 = in_R1,

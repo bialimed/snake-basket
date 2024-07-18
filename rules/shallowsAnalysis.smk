@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.5.0'
+__version__ = '2.6.0'
 
 
 def shallowsAnalysis(
@@ -21,9 +21,12 @@ def shallowsAnalysis(
         params_known_symbol_field=None,
         params_min_base_qual=None,
         params_keep_outputs=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Extract shallow areas from the alignment are annotate them with genomic features and known variants."""
-    rule shallowsAnalysis:
+    rule:
+        name:
+            "shallowsAnalysis" + snake_rule_suffix
         input:
             alignments = in_alignments,
             reference_annotations = in_reference_annotations,

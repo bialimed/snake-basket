@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2020 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.2.0'
+__version__ = '1.3.0'
 
 
 def standardizeBND(
@@ -13,12 +13,15 @@ def standardizeBND(
         params_trace_unstandard=False,
         params_keep_outputs=False,
         params_stderr_append=False,
+        snake_rule_suffix="",
         snake_wildcard_constraints=None):
     """Replace N in alt and ref by the convenient nucleotid and move each breakend in pair at the left most position and add uncertainty iin CIPOS tag."""
     # Parameters
     snake_wildcard_constraints = {} if snake_wildcard_constraints is None else snake_wildcard_constraints
     # Rule
-    rule standardizeBND:
+    rule:
+        name:
+            "standardizeBND" + snake_rule_suffix
         wildcard_constraints:
             **snake_wildcard_constraints
         input:

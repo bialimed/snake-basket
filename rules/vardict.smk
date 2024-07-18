@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.3.0'
+__version__ = '2.4.0'
 
 
 def vardict(
@@ -16,10 +16,13 @@ def vardict(
         params_min_alt_fraction=0.33,
         params_min_base_qual=15,
         params_keep_outputs=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """VarDict is an ultra sensitive variant caller for both single and paired sample variant calling from BAM files."""
     # Vardict
-    rule vardict_call:
+    rule:
+        name:
+            "vardict_call" + snake_rule_suffix
         input:
             alignments = in_alignments,
             reference = in_reference_seq,
@@ -56,7 +59,9 @@ def vardict(
             " > {output}"
             " {params.stderr_redirection} {log}"
     # Test strand bias
-    rule vardict_strandbias:
+    rule:
+        name:
+            "vardict_strandbias" + snake_rule_suffix
         input:
             out_variants + "_tmpCall.tsv"
         output:
@@ -77,7 +82,9 @@ def vardict(
             " > {output}"
             " 2>> {log}"
     # Variants to VCF
-    rule vardict_var2vcf:
+    rule:
+        name:
+            "vardict_var2vcf" + snake_rule_suffix
         input:
             out_variants + "_tmpStrandBias.tsv"
         output:
@@ -108,7 +115,9 @@ def vardict(
             " > {output}"
             " 2>> {log}"
     # Fix VCF caller error in header
-    rule vardict_fix:
+    rule:
+        name:
+            "vardict_fix" + snake_rule_suffix
         input:
             out_variants + "_tmpVar2vcf.vcf"
         output:
