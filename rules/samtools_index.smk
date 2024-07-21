@@ -1,18 +1,19 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.3.0'
+__version__ = '2.4.0'
 
 
 def samtools_index(
         in_alignments="aln/{sample}.bam",
+        out_alignments_idx=None,
         out_stderr="logs/{sample}_alnIndex_stderr.txt",
         params_keep_outputs=False,
         params_stderr_append=False,
         snake_rule_suffix=""):
     """Index a coordinate-sorted BAM or CRAM file for fast random access."""
     # Parameters
-    out_index = in_alignments + ".bai"
+    out_alignments_idx = in_alignments[:-4] + ".bai" if out_alignments_idx is None else out_alignments_idx
     # Rule
     rule:
         name:
@@ -20,7 +21,7 @@ def samtools_index(
         input:
             in_alignments,
         output:
-            out_index if params_keep_outputs else temp(out_index)
+            out_alignments_idx if params_keep_outputs else temp(out_alignments_idx)
         log:
             out_stderr
         params:
