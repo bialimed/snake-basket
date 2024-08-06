@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.4.0'
+__version__ = '2.4.1'
 
 
 def samtools_index(
@@ -36,5 +36,5 @@ def samtools_index(
         shell:
             "{params.bin_path} index"
             " {input}"
-            " > {output}"
+            " {output}"
             " {params.stderr_redirection} {log}"

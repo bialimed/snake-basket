@@ -11,7 +11,7 @@ def samtools_depth(
         out_stderr="logs/stats/samtoolsDepth/{sample}_stderr.txt",
         params_mode="covered",  # Must be "absolutely_all", "all_targeted" or "covered"
         params_extra="",
-        params_max_depth=0,  # No max
+        params_max_depth=0,  # Before 1.13: 0 for no max ; From 1.13: option ignored
         params_min_map_qual=None,
         params_min_read_qual=None,
         params_keep_outputs=False,
