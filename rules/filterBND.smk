@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2020 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.4.0'
+__version__ = '1.5.0'
 
 
 def filterBND(
@@ -17,9 +17,12 @@ def filterBND(
         params_normal_key=None,  # id or symbol
         params_normal_sources=None,
         params_rt_max_dist=None,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Filter fusions that are readthrough, within a gene, known in normal samples or occuring on HLA or IG."""
-    rule filterBND:
+    rule:
+        name:
+            "filterBND" + snake_rule_suffix
         input:
             annotations = in_annotations,
             normal = [] if in_normal is None else in_normal,

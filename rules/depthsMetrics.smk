@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.2.0'
+__version__ = '2.3.0'
 
 
 include: "samtools_depth.smk"
@@ -16,7 +16,8 @@ def depthsMetrics(
         params_min_read_qual=None,
         params_expected_min_depth=None,
         params_keep_outputs=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Depths metrics (distribution, count by depth and targets under threshold) from the samtools depth output."""
     # Parameters
     params_format = out_metrics.split(".")[-1]
@@ -32,10 +33,13 @@ def depthsMetrics(
         params_max_depth=0,
         params_min_map_qual=params_min_map_qual,
         params_min_read_qual=params_min_read_qual,
-        params_stderr_append=params_stderr_append
+        params_stderr_append=params_stderr_append,
+        snake_rule_suffix=snake_rule_suffix
     )
     # Metrics
-    rule depthsMetrics:
+    rule:
+        name:
+            "depthsMetrics" + snake_rule_suffix
         input:
             out_metrics + "_samtoolsDepth"
         output:

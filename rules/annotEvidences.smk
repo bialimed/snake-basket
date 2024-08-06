@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2021 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.2.0'
+__version__ = '1.3.0'
 
 
 def annotEvidences(
@@ -18,7 +18,8 @@ def annotEvidences(
         params_disease_term_by_spl=None,
         params_evidences_source=None,
         params_keep_outputs=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Add clinical evidence level to known variants."""
     # Manage sample disease
     if params_disease_id_by_spl is None:
@@ -41,7 +42,9 @@ def annotEvidences(
         return param
 
     # Rule
-    rule annotEvidences:
+    rule:
+        name:
+            "annotEvidences" + snake_rule_suffix
         input:
             disease_ontology = in_disease_ontology,
             evidences = in_evidences,

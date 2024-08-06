@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.2.0'
+__version__ = '2.3.0'
 
 
 def filterAnnotVCF(
@@ -12,9 +12,12 @@ def filterAnnotVCF(
         out_stderr="logs/variants/{variant_caller}/{sample}_filterAnnot_stderr.txt",
         params_annotation_field=None,
         params_keep_outputs=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Filter VCF variants and annotations on criteria described in JSON files."""
-    rule filterAnnotVCF:
+    rule:
+        name:
+            "filterAnnotVCF" + snake_rule_suffix
         input:
             filters_annotations = ([] if in_filters_annotations is None else in_filters_annotations),
             filters_variants = ([] if in_filters_variants is None else in_filters_variants),

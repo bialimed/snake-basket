@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.2.0'
+__version__ = '2.3.0'
 
 
 def collectHsMetrics(
@@ -14,12 +14,15 @@ def collectHsMetrics(
         params_extra="",
         params_keep_outputs=False,
         params_stderr_append=False,
-        params_stringency="LENIENT"):
+        params_stringency="LENIENT",
+        snake_rule_suffix=""):
     """Collect hybrid-selection (HS) metrics for a SAM or BAM file. """
     if in_baits_intervals is None:
         in_baits_intervals = in_targets_intervals
     # Rule
-    rule collectHsMetrics:
+    rule:
+        name:
+            "collectHsMetrics" + snake_rule_suffix
         input:
             alignments = in_alignments,
             baits_intervals = in_baits_intervals,

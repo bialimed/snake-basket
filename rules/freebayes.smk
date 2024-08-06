@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.2.0'
+__version__ = '2.3.0'
 
 
 def freebayes(
@@ -16,9 +16,12 @@ def freebayes(
         params_min_alt_count=4,
         params_min_alt_fraction=0.03,
         params_ploidy=2,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Bayesian haplotype-based genetic polymorphism discovery and genotyping."""
-    rule freebayes:
+    rule:
+        name:
+            "freebayes" + snake_rule_suffix
         input:
             alignments = in_alignments,
             reference = in_reference_seq,

@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.2.0'
+__version__ = '2.3.0'
 
 
 def filterVCFByAnnot(
@@ -16,9 +16,12 @@ def filterVCFByAnnot(
         params_polym_threshold=None,
         params_rna_with_version=False,
         params_remove=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Filter variants and their annotations on annotations."""
-    rule filterVCFByAnnot:
+    rule:
+        name:
+            "filterVCFByAnnot" + snake_rule_suffix
         input:
             selected_rna = ([] if in_selected_rna is None else in_selected_rna),
             variants = in_variants

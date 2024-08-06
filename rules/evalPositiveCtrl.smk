@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '3.2.0'
+__version__ = '3.3.0'
 
 
 def evalPositiveCtrl(
@@ -12,9 +12,12 @@ def evalPositiveCtrl(
         params_error_threshold=None,
         params_keep_outputs=False,
         params_only_expected=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """'Compare variant calling result to expected variants."""
-    rule evalPositiveCtrl:
+    rule:
+        name:
+            "evalPositiveCtrl" + snake_rule_suffix
         input:
             expected = in_expected,
             observed = in_observed

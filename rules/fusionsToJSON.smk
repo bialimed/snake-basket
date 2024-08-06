@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2020 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.2.0'
+__version__ = '1.3.0'
 
 
 def fusionsToJSON(
@@ -13,9 +13,12 @@ def fusionsToJSON(
         params_calling_source="Unknown",
         params_merged_sources=False,
         params_keep_outputs=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Convert fusions VCF to JSON format."""
-    rule fusionsToJSON:
+    rule:
+        nale:
+            "fusionsToJSON" + snake_rule_suffix
         input:
             in_variants
         output:

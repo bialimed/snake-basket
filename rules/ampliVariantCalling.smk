@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.2.0'
+__version__ = '2.3.0'
 
 
 def ampliVariantCalling(
@@ -17,9 +17,12 @@ def ampliVariantCalling(
         params_min_alt_count=None,
         params_min_alt_fraction=None,
         params_min_base_qual=None,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Variant calling on Illumina amplicon sequencing."""
-    rule ampliVariantCalling:
+    rule:
+        name:
+            "ampliVariantCalling" + snake_rule_suffix
         input:
             alignments = in_alignments,
             reference_seq = in_reference_seq,

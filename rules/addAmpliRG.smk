@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.2.0'
+__version__ = '2.3.0'
 
 
 def addAmpliRG(
@@ -17,9 +17,12 @@ def addAmpliRG(
         params_RG_tag=None,
         params_single_mode=False,
         params_stderr_append=False,
-        params_summary_format="json"):
+        params_summary_format="json",
+        snake_rule_suffix=""):
     """Add RG corresponding to the amplicons panel. For one reads pair the amplicon is determined from the position of the first match position of the two reads (primers start positions)."""
-    rule addAmpliRG:
+    rule:
+        name:
+            "addAmpliRG" + snake_rule_suffix
         input:
             alignments = in_alignments,
             alignments_index = in_alignments + ".bai",

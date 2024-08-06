@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.2.0'
+__version__ = '2.3.0'
 
 
 def filterVCFHomopolym(
@@ -13,9 +13,12 @@ def filterVCFHomopolym(
         params_keep_outputs=False,
         params_tag_name=None,
         params_remove=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Filter the variants adjacents of homopolymers."""
-    rule filterVCFHomopolym:
+    rule:
+        name:
+            "filterVCFHomopolym" + snake_rule_suffix
         input:
             reference = in_reference,
             variants = in_variants

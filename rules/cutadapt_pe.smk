@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.2.0'
+__version__ = '2.3.0'
 
 
 def cutadapt_pe(
@@ -20,9 +20,12 @@ def cutadapt_pe(
         params_keep_outputs=False,
         params_min_length=0,
         params_min_overlap=11,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Remove adapter sequences in paired-end data."""
-    rule cutadapt_pe:
+    rule:
+        name:
+            "cutadapt_pe" + snake_rule_suffix
         input:
             R1_reads = in_R1_reads,
             R1_end_adapter = in_R1_end_adapter,

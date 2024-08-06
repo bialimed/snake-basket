@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.3.0'
+__version__ = '2.4.0'
 
 
 def delDuplicates(
@@ -13,9 +13,12 @@ def delDuplicates(
         params_extra="",
         params_keep_outputs=False,
         params_stderr_append=False,
-        params_stringency="LENIENT"):
+        params_stringency="LENIENT",
+        snake_rule_suffix=""):
     """Remove pairs of reads originating from a single fragment of DNA."""
-    rule delDuplicates:
+    rule:
+        name:
+            "delDuplicates" + snake_rule_suffix
         input:
             in_alignments
         output:

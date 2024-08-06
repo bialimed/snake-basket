@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2020 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.2.0'
+__version__ = '1.3.0'
 
 
 def combinePairs(
@@ -15,9 +15,12 @@ def combinePairs(
         params_max_frag_length=None,
         params_min_frag_length=None,
         params_min_overlap=None,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Combine R1 and R2 by their overlapping segment."""
-    rule combinePairs:
+    rule:
+        name:
+            "combinePairs" + snake_rule_suffix
         input:
             R1 = in_R1,
             R2 = in_R2,

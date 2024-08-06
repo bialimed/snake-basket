@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.2.0'
+__version__ = '2.3.0'
 
 
 def fixHGVS(
@@ -14,9 +14,12 @@ def fixHGVS(
         params_keep_outputs=False,
         params_mutalyzer_url=None,
         params_proxy_url=None,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Fix or add HGVSg, HGVSc and HGVSp on variants annotations. The HGVS used are based on mutalyzer."""
-    rule fixHGVS:
+    rule:
+        name:
+            "fixHGVS" + snake_rule_suffix
         input:
             assembly_accessions = in_assembly_accessions,
             variants = in_variants

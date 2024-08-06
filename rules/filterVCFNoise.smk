@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.2.0'
+__version__ = '2.3.0'
 
 
 def filterVCFNoise(
@@ -12,9 +12,12 @@ def filterVCFNoise(
         params_keep_outputs=False,
         params_remove=False,
         params_tag_name="popConst",
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Filter artifact variants."""
-    rule filterVCFNoise:
+    rule:
+        name:
+            "filterVCFNoise" + snake_rule_suffix
         input:
             variants = in_variants,
             known_artifacts = in_known_artifacts

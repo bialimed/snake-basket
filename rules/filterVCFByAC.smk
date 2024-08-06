@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.2.0'
+__version__ = '2.3.0'
 
 
 def filterVCFByAC(
@@ -13,9 +13,12 @@ def filterVCFByAC(
         params_min_alt_count=4,
         params_min_calling_depth=20,
         params_remove=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Filter variants on their AD, AF and DP."""
-    rule filterVCFByAC:
+    rule:
+        name:
+            "filterVCFByAC" + snake_rule_suffix
         input:
             in_variants
         output:

@@ -1,7 +1,7 @@
 __author__ = 'Veronique Ivashchenko and Frederic Escudie'
 __copyright__ = 'Copyright (C) 2020 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.0.0'
+__version__ = '2.1.0'
 
 
 def arriba(
@@ -22,14 +22,17 @@ def arriba(
         params_min_anchor_length=None,  # This parameter sets the threshold in bp for what the filter considers short.
         params_min_supporting_reads=None,  # The filter min_support discards all fusions with fewer than this many supporting reads (split reads and discordant mates combined).
         params_stderr_append=False,
-        params_strandedness="auto"):
+        params_strandedness="auto",
+        snake_rule_suffix=""):
     """Call fusions with Arriba."""
     in_genome_dir = os.path.dirname(in_reference_seq)
 
     # Run STAR alignment
     star_alignments = os.path.join(os.path.dirname(out_fusions), "{sample}Aligned.sortedByCoord.out.bam")
     star_prefix = os.path.join(os.path.dirname(out_fusions), "{sample}")
-    rule arriba_star:
+    rule:
+        name:
+            "arriba_star" + snake_rule_suffix
         input:
             annotations = in_annotations,
             genome_dir = in_genome_dir,
@@ -81,7 +84,9 @@ def arriba(
             " {params.stderr_redirection} {log}"
 
     # Run arriba
-    rule arriba_run:
+    rule:
+        name:
+            "arriba_run" + snake_rule_suffix
         input:
             alignments = star_alignments,
             annotations = in_annotations,

@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.2.0'
+__version__ = '1.3.0'
 
 
 def filterVCFBySOR(
@@ -18,9 +18,12 @@ def filterVCFBySOR(
         params_ref_rev_tag=None,
         params_SOR_tag="SOR",
         params_stderr_append=False,
-        params_substit_max_SOR=None):
+        params_substit_max_SOR=None,
+        snake_rule_suffix=""):
     """Add snakemake rule to filter VCF by strand odd ratio."""
-    rule filterVCFBySOR:
+    rule:
+        name:
+            "filterVCFBySOR" + snake_rule_suffix
         input:
             in_variants
         output:

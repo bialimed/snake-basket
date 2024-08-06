@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2020 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.0.0'
+__version__ = '2.1.0'
 
 
 def extractIlluminaBarcodes(
@@ -13,9 +13,12 @@ def extractIlluminaBarcodes(
         out_stderr="logs/demultiplex/extractIlluminaBarcode_L{lane}_stderr.txt",
         params_extra="",
         params_keep_outputs=False,
-        params_lane="{lane}"):
+        params_lane="{lane}",
+        snake_rule_suffix=""):
     """Determines the barcode for each read in an Illumina lane."""
-    rule extractIlluminaBarcodes:
+    rule:
+        name:
+            "extractIlluminaBarcodes" + snake_rule_suffix
         input:
             barcodes = in_barcodes_file,
             basecalls = in_basecalls_dir

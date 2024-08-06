@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2021 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.2.0'
+__version__ = '1.3.0'
 
 
 def filterDetailedEvidences(
@@ -10,9 +10,12 @@ def filterDetailedEvidences(
         out_evidences="variants/{sample}_annot_evidencesList.json",
         out_stderr="logs/variants/{sample}_filterDetailedEvidences_stderr.txt",
         params_keep_outputs=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Filter detailed evidences produced by annotEvidences.py to correspond to the filtered VCF."""
-    rule filterDetailedEvidences:
+    rule:
+        name:
+            "filterDetailedEvidences" + snake_rule_suffix
         input:
             evidences = in_evidences,
             variants = in_variants

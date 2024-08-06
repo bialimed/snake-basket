@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2021 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.2.0'
+__version__ = '1.3.0'
 
 
 def depthsPanel(
@@ -13,9 +13,12 @@ def depthsPanel(
         params_expected_min_depth=None,
         params_keep_outputs=False,
         params_min_base_qual=None,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Write depths distribution and number of nt below depth thresholds for each target."""
-    rule depthsPanel:
+    rule:
+        name:
+            "depthsPanel" + snake_rule_suffix
         input:
             alignments = in_alignments,
             targets = in_targets

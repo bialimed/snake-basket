@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.2.0'
+__version__ = '1.3.0'
 
 
 def annotBND(
@@ -11,9 +11,12 @@ def annotBND(
         out_stderr="logs/structural_variants/{sample}_annotBND_stderr.txt",
         params_annotations_field=None,
         params_keep_outputs=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Annotate BND in a VCF with content of a GTF."""
-    rule annotBND:
+    rule:
+        name:
+            "annotBND" + snake_rule_suffix
         input:
             annotations = in_annotations,
             variants = in_variants

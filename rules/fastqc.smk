@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '3.0.0'
+__version__ = '3.1.0'
 
 
 def fastqc(
@@ -14,7 +14,8 @@ def fastqc(
         params_extra="",
         params_is_grouped=True,
         params_keep_outputs=True,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Reads quality controls."""
     out_html = os.path.join(
         out_dir,
@@ -25,7 +26,9 @@ def fastqc(
         os.path.basename(in_fastq).replace(".fastq.gz", "_fastqc.zip").replace(".fastq", "_fastqc.zip")
     )
     # Rule
-    rule fastqc:
+    rule:
+        name:
+            "fastqc" + snake_rule_suffix
         input:
             adapters = [] if in_adapters is None else in_adapters,
             contaminants = [] if in_contaminants is None else in_contaminants,

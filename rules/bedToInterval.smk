@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.2.0'
+__version__ = '2.3.0'
 
 
 def bedToInterval(
@@ -12,13 +12,16 @@ def bedToInterval(
         out_stdout="logs/design/targets_stdout.txt",
         params_keep_outputs=False,
         params_stderr_append=False,
-        params_unique=False):
+        params_unique=False,
+        snake_rule_suffix=""):
     """Converts a BED file to a Picard Interval List."""
     # Parameters
     if in_reference_dict is None:
         in_reference_dict = getDictPath("data/reference.fa")
     # Rule
-    rule bedToInterval:
+    rule:
+        name:
+            "bedToInterval" + snake_rule_suffix
         input:
             reference_dict = in_reference_dict,
             target_bed = in_target_bed

@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2020 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.1.0'
+__version__ = '1.2.0'
 
 
 def annotKnownBND(
@@ -11,9 +11,12 @@ def annotKnownBND(
         out_stderr="logs/structural_variants/{sample}_annotKnownBND_stderr.txt",
         params_annotations_field=None,
         params_keep_outputs=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Annotate fusions known in fusions database with databases names and entries ID known."""
-    rule annotKnownBND:
+    rule:
+        name:
+            "annotKnownBND" + snake_rule_suffix
         input:
             known_partners = in_known_partners,
             variants = in_variants

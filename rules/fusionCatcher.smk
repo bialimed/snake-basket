@@ -1,7 +1,7 @@
 __author__ = 'Veronique Ivashchenko and Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.0.0'
+__version__ = '2.1.0'
 
 
 def fusionCatcher(
@@ -12,13 +12,16 @@ def fusionCatcher(
         out_fusions="structural_variants/FusionCatcher/{sample}_fusions.tsv",
         out_stderr="logs/structural_variants/{sample}_fusionCatcher_stderr.txt",
         params_keep_outputs=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Call fusions with FusionCatcher."""
     # Parameters
     work_folder = os.path.join(os.path.dirname(out_fusions), "{sample}_work")
 
     # Run fusionCatcher
-    rule fusionCatcher:
+    rule:
+        name:
+            "fusionCatcher" + snake_rule_suffix
         input:
             fusion_resources = in_fusion_resources,
             R1 = in_R1,

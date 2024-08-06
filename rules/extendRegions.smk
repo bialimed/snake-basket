@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.3.0'
+__version__ = '2.4.0'
 
 
 def extendRegions(
@@ -12,9 +12,12 @@ def extendRegions(
         params_keep_outputs=False,
         params_merge_contiguous=False,
         params_padding_size=None,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Add padding to each regions and merge the overlapping and optionally the contiguous regions."""
-    rule extendRegions:
+    rule:
+        name:
+            "extendRegions" + snake_rule_suffix
         input:
             in_regions
         output:
