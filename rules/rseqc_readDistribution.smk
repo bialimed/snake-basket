@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2020 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.2.0'
+__version__ = '1.3.0'
 
 
 def rseqc_readDistribution(
@@ -10,9 +10,12 @@ def rseqc_readDistribution(
         out_metrics="stats/reseqc/{sample}_readDistribution.tsv",
         out_stderr="logs/reseqc/{sample}_readDistribution_stderr.txt",
         params_keep_outputs=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Calculate how mapped reads were distributed over genome feature (like CDS exon, 5’UTR exon, 3’ UTR exon, Intron, Intergenic regions)."""
-    rule rseqc_readDistribution:
+    rule:
+        name:
+            "rseqc_readDistribution" + snake_rule_suffix
         input:
             annotations = in_annotations,
             alignments = in_alignments

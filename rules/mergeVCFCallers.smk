@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.2.0'
+__version__ = '2.3.0'
 
 
 def mergeVCFCallers(
@@ -12,9 +12,12 @@ def mergeVCFCallers(
         params_annotation_field=None,
         params_shared_filters=["OOT", "homoP", "popAF", "CSQ", "ANN.COLLOC", "ANN.RNA", "ANN.popAF", "ANN.CSQ"],
         params_keep_outputs=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Merge VCF coming from different calling on same sample(s). It is strongly recommended to apply this script after standardization and before annotation and filtering/tagging."""
-    rule mergeVCFCallers:
+    rule:
+        name:
+            "mergeVCFCallers" + snake_rule_suffix
         input:
             in_variants,
         output:

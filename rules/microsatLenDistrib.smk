@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2020 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.4.0'
+__version__ = '1.5.0'
 
 
 def microsatLenDistrib(
@@ -16,9 +16,12 @@ def microsatLenDistrib(
         params_sample_name="{sample}",
         params_stitch_count=False,
         params_keep_outputs=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Retrieves the reads length distribution for loci."""
-    rule microsatLenDistrib:
+    rule:
+        name:
+            "microsatLenDistrib" + snake_rule_suffix
         input:
             alignments = in_alignments,
             microsatellites = in_microsatellites

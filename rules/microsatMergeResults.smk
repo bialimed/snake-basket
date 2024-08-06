@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2022 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.2.0'
+__version__ = '1.3.0'
 
 
 def microsatMergeResults(
@@ -9,9 +9,12 @@ def microsatMergeResults(
         out_report="microsat/{sample}_statusClassify.json",
         out_stderr="logs/{sample}_microsatMergeResults_stderr.txt",
         params_keep_outputs=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Merge multiple MSI ReportIO from the same samples and loci."""
-    rule microsatMergeResults:
+    rule:
+        name:
+            "microsatMergeResults" + snake_rule_suffix
         input:
             in_reports
         output:

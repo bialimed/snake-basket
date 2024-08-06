@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2022 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.2.0'
+__version__ = '1.3.0'
 
 
 def microsatMsisensorproProClassify(
@@ -19,9 +19,12 @@ def microsatMsisensorproProClassify(
         params_status_method=None,
         params_undetermined_weight=None,
         params_keep_outputs=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Predict stability classes and scores for loci and samples using MSIsensor-pro pro v1.2.0 like algorithm."""
-    rule microsatMSIsensorproProClassify:
+    rule:
+        name:
+            "microsatMSIsensorproProClassify" + snake_rule_suffix
         input:
             evaluated = in_evaluated,
             model = in_model

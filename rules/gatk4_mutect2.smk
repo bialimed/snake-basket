@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '3.0.0'
+__version__ = '3.1.0'
 
 include: "gatk4_learnReadOrientationModel.smk"
 
@@ -18,10 +18,13 @@ def gatk4_mutect2(
         params_min_alt_count=4,
         params_min_alt_fraction=0.03,
         params_stderr_append=False,
-        params_tag_strand_bias=False):
+        params_tag_strand_bias=False,
+        snake_rule_suffix=""):
     """Call somatic SNPs and indels via local re-assembly of haplotypes."""
     # Filter supplementals to prevent mutect2 error with version 4.1.4.[0-1] (see: https://github.com/broadinstitute/gatk/issues/6310)
-    rule mutect2_filterSupplementals:
+    rule:
+        name:
+            "mutect2_filterSupplementals" + snake_rule_suffix
         input:
             tumoral_aln = in_tumoral_aln
         output:
@@ -52,7 +55,9 @@ def gatk4_mutect2(
             " 2>> {log}"
 
     # Variant calling
-    rule mutect2:
+    rule:
+        name:
+            "mutect2" + snake_rule_suffix
         input:
             reference_seq = in_reference_seq,
             tumoral_aln = out_variants + "_filteredTmp.bam",
@@ -94,10 +99,13 @@ def gatk4_mutect2(
     if params_tag_strand_bias:
         gatk4_learnReadOrientationModel(
             in_alternatives_table=out_variants + "_f1r2.tar.gz",
-            out_model=out_variants + "_strandModel.tar.gz"
+            out_model=out_variants + "_strandModel.tar.gz",
+            snake_rule_suffix=snake_rule_suffix
         )
 
-    rule filterMutectCalls:
+    rule:
+        name:
+            "filterMutectCalls" + snake_rule_suffix
         input:
             reference_seq = in_reference_seq,
             variants = out_variants + "_initTmp.vcf",
@@ -127,7 +135,9 @@ def gatk4_mutect2(
     # --max-alt-allele-count 1 default
 
     # Split multi-alternative variants in sevrel records
-    rule mutect2_splitVCFAlt:
+    rule:
+        name:
+            "mutect2_splitVCFAlt" + snake_rule_suffix
         input:
             out_variants + "_initTmp_filterTmp.vcf"
         output:
@@ -149,7 +159,9 @@ def gatk4_mutect2(
             " 2>> {log}"
 
     # Filter variants on AD and AF
-    rule mutect2_filterByCount:
+    rule:
+        name:
+            "mutect2_filterByCount" + snake_rule_suffix
         input:
             out_variants + "_oneLine.vcf"
         output:

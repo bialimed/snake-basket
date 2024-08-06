@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2020 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.2.0'
+__version__ = '1.3.0'
 
 
 def rseqc_inferExperiment(
@@ -12,9 +12,12 @@ def rseqc_inferExperiment(
         params_map_quality=None,
         params_sample_size=1000000,
         params_keep_outputs=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Use to guess how RNA-seq sequencing were configured, particulary how reads were stranded for strand-specific RNA-seq data, through comparing the “strandness of reads” with the “standness of transcripts”."""
-    rule rseqc_inferExperiment:
+    rule:
+        name:
+            "rseqc_inferExperiment" + snake_rule_suffix
         input:
             annotations = in_annotations,
             alignments = in_alignments

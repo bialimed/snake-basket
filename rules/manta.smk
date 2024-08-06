@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.0.0'
+__version__ = '2.1.0'
 
 import os
 
@@ -22,7 +22,8 @@ def manta(
         params_type="rna",  # rna or targeted or genome
         params_keep_bam=False,
         params_keep_outputs=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Call structural variants (SVs) and indels from paired-end sequencing reads."""
     # Parameters
     opt_by_type = {"rna": "--rna", "targeted": "--exome", "genome": ""}
@@ -34,7 +35,9 @@ def manta(
     # Run STAR alignment
     star_alignments = os.path.join(os.path.dirname(out_sv), "{sample}Aligned.sortedByCoord.out.bam")
     star_prefix = os.path.join(os.path.dirname(out_sv), "{sample}")
-    rule manta_star:
+    rule:
+        name:
+            "manta_star" + snake_rule_suffix
         input:
             annotations = in_annotations,
             genome_dir = in_genome_dir,
@@ -91,7 +94,9 @@ def manta(
     # Mark duplications
     markdup_alignments = star_alignments[:-4] + "_markdup.bam"
     markdup_alignments_index = markdup_alignments[:-4] + ".bai"
-    rule manta_markDup:
+    rule:
+        name:
+            "manta_markDup" + snake_rule_suffix
         input:
             star_alignments
         output:
@@ -124,7 +129,9 @@ def manta(
     # Configurate manta
     manta_launcher = os.path.join(manta_dir, "runWorkflow.py")
     config_manta_path = config.get("software_paths", {}).get("configManta", "configManta.py")
-    rule manta_config:
+    rule:
+        name:
+            "manta_config" + snake_rule_suffix
         input:
             alignments = markdup_alignments,
             alignments_idx = markdup_alignments_index,
@@ -166,7 +173,9 @@ def manta(
             " 2>> {log}"
 
     # Run manta
-    rule manta_run:
+    rule:
+        name:
+            "manta_run" + snake_rule_suffix
         input:
             alignments = markdup_alignments,
             alignments_idx = markdup_alignments_index,

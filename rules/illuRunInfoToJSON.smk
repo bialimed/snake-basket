@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.2.0'
+__version__ = '2.3.0'
 
 
 def illuRunInfoToJSON(
@@ -9,11 +9,14 @@ def illuRunInfoToJSON(
         out_summary="stats/run/runSummary.json",
         out_stderr="logs/stats/run/illuRunInfoToJSON_stderr.txt",
         params_keep_outputs=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Dump run information coming from several files in run folder."""
     in_run_info = os.path.join(in_run_folder, "RunInfo.xml")
     # Rule
-    rule illuRunInfoToJSON:
+    rule:
+        name:
+            "illuRunInfoToJSON" + snake_rule_suffix
         input:
             run_info = in_run_info,
             run_folder = in_run_folder

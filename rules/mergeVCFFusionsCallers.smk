@@ -1,7 +1,7 @@
 __author__ = 'Veronique Ivashchenko and Frederic Escudie'
 __copyright__ = 'Copyright (C) 2020 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.2.0'
+__version__ = '1.3.0'
 
 
 def mergeVCFFusionsCallers(
@@ -12,12 +12,15 @@ def mergeVCFFusionsCallers(
         params_calling_sources=None,
         params_shared_filters=None,
         params_keep_outputs=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Merge VCF coming from different fusions caller on same sample(s). It is strongly recommended to apply this script before annotation and filtering/tagging."""
     if params_calling_sources is None:
         raise Exception("At least one value must be provided for params_calling_sources.")
     # Rule
-    rule mergeVCFFusionsCallers:
+    rule:
+        name:
+            "mergeVCFFusionsCallers" + snake_rule_suffix
         input:
             in_variants
         output:

@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.2.0'
+__version__ = '2.3.0'
 
 
 def markDuplicates(
@@ -14,9 +14,12 @@ def markDuplicates(
         params_extra="",
         params_keep_outputs=False,
         params_stderr_append=False,
-        params_stringency="LENIENT"):
+        params_stringency="LENIENT",
+        snake_rule_suffix=""):
     """"Mark or remove pairs of reads originating from a single fragment of DNA."""
-    rule markDuplicates:
+    rule:
+        name:
+            "markDuplicates" + snake_rule_suffix
         input:
             in_alignments
         output:

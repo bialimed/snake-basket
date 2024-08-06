@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2020 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.2.0'
+__version__ = '1.3.0'
 
 
 def microsatStatusToAnnot(
@@ -11,9 +11,12 @@ def microsatStatusToAnnot(
         out_stderr="logs/microsatLenDistrib_stderr.txt",
         params_locus_id=True,
         params_keep_outputs=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Convert MSI status file (splA<tab>status_locus_1<tab>status_locus_2) in MSI annotation file."""
-    rule microsatStatusToAnnot:
+    rule:
+        name:
+            "microsatStatusToAnnot" + snake_rule_suffix
         input:
             loci_status = in_loci_status,
             microsatellites = in_microsatellites

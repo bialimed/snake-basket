@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2020 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.2.0'
+__version__ = '2.3.0'
 
 
 def microsatCreateModel(
@@ -14,9 +14,12 @@ def microsatCreateModel(
         params_min_support=None,
         params_peak_height_cutoff=None,
         params_keep_outputs=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Create training data for MSI classifiers."""
-    rule microsatCreateModel:
+    rule:
+        name:
+            "microsatCreateModel" + snake_rule_suffix
         input:
             length_distributions = in_length_distributions,
             loci_status = in_loci_status,

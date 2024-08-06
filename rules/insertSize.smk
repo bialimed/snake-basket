@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.2.0'
+__version__ = '2.3.0'
 
 
 def insertSize(
@@ -14,9 +14,12 @@ def insertSize(
         params_keep_outputs=False,
         params_min_pct=0.05,
         params_stderr_append=False,
-        params_stringency="LENIENT"):
+        params_stringency="LENIENT",
+        snake_rule_suffix=""):
     """Insert size distribution and read orientation of paired-end libraries."""
-    rule insertSize:
+    rule:
+        name:
+            "insertSize" + snake_rule_suffix
         input:
             in_alignments
         output:

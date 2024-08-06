@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2020 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.3.0'
+__version__ = '1.4.0'
 
 
 def inspectBND(
@@ -17,13 +17,16 @@ def inspectBND(
         params_min_base_qual=None,
         params_stranded=None,
         params_keep_outputs=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Produce data to inspect fusions breakends."""
     # Parameters
     if in_alignments_idx is None:
         in_alignments_idx = in_alignments[:-4] + ".bai"
     # Rule
-    rule inspectBND:
+    rule:
+        name:
+            "inspectBND" + snake_rule_suffix
         input:
             alignments = in_alignments,
             alignments_idx = in_alignments_idx,

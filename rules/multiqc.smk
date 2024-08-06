@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.2.0'
+__version__ = '2.3.0'
 
 
 def multiqc(
@@ -9,7 +9,8 @@ def multiqc(
         out_dir="stats/multiqc",
         out_stderr="logs/stats/multiqc_stderr.txt",
         out_stdout="logs/stats/multiqc_stdout.txt",
-        params_extra=""):
+        params_extra="",
+        snake_rule_suffix=""):
     """Aggregate results from bioinformatics analyses across many samples into a single report."""
     # Parameters
     in_files_list = os.path.join(out_dir, "multiqc_inputs.txt")
@@ -19,7 +20,9 @@ def multiqc(
         for curr_file in in_files:
             handle.write(curr_file + "\n")
     # Rule
-    rule multiqc:
+    rule:
+        name:
+            "multiqc" + snake_rule_suffix
         input:
             in_files
         output:

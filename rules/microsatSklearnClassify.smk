@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2020 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.2.0'
+__version__ = '1.3.0'
 
 
 def microsatSklearnClassify(
@@ -20,14 +20,17 @@ def microsatSklearnClassify(
         params_status_method=None,
         params_undetermined_weight=None,
         params_keep_outputs=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Predict stability classes and scores for loci and samples using an sklearn classifer."""
     # Parameters
     if params_classifier_params is not None:
         if not isinstance(params_classifier_params, str):
             raise Exception('The argument "params_classifier_params" in rule microsatSklearnClassify must be a string not {}: {}.'.format(type(params_classifier_params), params_classifier_params))
     # Rule
-    rule microsatSklearnClassify:
+    rule:
+        name:
+            "microsatSklearnClassify" + snake_rule_suffix
         input:
             evaluated = in_evaluated,
             model = in_model

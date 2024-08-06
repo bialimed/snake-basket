@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.3.0'
+__version__ = '2.4.0'
 
 
 def mergeCoOccurVar(
@@ -16,9 +16,12 @@ def mergeCoOccurVar(
         params_max_distance=None,
         params_spliced_aln=None,
         params_keep_outputs=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Group variants occuring in same reads."""
-    rule mergeCoOccurVar:
+    rule:
+        name:
+            "mergeCoOccurVar" + snake_rule_suffix
         input:
             alignments = in_alignments,
             sequences = in_sequences,

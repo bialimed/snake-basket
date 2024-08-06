@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.2.0'
+__version__ = '2.3.0'
 
 
 def gatk4_baseRecalibrator(
@@ -13,10 +13,13 @@ def gatk4_baseRecalibrator(
         out_stderr="logs/aln/gatk_recal/{sample}_baseRecalibrator_stderr.txt",
         params_extra="",
         params_keep_outputs=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Apply machine learning to model sequencing machines errors empirically and adjust the quality scores accordingly. This allows us to get more accurate base qualities, which in turn improves the accuracy of our variant calls."""
     # Create recalibration model
-    rule gatk4_baseRecalibrator:
+    rule:
+        name:
+            "gatk4_baseRecalibrator" + snake_rule_suffix
         input:
             alignments = in_alignments,
             intervals = ([] if in_intervals is None else in_intervals),
@@ -48,7 +51,9 @@ def gatk4_baseRecalibrator(
             " --output {output}"
             " {params.stderr_redirection} {log}"
     # Apply base quality recalibration
-    rule gatk4_applyBQSR:
+    rule:
+        name:
+            "gatk4_applyBQSR" + snake_rule_suffix
         input:
             alignments = in_alignments,
             intervals = ([] if in_intervals is None else in_intervals),

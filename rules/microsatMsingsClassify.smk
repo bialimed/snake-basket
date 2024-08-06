@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2020 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.2.0'
+__version__ = '1.3.0'
 
 
 def microsatMsingsClassify(
@@ -18,9 +18,12 @@ def microsatMsingsClassify(
         params_std_dev_rate=None,
         params_undetermined_weight=None,
         params_keep_outputs=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Predict stability classes and scores for loci and samples using mSINGS v4.0 like algorithm."""
-    rule microsatMsingsClassify:
+    rule:
+        name:
+            "microsatMsingsClassify" + snake_rule_suffix
         input:
             evaluated = in_evaluated,
             model = in_model

@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.2.0'
+__version__ = '1.3.0'
 
 
 def gatk4_learnReadOrientationModel(
@@ -9,9 +9,12 @@ def gatk4_learnReadOrientationModel(
         out_model="variants/mutect2/{sample}_strandModel.tar.gz",
         out_stderr="logs/variants/mutect2/{sample}_strandModel_stderr.txt",
         params_keep_outputs=False,
-        params_stderr_append=False):
+        params_stderr_append=False,
+        snake_rule_suffix=""):
     """Create orientation model from foward and reverse information of reads on variants."""
-    rule gatk4_learnReadOrientationModel:
+    rule:
+        name:
+            "gatk4_learnReadOrientationModel" + snake_rule_suffix
         input:
             variants = in_alternatives_table
         output:
