@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.7.0'
+__version__ = '2.8.0'
 
 
 def vep_cache(
@@ -112,3 +112,36 @@ def vep_cache(
             " --input-variants {input.variants}"
             " --output-variants {output}"
             " 2>> {log}"
+
+
+def vepCustomArgs(custom_db, release_earlier_109=True):
+    """
+    Return VEP arguments for custom databases and annotation selected fields.
+
+    :param custom_db: Info for custom databases. Each databse is dict like {"name": str, "path": str, "fields": list, "format": str, "type": str} (format and type are optional).
+    :type custom_db: list
+    :param release_earlier_109: VEP release used is earlier than 109. This parameters change custom format.
+    :type release_earlier_109: bool
+    :return: VEP arguments for custom databases and annotation selected fields.
+    :rtype: (str, list)
+    """
+    vep_extra = ""
+    fields = ["CLIN_SIG"]
+    syntax = " --custom {},{},{},{},0,{}"  # Format: --custom Filename,Short_name,File_type,Annotation_type,Force_report_coordinates,VCF_fields
+    fields_linker = ","
+    if release_earlier_109:
+        syntax = " --custom file={},short_name={},format={},type={},0,fields={}"  # file=Filename,short_name=Short_name,format=File_type,type=Annotation_type,fields=VCF_fields
+        fields_linker = "%"
+    for curr_db in custom_db:
+        vep_extra += syntax.format(
+            curr_db["path"],
+            curr_db["name"],
+            curr_db.get("format", "vcf"),
+            curr_db.get("type", "exact"),
+            fields_linker.join(curr_db["fields"])
+        )
+        if curr_db["name"].lower() == "clinvar":
+            fields.remove("CLIN_SIG")
+        for field in curr_db["fields"]:
+            fields.append(curr_db["name"] + "_" + field)
+    return vep_extra, fields
