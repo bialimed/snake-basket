@@ -130,7 +130,7 @@ def vepCustomArgs(custom_db, release_earlier_109=True):
     syntax = " --custom {},{},{},{},0,{}"  # Format: --custom Filename,Short_name,File_type,Annotation_type,Force_report_coordinates,VCF_fields
     fields_linker = ","
     if release_earlier_109:
-        syntax = " --custom file={},short_name={},format={},type={},0,fields={}"  # file=Filename,short_name=Short_name,format=File_type,type=Annotation_type,fields=VCF_fields
+        syntax = " --custom file={},short_name={},format={},type={},0,fields={},num_records={}"  # file=Filename,short_name=Short_name,format=File_type,type=Annotation_type,fields=VCF_fields
         fields_linker = "%"
     for curr_db in custom_db:
         vep_extra += syntax.format(
@@ -138,7 +138,8 @@ def vepCustomArgs(custom_db, release_earlier_109=True):
             curr_db["name"],
             curr_db.get("format", "vcf"),
             curr_db.get("type", "exact"),
-            fields_linker.join(curr_db["fields"])
+            fields_linker.join(curr_db["fields"]),
+            curr_db.get("num_records", "all")
         )
         if curr_db["name"].lower() == "clinvar":
             fields.remove("CLIN_SIG")
