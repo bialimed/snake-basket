@@ -38,6 +38,7 @@ def bedtools_intersect(
             "envs/bedtools.yml"
         shell:
             "{params.bin_path} intersect"
+            " -header"
             " -a {input.features}"
             " -b {input.targets}"
             " > {output}"
