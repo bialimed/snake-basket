@@ -8,7 +8,7 @@ def bedtools_intersect(
         in_features,
         in_targets,
         out_features,
-        out_stderr="logs/{sample}_bedtools_intersect_stderr.txt",
+        out_stderr="logs/bedtools_intersect_stderr.txt",
         params_keep_outputs=False,
         params_mode="intersect",  # "overlap" or "remove"
         params_stderr_append=False,
@@ -28,7 +28,7 @@ def bedtools_intersect(
             out_stderr
         params:
             bin_path = config.get("software_paths", {}).get("bedtools", "bedtools"),
-            mode = "" if params_mode is None or params_mode == "intersect" else ("-wa" if "overlap" else "-v")
+            mode = "" if params_mode is None or params_mode == "intersect" else ("-wa" if "overlap" else "-v"),
             stderr_redirection = "2>" if not params_stderr_append else "2>>",
         resources:
             extra = "",
