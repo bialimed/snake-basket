@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2021 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.3.0'
+__version__ = '1.4.0'
 
 
 def annotEvidences(
@@ -41,6 +41,11 @@ def annotEvidences(
             param = "--disease-term '{}'".format(params_disease_term_by_spl[spl_name])
         return param
 
+    # Parameters
+    in_sequences_index = in_sequences + ".fai"
+    if isinstance(in_sequences, snakemake.io.AnnotatedString) and "storage_object" in in_sequences.flags:
+        in_sequences_index = storage(in_sequences.flags["storage_object"].query + ".fai")
+
     # Rule
     rule:
         name:
@@ -49,6 +54,7 @@ def annotEvidences(
             disease_ontology = in_disease_ontology,
             evidences = in_evidences,
             sequences = in_sequences,
+            sequences_index = in_sequences_index,
             variants = in_variants
         output:
             evidences = None if out_evidences is None else (out_evidences if params_keep_outputs else temp(out_evidences)),

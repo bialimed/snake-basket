@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '3.0.0'
+__version__ = '3.1.0'
 
 
 def addAmpliRG(
@@ -20,12 +20,17 @@ def addAmpliRG(
         params_summary_format="json",
         snake_rule_suffix=""):
     """Add RG corresponding to the amplicons panel. For one reads pair the amplicon is determined from the position of the first match position of the two reads (primers start positions)."""
+    # Parameters
+    in_alignements_index = in_alignments + ".bai"
+    if isinstance(in_alignments, snakemake.io.AnnotatedString) and "storage_object" in in_alignments.flags:
+        in_alignements_index = storage(in_alignements_index.flags["storage_object"].query)
+    # Rule
     rule:
         name:
             "addAmpliRG" + snake_rule_suffix
         input:
             alignments = in_alignments,
-            alignments_index = in_alignments + ".bai",
+            alignments_index = in_alignements_index,
             panel = in_panel
         output:
             alignments = out_alignments if params_keep_outputs else temp(out_alignments),
@@ -34,7 +39,7 @@ def addAmpliRG(
             out_stderr
         params:
             anchor_offset = "" if params_anchor_offset is None else "--anchor-offset " + str(params_anchor_offset),
-            bin_path = os.path.abspath(os.path.join(workflow.basedir, "scripts/addAmpliRG.py")),
+            bin_path = config.get("software_paths", {}).get("addAmpliRG", "addAmpliRG.py"),
             check_strand = "--check-strand" if params_check_strand else "",
             min_zoi_cov = "" if params_min_zoi_cov is None else "--min-zoi-cov " + str(params_min_zoi_cov),
             mode = "--mode " + params_mode if params_mode else "",

@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '3.2.0'
+__version__ = '3.3.0'
 
 include: "sortVCF.smk"
 
@@ -17,12 +17,17 @@ def standardizeVCF(
         params_stderr_append=False,
         snake_rule_suffix=""):
     """Split alternatives alleles in multi-lines and removes unecessary reference and alternative nucleotids, move indel to most upstream position and update alt allele in annotations."""
+    # Parameters
+    in_reference_seq_index = in_reference_seq + ".fai"
+    if isinstance(in_reference_seq, snakemake.io.AnnotatedString) and "storage_object" in in_reference_seq.flags:
+        in_reference_seq_index = storage(in_reference_seq.flags["storage_object"].query + ".fai")
     # Standardize VCF
     rule:
         name:
             "standardizeVCF" + snake_rule_suffix
         input:
             reference_seq = in_reference_seq,
+            reference_seq_index = in_reference_seq_index,
             variants = in_variants
         output:
             temp(out_variants + ".std_tmp")

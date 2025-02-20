@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.3.0'
+__version__ = '2.4.0'
 
 
 def filterVCFHomopolym(
@@ -16,11 +16,17 @@ def filterVCFHomopolym(
         params_stderr_append=False,
         snake_rule_suffix=""):
     """Filter the variants adjacents of homopolymers."""
+    # Parameters
+    in_reference_index = in_reference + ".fai"
+    if isinstance(in_reference, snakemake.io.AnnotatedString) and "storage_object" in in_reference.flags:
+        in_reference_index = storage(in_reference.flags["storage_object"].query + ".fai")
+    # Rule
     rule:
         name:
             "filterVCFHomopolym" + snake_rule_suffix
         input:
             reference = in_reference,
+            reference_index = in_reference_index,
             variants = in_variants
         output:
             out_variants if params_keep_outputs else temp(out_variants)

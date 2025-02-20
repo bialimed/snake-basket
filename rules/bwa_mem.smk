@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '3.1.0'
+__version__ = '3.2.0'
 
 
 def bwa_mem(
@@ -16,6 +16,9 @@ def bwa_mem(
     """Map low-divergent sequences against a large reference genome."""
     # Parameters
     in_reads = ["data/{sample}_R1.fastq.gz", "data/{sample}_R2.fastq.gz"] if in_reads is None else in_reads
+    in_reference_seq_index = [in_reference_seq + ext for ext in [".amb", ".ann", ".bwt", ".pac", ".sa"]]
+    if isinstance(in_reference_seq, snakemake.io.AnnotatedString) and "storage_object" in in_reference_seq.flags:
+        in_reference_seq_index = [storage(in_reference_seq.flags["storage_object"].query + ext) for ext in [".amb", ".ann", ".bwt", ".pac", ".sa"]]
     # Rule
     rule:
         name:
@@ -23,6 +26,7 @@ def bwa_mem(
         input:
             reads = in_reads,
             reference = in_reference_seq
+            reference_index = in_reference_seq_index,
         output:
             bam = out_alignments if params_keep_outputs else temp(out_alignments),
             sam = temp(out_alignments + ".sam")

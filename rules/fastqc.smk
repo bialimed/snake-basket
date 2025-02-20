@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '3.1.0'
+__version__ = '3.2.0'
 
 
 def fastqc(
@@ -45,7 +45,7 @@ def fastqc(
             adapters = "" if in_adapters is None else "--adapters " + in_adapters,
             bin_path = config.get("software_paths", {}).get("fastqc", "fastqc"),
             contaminants = "" if in_contaminants is None else "--contaminants " + in_contaminants,
-            dir = out_dir,
+            dir = lambda wildcards, output: os.path.dirname(output.html),
             extra = params_extra,
             nogroup = "" if params_is_grouped else "--nogroup",
             stderr_redirection = "2>" if not params_stderr_append else "2>>"

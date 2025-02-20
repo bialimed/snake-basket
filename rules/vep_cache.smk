@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.8.0'
+__version__ = '2.9.0'
 
 
 def vep_cache(
@@ -9,6 +9,7 @@ def vep_cache(
         in_variants="variants/{variant_caller}/{sample}_call.vcf",
         in_cache=None,
         in_cosmic=None,
+        in_customs=None,
         out_variants="variants/{variant_caller}/{sample}_annot.vcf",
         out_stdout="logs/variants/{variant_caller}/{sample}_annot_stdout.txt",
         out_stderr="logs/variants/{variant_caller}/{sample}_annot_stderr.txt",
@@ -26,12 +27,28 @@ def vep_cache(
         params_annotations_source_opt = "--xref_refseq --tsl --appris"
     elif params_annotations_source == "refseq":
         params_annotations_source_opt = "--refseq"
+    in_cosmic_index = []
+    if in_cosmic:
+        if isinstance(in_cosmic, snakemake.io.AnnotatedString) and "storage_object" in in_cosmic.flags:
+            in_cosmic_index.append(storage(in_cosmic.flags["storage_object"].query + ".tbi"))
+        else:
+            in_cosmic_index.append(in_cosmic + ".tbi")
+    in_customs_index = []
+    if in_customs:
+        for path in in_customs:
+            if isinstance(path, snakemake.io.AnnotatedString) and "storage_object" in path.flags:
+                in_customs_index.append(storage(path.flags["storage_object"].query + ".tbi"))
+            else:
+                in_customs_index.append(path + ".tbi")
     # VEP
     rule:
         name:
             "vep_cache" + snake_rule_suffix
         input:
-            in_variants
+            cache = in_cache,
+            customs = in_customs if in_customs else [],
+            customs_index = in_customs_index,
+            variants = in_variants
         output:
             temp(out_variants + "_unfixed.tmp")
         log:
@@ -80,7 +97,7 @@ def vep_cache(
             " --no_stats"
             " --vcf"
             " --vcf_info_field {params.annotations_field}"
-            " --input_file {input}"
+            " --input_file {input.variants}"
             " --output_file {output}"
             " > {log.stdout}"
             " {params.stderr_redirection} {log.stderr}"
@@ -90,6 +107,7 @@ def vep_cache(
             "fixVEPAnnot" + snake_rule_suffix
         input:
             cosmic = [] if in_cosmic is None else in_cosmic,
+            cosmic_index = in_cosmic_index,
             variants = out_variants + "_unfixed.tmp"
         output:
             out_variants if params_keep_outputs else temp(out_variants)

@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.3.0'
+__version__ = '2.4.0'
 
 
 def ampliVariantCalling(
@@ -20,12 +20,18 @@ def ampliVariantCalling(
         params_stderr_append=False,
         snake_rule_suffix=""):
     """Variant calling on Illumina amplicon sequencing."""
+    # Parameters
+    in_reference_seq_index = in_reference_seq + ".fai"
+    if isinstance(in_reference_seq, snakemake.io.AnnotatedString) and "storage_object" in in_reference_seq.flags:
+        in_reference_seq_index = storage(in_reference_seq.flags["storage_object"].query + ".fai")
+    # Rule
     rule:
         name:
             "ampliVariantCalling" + snake_rule_suffix
         input:
             alignments = in_alignments,
             reference_seq = in_reference_seq,
+            reference_seq_index = in_reference_seq_index,
             design_with_primers = in_design_with_primers,
             design_wout_primers = in_design_wout_primers,
             non_overlapping_design = in_non_overlapping_design,
