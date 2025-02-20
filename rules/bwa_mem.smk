@@ -25,8 +25,8 @@ def bwa_mem(
             "bwa_mem" + snake_rule_suffix
         input:
             reads = in_reads,
-            reference = in_reference_seq
-            reference_index = in_reference_seq_index,
+            reference = in_reference_seq,
+            reference_index = in_reference_seq_index
         output:
             bam = out_alignments if params_keep_outputs else temp(out_alignments),
             sam = temp(out_alignments + ".sam")
