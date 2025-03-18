@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.6.0'
+__version__ = '2.7.0'
 
 
 def shallowsAnalysis(
@@ -24,11 +24,17 @@ def shallowsAnalysis(
         params_stderr_append=False,
         snake_rule_suffix=""):
     """Extract shallow areas from the alignment are annotate them with genomic features and known variants."""
+    # Parameters
+    in_alignments_index = in_alignments[:-4] + ".bai"
+    if isinstance(in_alignments, snakemake.io.AnnotatedString) and "storage_object" in in_alignments.flags:
+        in_alignments_index = storage(in_alignments.flags["storage_object"].query[:-4] + ".bai")
+    # Rule
     rule:
         name:
             "shallowsAnalysis" + snake_rule_suffix
         input:
             alignments = in_alignments,
+            alignments_index = in_alignments_index,
             reference_annotations = in_reference_annotations,
             targets = [] if in_targets is None else in_targets,
             known_variants = [] if in_known_variants is None else in_known_variants

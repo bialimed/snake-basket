@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.4.0'
+__version__ = '2.5.0'
 
 
 def mergeCoOccurVar(
@@ -19,12 +19,22 @@ def mergeCoOccurVar(
         params_stderr_append=False,
         snake_rule_suffix=""):
     """Group variants occuring in same reads."""
+    # Parameters
+    in_alignments_index = in_alignments[:-4] + ".bai"
+    if isinstance(in_alignments, snakemake.io.AnnotatedString) and "storage_object" in in_alignments.flags:
+        in_alignments_index = storage(in_alignments.flags["storage_object"].query[:-4] + ".bai")
+    in_sequences_index = in_sequences + ".fai"
+    if isinstance(in_sequences, snakemake.io.AnnotatedString) and "storage_object" in in_sequences.flags:
+        in_sequences_index = storage(in_sequences.flags["storage_object"].query + ".fai")
+    # Rule
     rule:
         name:
             "mergeCoOccurVar" + snake_rule_suffix
         input:
             alignments = in_alignments,
+            alignments_index = in_alignments_index,
             sequences = in_sequences,
+            sequences_index = in_sequences_index,
             variants = in_variants
         output:
             out_variants if params_keep_outputs else temp(out_variants)

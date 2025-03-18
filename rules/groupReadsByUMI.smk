@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2020 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.2.0'
+__version__ = '1.3.0'
 
 
 def groupReadsByUMI(
@@ -18,11 +18,17 @@ def groupReadsByUMI(
         params_umi_tag="RX",
         snake_rule_suffix=""):
     """Groups reads together that appear to have come from the same original molecule."""
+    # Parameters
+    in_alignments_index = in_alignments[:-4] + ".bai"
+    if isinstance(in_alignments, snakemake.io.AnnotatedString) and "storage_object" in in_alignments.flags:
+        in_alignments_index = storage(in_alignments.flags["storage_object"].query[:-4] + ".bai")
+    # Rule
     rule:
         name:
             "groupReadsByUMI" + snake_rule_suffix
         input:
-            in_alignments
+            alignments = in_alignments,
+            alignments_index = in_alignments_index
         output:
             alignments = out_alignments if params_keep_outputs else temp(out_alignments),
             metrics = out_metrics if params_keep_outputs else temp(out_metrics)
@@ -49,7 +55,7 @@ def groupReadsByUMI(
             " --strategy={params.strategy}"
             " --edits={params.max_edits}"
             " --min-map-q={params.min_mapq}"
-            " --input={input}"
+            " --input={input.alignments}"
             " --output={output.alignments}"
             " --family-size-histogram={output.metrics}"
             " {params.stderr_redirection} {log}"

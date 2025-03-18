@@ -21,16 +21,16 @@ def addAmpliRG(
         snake_rule_suffix=""):
     """Add RG corresponding to the amplicons panel. For one reads pair the amplicon is determined from the position of the first match position of the two reads (primers start positions)."""
     # Parameters
-    in_alignements_index = in_alignments + ".bai"
+    in_alignments_index = in_alignments + ".bai"
     if isinstance(in_alignments, snakemake.io.AnnotatedString) and "storage_object" in in_alignments.flags:
-        in_alignements_index = storage(in_alignements_index.flags["storage_object"].query)
+        in_alignments_index = storage(in_alignments.flags["storage_object"].query + ".bai")
     # Rule
     rule:
         name:
             "addAmpliRG" + snake_rule_suffix
         input:
             alignments = in_alignments,
-            alignments_index = in_alignements_index,
+            alignments_index = in_alignments_index,
             panel = in_panel
         output:
             alignments = out_alignments if params_keep_outputs else temp(out_alignments),

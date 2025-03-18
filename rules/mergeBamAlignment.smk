@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2021 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.2.0'
+__version__ = '1.3.0'
 
 
 def mergeBamAlignment(
@@ -29,7 +29,8 @@ def mergeBamAlignment(
             reference_seq = in_reference_seq,
             unmapped_bam = in_unmapped_bam
         output:
-            out_alignments if params_keep_outputs else temp(out_alignments)
+            alignments = out_alignments if params_keep_outputs else temp(out_alignments),
+            alignments_index = out_alignments[:-4] + ".bai" if params_create_index else []
         log:
             out_stderr
         params:
@@ -62,5 +63,5 @@ def mergeBamAlignment(
             " REFERENCE_SEQUENCE={input.reference_seq}"
             " UNMAPPED_BAM={input.unmapped_bam}"
             " ALIGNED_BAM={input.alignments}"
-            " OUTPUT={output}"
+            " OUTPUT={output.alignments}"
             " {params.stderr_redirection} {log}"

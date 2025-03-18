@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '3.1.0'
+__version__ = '3.2.0'
 
 include: "gatk4_learnReadOrientationModel.smk"
 
@@ -21,6 +21,21 @@ def gatk4_mutect2(
         params_tag_strand_bias=False,
         snake_rule_suffix=""):
     """Call somatic SNPs and indels via local re-assembly of haplotypes."""
+    # Parameters
+    in_reference_seq_index = in_reference_seq.rsplit(".", 1)[0] + ".dict"
+    if isinstance(in_reference_seq, snakemake.io.AnnotatedString) and "storage_object" in in_reference_seq.flags:
+        in_reference_seq_index = storage(in_reference_seq.flags["storage_object"].query.rsplit(".", 1)[0] + ".dict")
+    in_pon_variants_index = None
+    if in_pon_variants:
+        in_pon_variants_index = in_pon_variants + ".tbi"
+        if isinstance(in_pon_variants, snakemake.io.AnnotatedString) and "storage_object" in in_pon_variants.flags:
+            in_pon_variants_index = storage(in_pon_variants.flags["storage_object"].query + ".tbi")
+    in_germline_variants_index = None
+    if in_germline_variants:
+        in_germline_variants_index = in_germline_variants + ".tbi"
+        if isinstance(in_germline_variants, snakemake.io.AnnotatedString) and "storage_object" in in_germline_variants.flags:
+            in_germline_variants_index = storage(in_germline_variants.flags["storage_object"].query + ".tbi")
+
     # Filter supplementals to prevent mutect2 error with version 4.1.4.[0-1] (see: https://github.com/broadinstitute/gatk/issues/6310)
     rule:
         name:
@@ -60,10 +75,13 @@ def gatk4_mutect2(
             "mutect2" + snake_rule_suffix
         input:
             reference_seq = in_reference_seq,
+            reference_seq_index = in_reference_seq_index,
             tumoral_aln = out_variants + "_filteredTmp.bam",
             tumoral_bai = out_variants + "_filteredTmp.bam.bai",
-            pon_variants = ([] if in_pon_variants is None else in_pon_variants),
-            germline_variants = ([] if in_germline_variants is None else in_germline_variants)
+            pon_variants = [] if in_pon_variants is None else in_pon_variants,
+            pon_variants_index = [] if in_pon_variants_index is None else in_pon_variants_index,
+            germline_variants = [] if in_germline_variants is None else in_germline_variants,
+            germline_variants_index = [] if in_germline_variants_index is None else in_germline_variants_index
         output:
             variants = temp(out_variants + "_initTmp.vcf"),
             f1r2 = ([] if not params_tag_strand_bias else temp(out_variants + "_f1r2.tar.gz"))
@@ -108,6 +126,7 @@ def gatk4_mutect2(
             "filterMutectCalls" + snake_rule_suffix
         input:
             reference_seq = in_reference_seq,
+            reference_seq_index = in_reference_seq_index,
             variants = out_variants + "_initTmp.vcf",
             strand_model = ([] if not params_tag_strand_bias else params_tag_strand_bias + "_strandModel.tar.gz")
         output:

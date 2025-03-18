@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2019 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '2.3.0'
+__version__ = '2.4.0'
 
 
 def filterVCFTargets(
@@ -15,11 +15,16 @@ def filterVCFTargets(
         params_stderr_append=False,
         snake_rule_suffix=""):
     """Filter variants by location. Each variant not located on one of the selected regions is removed."""
+    # Parameters
+    in_reference_seq_index = in_reference_seq + ".fai"
+    if isinstance(in_reference_seq, snakemake.io.AnnotatedString) and "storage_object" in in_reference_seq.flags:
+        in_reference_seq_index = storage(in_reference_seq.flags["storage_object"].query + ".fai")
     rule:
         name:
             "filterVCFTargets" + snake_rule_suffix
         input:
             reference_seq = in_reference_seq,
+            reference_seq_index = in_reference_seq_index,
             targets = in_targets,
             variants = in_variants
         output:

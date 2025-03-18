@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2021 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.3.0'
+__version__ = '1.4.0'
 
 
 def depthsPanel(
@@ -16,11 +16,17 @@ def depthsPanel(
         params_stderr_append=False,
         snake_rule_suffix=""):
     """Write depths distribution and number of nt below depth thresholds for each target."""
+    # Parameters
+    in_alignments_index = in_alignments[:-4] + ".bai"
+    if isinstance(in_alignments, snakemake.io.AnnotatedString) and "storage_object" in in_alignments.flags:
+        in_alignments_index = storage(in_alignments.flags["storage_object"].query[:-4] + ".bai")
+    # Rule
     rule:
         name:
             "depthsPanel" + snake_rule_suffix
         input:
             alignments = in_alignments,
+            alignments_index = in_alignments_index,
             targets = in_targets
         output:
             out_metrics if params_keep_outputs else temp(out_metrics)
