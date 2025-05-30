@@ -136,8 +136,4 @@ You can change default values in profile configuration file.
             - $RULE:$KEY=$VAL
 
 ## Copyright
-2019 Laboratoire d'Anatomo-Cytopathologie de l'Institut Universitaire du Cancer
-Toulouse - Oncopole
-
-## Contact
-escudie.frederic@iuct-oncopole.fr
+2019 Laboratoire d'Anatomo-Cytopathologie du CHU Toulouse
