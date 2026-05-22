@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2021 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.2.0'
+__version__ = '1.2.1'
 
 
 def fastqToBam(
@@ -37,6 +37,7 @@ def fastqToBam(
             sample = params_sample,
             sort = "--sort" if params_sort else "",
             stderr_redirection = "2>" if not params_stderr_append else "2>>",
+            tmp_dir = os.path.dirname(out_alignments),
             umi_tag = "--umi-tag {}".format(params_umi_tag)
         resources:
             extra = "",
@@ -45,7 +46,9 @@ def fastqToBam(
         conda:
             "envs/fgbio.yml"
         shell:
-            "{params.bin_path} FastqToBam"
+            "{params.bin_path}"
+            " --tmp-dir {params.tmp_dir}"
+            " FastqToBam"
             " {params.extra}"
             " --library {params.library}"
             " --read-group-id {params.read_group_id}"
