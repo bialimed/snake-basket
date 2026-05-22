@@ -7,11 +7,12 @@ __version__ = '1.0.0'
 def gridss(
         in_alignments="aln/delDup/{sample}.bam",
         in_reference_seq="reference/genome.fasta",
-        out_variants="sv/{sample}_lumpyexpress_call.vcf",
-        out_stderr="logs/{sample}_lumpyexpress_stderr.txt",
+        out_assembly="structural_variants/{sample}_gridss_assembly.bam",
+        out_variants="structural_variants/{sample}_gridss_call.vcf",
+        out_stderr="logs/{sample}_gridss_stderr.txt",
         params_max_coverage=None,
         params_gridss_container=None,
-        params_keep_outputs=True,
+        params_keep_outputs=False,
         params_stderr_append=False,
         snake_rule_suffix=""):
     """Structural variant discovery."""
@@ -20,15 +21,17 @@ def gridss(
             "gridss" + snake_rule_suffix
         input:
             alignments = in_alignments,
-            reference_seq = in_reference_seq,
-            targets = ([] if in_targets is None else in_targets)
+            reference_seq = in_reference_seq
         output:
-            out_variants if params_keep_outputs else temp(out_variants)
+            assembly = out_assembly if params_keep_outputs else temp(out_assembly),
+            variants = out_variants if params_keep_outputs else temp(out_variants),
+            variants_idx = out_variants + ".idx" if params_keep_outputs else temp(out_variants + ".idx"),
+            work_dir = temp(directory(out_variants + "_tmpDir"))
         log:
             out_stderr
         params:
             bin_path = config.get("software_paths", {}).get("gridss", "gridss"),
-            max_coverage = "--maxcoverage {}".format() if params_max_coverage else ""
+            max_coverage = "--maxcoverage " + str(params_max_coverage) if params_max_coverage else "",
             stderr_redirection = "2>" if not params_stderr_append else "2>>"
         resources:
             extra = "",
@@ -36,16 +39,16 @@ def gridss(
             mem = "32G",
             partition = "normal"
         threads: 1
-        container:
+        singularity:
             params_gridss_container
         shell:
             "{params.bin_path}"
             " --jvmheap {resources.java_mem}"
             " --threads {threads}"
             " {params.max_coverage}"
-            " --assembly {input.alignments}"
             " --reference {input.reference_seq}"
-            " --workingdir {output}_tmpDir"
-            " --output {output}"
-            " > {log}"
-            " {params.stderr_redirection} {log.stderr}"
+            " --workingdir {output.work_dir}"
+            " --assembly {output.assembly}"
+            " --output {output.variants}"
+            " {input.alignments}"
+            " {params.stderr_redirection} {log}"
