@@ -17,7 +17,7 @@ def fusionsToJSON(
         snake_rule_suffix=""):
     """Convert fusions VCF to JSON format."""
     rule:
-        nale:
+        name:
             "fusionsToJSON" + snake_rule_suffix
         input:
             in_variants
