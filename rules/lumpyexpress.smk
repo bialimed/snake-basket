@@ -7,9 +7,9 @@ __version__ = '1.0.0'
 def lumpyexpress(
         in_alignments="aln/delDup/{sample}.bam",
         in_targets=None,
-        out_variants="sv/{sample}_lumpyexpress_call.vcf",
+        out_variants="structural_variants/{sample}_lumpyexpress_call.vcf",
         out_stderr="logs/{sample}_lumpyexpress_stderr.txt",
-        params_keep_outputs=True,
+        params_keep_outputs=False,
         params_stderr_append=False,
         snake_rule_suffix=""):
     """Structural variant discovery."""
@@ -39,5 +39,5 @@ def lumpyexpress(
             " {params.targets}"
             " -B {input.alignments}"
             " -o {output}"
-            " > {log}"
-            " {params.stderr_redirection} {log.stderr}"
+            " -T {output}_tmpDir"
+            " {params.stderr_redirection} {log}"
