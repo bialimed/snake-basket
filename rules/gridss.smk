@@ -7,6 +7,7 @@ __version__ = '1.0.0'
 def gridss(
         in_alignments="aln/delDup/{sample}.bam",
         in_reference_seq="reference/genome.fasta",
+        in_reference_seq_idx=None,
         out_assembly="structural_variants/{sample}_gridss_assembly.bam",
         out_variants="structural_variants/{sample}_gridss_call.vcf",
         out_stderr="logs/{sample}_gridss_stderr.txt",
@@ -16,12 +17,14 @@ def gridss(
         params_stderr_append=False,
         snake_rule_suffix=""):
     """Structural variant discovery."""
+    in_reference_seq_idx = in_reference_seq_idx + ".fai" if in_reference_seq_idx is None else in_reference_seq_idx
     rule:
         name:
             "gridss" + snake_rule_suffix
         input:
             alignments = in_alignments,
-            reference_seq = in_reference_seq
+            reference_seq = in_reference_seq,
+            reference_seq_idx = in_reference_seq_idx
         output:
             assembly = out_assembly if params_keep_outputs else temp(out_assembly),
             variants = out_variants if params_keep_outputs else temp(out_variants),
