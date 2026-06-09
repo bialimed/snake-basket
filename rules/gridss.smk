@@ -17,7 +17,7 @@ def gridss(
         params_stderr_append=False,
         snake_rule_suffix=""):
     """Structural variant discovery."""
-    in_reference_seq_idx = in_reference_seq_idx + ".fai" if in_reference_seq_idx is None else in_reference_seq_idx
+    in_reference_seq_idx = in_reference_seq + ".fai" if in_reference_seq_idx is None else in_reference_seq_idx
     rule:
         name:
             "gridss" + snake_rule_suffix
