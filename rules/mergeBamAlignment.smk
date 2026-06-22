@@ -1,7 +1,7 @@
 __author__ = 'Frederic Escudie'
 __copyright__ = 'Copyright (C) 2021 CHU Toulouse'
 __license__ = 'GNU General Public License'
-__version__ = '1.2.0'
+__version__ = '1.3.0'
 
 
 def mergeBamAlignment(
@@ -41,7 +41,8 @@ def mergeBamAlignment(
             expected_orientations = params_expected_orientations,
             sort_order = params_sort_order,
             stderr_redirection = "2>" if not params_stderr_append else "2>>",
-            stringency = params_stringency
+            stringency = params_stringency,
+            tmp_dir = out_alignments + "_tmpMergeBamAln" + snake_rule_suffix
         resources:
             extra = "",
             java_mem = "5G",
@@ -52,6 +53,7 @@ def mergeBamAlignment(
         shell:
             "{params.bin_path} MergeBamAlignment"
             " -Xmx{resources.java_mem}"
+            " TMP_DIR={params.tmp_dir}"
             " {params.extra}"
             " ALIGNER_PROPER_PAIR_FLAGS={params.aligner_proper_pair_flags}"
             " MAX_GAPS={params.max_gaps}"
